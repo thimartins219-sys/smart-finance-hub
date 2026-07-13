@@ -9,8 +9,38 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as RelatoriosRouteImport } from './routes/relatorios'
+import { Route as IndicadoresRouteImport } from './routes/indicadores'
+import { Route as GastosRouteImport } from './routes/gastos'
+import { Route as ConfiguracoesRouteImport } from './routes/configuracoes'
+import { Route as CentrosCustoRouteImport } from './routes/centros-custo'
 import { Route as IndexRouteImport } from './routes/index'
 
+const RelatoriosRoute = RelatoriosRouteImport.update({
+  id: '/relatorios',
+  path: '/relatorios',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndicadoresRoute = IndicadoresRouteImport.update({
+  id: '/indicadores',
+  path: '/indicadores',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GastosRoute = GastosRouteImport.update({
+  id: '/gastos',
+  path: '/gastos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConfiguracoesRoute = ConfiguracoesRouteImport.update({
+  id: '/configuracoes',
+  path: '/configuracoes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CentrosCustoRoute = CentrosCustoRouteImport.update({
+  id: '/centros-custo',
+  path: '/centros-custo',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +49,102 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/centros-custo': typeof CentrosCustoRoute
+  '/configuracoes': typeof ConfiguracoesRoute
+  '/gastos': typeof GastosRoute
+  '/indicadores': typeof IndicadoresRoute
+  '/relatorios': typeof RelatoriosRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/centros-custo': typeof CentrosCustoRoute
+  '/configuracoes': typeof ConfiguracoesRoute
+  '/gastos': typeof GastosRoute
+  '/indicadores': typeof IndicadoresRoute
+  '/relatorios': typeof RelatoriosRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/centros-custo': typeof CentrosCustoRoute
+  '/configuracoes': typeof ConfiguracoesRoute
+  '/gastos': typeof GastosRoute
+  '/indicadores': typeof IndicadoresRoute
+  '/relatorios': typeof RelatoriosRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/centros-custo'
+    | '/configuracoes'
+    | '/gastos'
+    | '/indicadores'
+    | '/relatorios'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/centros-custo'
+    | '/configuracoes'
+    | '/gastos'
+    | '/indicadores'
+    | '/relatorios'
+  id:
+    | '__root__'
+    | '/'
+    | '/centros-custo'
+    | '/configuracoes'
+    | '/gastos'
+    | '/indicadores'
+    | '/relatorios'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CentrosCustoRoute: typeof CentrosCustoRoute
+  ConfiguracoesRoute: typeof ConfiguracoesRoute
+  GastosRoute: typeof GastosRoute
+  IndicadoresRoute: typeof IndicadoresRoute
+  RelatoriosRoute: typeof RelatoriosRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/relatorios': {
+      id: '/relatorios'
+      path: '/relatorios'
+      fullPath: '/relatorios'
+      preLoaderRoute: typeof RelatoriosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/indicadores': {
+      id: '/indicadores'
+      path: '/indicadores'
+      fullPath: '/indicadores'
+      preLoaderRoute: typeof IndicadoresRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gastos': {
+      id: '/gastos'
+      path: '/gastos'
+      fullPath: '/gastos'
+      preLoaderRoute: typeof GastosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/configuracoes': {
+      id: '/configuracoes'
+      path: '/configuracoes'
+      fullPath: '/configuracoes'
+      preLoaderRoute: typeof ConfiguracoesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/centros-custo': {
+      id: '/centros-custo'
+      path: '/centros-custo'
+      fullPath: '/centros-custo'
+      preLoaderRoute: typeof CentrosCustoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,7 +157,22 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CentrosCustoRoute: CentrosCustoRoute,
+  ConfiguracoesRoute: ConfiguracoesRoute,
+  GastosRoute: GastosRoute,
+  IndicadoresRoute: IndicadoresRoute,
+  RelatoriosRoute: RelatoriosRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
