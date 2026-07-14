@@ -32,11 +32,12 @@ export const evolucaoMensal = [
 ];
 
 export const centrosCusto = [
-  { nome: "Operações Portuárias", orcamento: 180_000, utilizado: 148_200, anterior: 142_100 },
-  { nome: "Compras", orcamento: 140_000, utilizado: 112_400, anterior: 118_900 },
-  { nome: "Logística", orcamento: 100_000, utilizado: 89_600, anterior: 84_500 },
-  { nome: "Administrativo", orcamento: 80_000, utilizado: 68_120, anterior: 71_200 },
-  { nome: "Comercial", orcamento: 90_000, utilizado: 69_000, anterior: 62_400 },
+  { nome: "Operações Portuárias", gestor: "Marina Costa", orcamento: 180_000, utilizado: 148_200, anterior: 142_100, savings: 18_400, status: "Saudável", atualizado: "há 2h" },
+  { nome: "Compras", gestor: "Eduardo Lima", orcamento: 140_000, utilizado: 112_400, anterior: 118_900, savings: 22_800, status: "Otimizado", atualizado: "há 1h" },
+  { nome: "Logística", gestor: "Camila Duarte", orcamento: 100_000, utilizado: 89_600, anterior: 84_500, savings: 9_200, status: "Atenção", atualizado: "há 4h" },
+  { nome: "Administrativo", gestor: "Rafael Souza", orcamento: 80_000, utilizado: 68_120, anterior: 71_200, savings: 6_400, status: "Saudável", atualizado: "há 30min" },
+  { nome: "Comercial", gestor: "Beatriz Alves", orcamento: 90_000, utilizado: 69_000, anterior: 62_400, savings: 4_100, status: "Atenção", atualizado: "há 6h" },
+  { nome: "Tecnologia", gestor: "Lucas Mendes", orcamento: 75_000, utilizado: 58_400, anterior: 54_000, savings: 7_800, status: "Saudável", atualizado: "há 3h" },
 ];
 
 export const gastos = [
