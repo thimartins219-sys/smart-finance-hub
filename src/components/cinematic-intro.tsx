@@ -38,91 +38,98 @@ export function CinematicIntro() {
         phase === "out" ? "opacity-0 pointer-events-none" : "opacity-100"
       }`}
     >
-      {/* Ambient radial glows */}
+      {/* Mesh gradient background — Sanity-inspired dual glow */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(600px 400px at 50% 50%, oklch(0.74 0.17 50 / 0.28), transparent 65%), radial-gradient(900px 600px at 50% 50%, oklch(0.62 0.14 40 / 0.10), transparent 70%)",
+            "radial-gradient(600px 400px at 40% 45%, oklch(0.63 0.21 32 / 0.22), transparent 60%), radial-gradient(500px 350px at 60% 55%, oklch(0.50 0.20 260 / 0.12), transparent 55%), radial-gradient(900px 600px at 50% 50%, oklch(0.10 0.005 260 / 0.90), transparent 70%)",
         }}
       />
       {/* Grid */}
-      <div className="absolute inset-0 grid-bg opacity-40" />
+      <div className="absolute inset-0 grid-bg opacity-25" />
 
-      {/* SVG data network */}
+      {/* SVG data network — organic flowing lines */}
       <svg
-        className="absolute inset-0 h-full w-full opacity-70"
+        className="absolute inset-0 h-full w-full opacity-50"
         viewBox="0 0 800 600"
         preserveAspectRatio="xMidYMid slice"
       >
         <defs>
-          <linearGradient id="introLine" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="oklch(0.86 0.14 72)" stopOpacity="0.9" />
-            <stop offset="100%" stopColor="oklch(0.72 0.18 45)" stopOpacity="0.1" />
+          <linearGradient id="introLineA" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="oklch(0.75 0.18 38)" stopOpacity="0.8" />
+            <stop offset="100%" stopColor="oklch(0.55 0.20 260)" stopOpacity="0.1" />
+          </linearGradient>
+          <linearGradient id="introLineB" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="oklch(0.55 0.20 260)" stopOpacity="0.5" />
+            <stop offset="100%" stopColor="oklch(0.63 0.21 32)" stopOpacity="0.1" />
           </linearGradient>
         </defs>
         {[
-          "M100,500 C220,400 300,320 400,300 S620,220 700,120",
-          "M60,320 C200,300 320,280 400,300 S560,340 740,320",
-          "M120,140 C260,220 340,260 400,300 S560,380 720,460",
-        ].map((d, i) => (
+          { d: "M100,500 C220,400 300,320 400,300 S620,220 700,120", grad: "url(#introLineA)" },
+          { d: "M60,320 C200,300 320,280 400,300 S560,340 740,320", grad: "url(#introLineB)" },
+          { d: "M120,140 C260,220 340,260 400,300 S560,380 720,460", grad: "url(#introLineA)" },
+        ].map((line, i) => (
           <path
             key={i}
-            d={d}
+            d={line.d}
             fill="none"
-            stroke="url(#introLine)"
-            strokeWidth="1.2"
+            stroke={line.grad}
+            strokeWidth="0.8"
             className="animate-draw-line"
-            style={{ animationDelay: `${i * 200}ms` }}
+            style={{ animationDelay: `${i * 250}ms` }}
           />
         ))}
-        {Array.from({ length: 18 }).map((_, i) => {
-          const x = 60 + ((i * 43) % 720);
+        {Array.from({ length: 14 }).map((_, i) => {
+          const x = 60 + ((i * 53) % 720);
           const y = 100 + ((i * 71) % 420);
           return (
             <circle
               key={i}
               cx={x}
               cy={y}
-              r="1.5"
-              fill="oklch(0.86 0.14 72)"
-              opacity="0.6"
+              r="1.2"
+              fill={i % 3 === 0 ? "oklch(0.55 0.20 260)" : "oklch(0.75 0.18 38)"}
+              opacity="0.5"
               className="animate-pulse-glow"
-              style={{ animationDelay: `${i * 60}ms` }}
+              style={{ animationDelay: `${i * 80}ms` }}
             />
           );
         })}
       </svg>
 
       {/* Center content */}
-      <div className="relative z-10 flex flex-col items-center gap-5 text-center animate-fade-in-soft">
-        <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl border border-border/60 overflow-hidden">
+      <div className="relative z-10 flex flex-col items-center gap-6 text-center animate-blur-in">
+        {/* Logo mark */}
+        <div className="relative flex h-14 w-14 items-center justify-center rounded-2xl overflow-hidden">
           <div
             className="absolute inset-0"
             style={{ background: "var(--gradient-primary)" }}
           />
           <div
-            className="absolute -inset-4 blur-2xl opacity-70"
+            className="absolute -inset-6 blur-3xl opacity-50"
             style={{ background: "var(--gradient-primary)" }}
           />
-          <span className="relative font-display text-3xl text-primary-foreground leading-none">
+          <span className="relative font-display text-2xl text-primary-foreground leading-none italic">
             e
           </span>
         </div>
+        {/* Title */}
         <div>
-          <div className="font-display text-4xl md:text-5xl tracking-tight text-gradient">
+          <div className="font-display text-4xl md:text-5xl tracking-tight text-gradient italic">
             The Econommy
           </div>
           <div
-            className="mt-3 text-[11px] uppercase tracking-[0.32em] text-muted-foreground/80 animate-fade-in-soft"
+            className="mt-3 text-[10px] uppercase tracking-[0.20em] text-shimmer font-medium"
             style={{ animationDelay: "600ms" }}
           >
             Transformando dados em decisões
           </div>
         </div>
+        {/* Skip */}
         <button
           onClick={skip}
-          className="mt-6 text-[10px] uppercase tracking-[0.24em] text-muted-foreground/60 transition-colors hover:text-foreground"
+          className="mt-4 text-[9px] uppercase tracking-[0.16em] text-muted-foreground/40 transition-colors hover:text-foreground/70"
         >
           Pular intro
         </button>

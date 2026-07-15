@@ -28,34 +28,34 @@ export function PageShell({
   return (
     <div
       key={pathname}
-      className="relative min-h-[calc(100vh-4rem)] px-4 py-8 md:px-10 md:py-12 animate-page-in"
+      className="relative min-h-[calc(100vh-4.5rem)] px-6 py-10 md:px-12 md:py-14 animate-page-in"
     >
-      {/* Ambient hero gradient */}
+      {/* Ambient hero gradient — wide, diffuse, asymmetric */}
       <div
-        className="pointer-events-none absolute inset-x-0 -top-10 h-[420px] opacity-90"
+        className="pointer-events-none absolute inset-x-0 -top-16 h-[480px] opacity-80"
         style={{ background: "var(--gradient-hero)" }}
       />
-      {/* Subtle grid overlay behind hero */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-[420px] grid-bg opacity-40" />
+      {/* Subtle grid overlay */}
+      <div className="pointer-events-none absolute inset-x-0 -top-16 h-[480px] grid-bg opacity-30" />
 
-      <div className="relative mx-auto max-w-[1400px]">
+      <div className="relative mx-auto max-w-[1440px]">
         {/* Breadcrumb */}
-        <nav className="mb-6 flex items-center gap-1.5 text-xs text-muted-foreground/80">
+        <nav className="mb-8 flex items-center gap-1.5 text-[11px] text-muted-foreground/50">
           <Link
             to="/"
-            className="flex items-center gap-1 transition-colors hover:text-foreground"
+            className="flex items-center gap-1 transition-colors hover:text-foreground/80"
           >
             <Home className="h-3 w-3" />
             <span>Início</span>
           </Link>
           {segments.map((seg, i) => (
             <span key={seg} className="flex items-center gap-1.5">
-              <ChevronRight className="h-3 w-3 text-muted-foreground/50" />
+              <ChevronRight className="h-2.5 w-2.5 text-muted-foreground/30" />
               <span
                 className={
                   i === segments.length - 1
-                    ? "text-foreground/90 font-medium"
-                    : "text-muted-foreground/80"
+                    ? "text-foreground/80 font-medium"
+                    : "text-muted-foreground/50"
                 }
               >
                 {ROUTE_LABELS[seg] ?? seg}
@@ -64,26 +64,31 @@ export function PageShell({
           ))}
         </nav>
 
-        <div className="mb-8 flex flex-wrap items-end justify-between gap-4 animate-count-up">
+        {/* Page Title Section */}
+        <div className="mb-10 flex flex-wrap items-end justify-between gap-6 animate-count-up">
           <div className="max-w-2xl">
-            <div className="mb-2 flex items-center gap-2">
-              <span className="h-1 w-1 rounded-full bg-primary shadow-[0_0_8px_var(--primary)]" />
-              <span className="text-[10px] font-medium uppercase tracking-[0.22em] text-muted-foreground/80">
+            {/* Suite badge */}
+            <div className="mb-3 flex items-center gap-2">
+              <span className="h-1 w-1 rounded-full bg-primary shadow-[0_0_6px_var(--primary)]" />
+              <span className="text-[9px] font-medium uppercase tracking-[0.14em] text-shimmer">
                 The Econommy · Suite
               </span>
             </div>
-            <h1 className="font-display text-3xl font-normal tracking-tight text-gradient md:text-[42px] md:leading-[1.05]">
+            {/* Title with Instrument Serif */}
+            <h1 className="font-display text-[38px] font-normal italic tracking-tight text-gradient md:text-[46px] md:leading-[1.08]">
               {title}
             </h1>
             {description && (
-              <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">
+              <p className="mt-3 text-[14px] leading-relaxed text-muted-foreground/70 max-w-lg">
                 {description}
               </p>
             )}
           </div>
-          {actions && <div className="flex flex-wrap gap-2 animate-fade-in-soft">{actions}</div>}
+          {actions && <div className="flex flex-wrap gap-2">{actions}</div>}
         </div>
-        <div className="animate-fade-in-soft [animation-delay:120ms]">{children}</div>
+
+        {/* Page Content */}
+        <div className="animate-count-up [animation-delay:80ms]">{children}</div>
       </div>
     </div>
   );

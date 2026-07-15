@@ -21,26 +21,25 @@ export const Route = createFileRoute("/indicadores")({
 });
 
 const radialData = [
-  { name: "Meta", value: 87, fill: "oklch(0.65 0.145 35)" },
+  { name: "Meta", value: 87, fill: "oklch(0.63 0.21 32)" },
 ];
 
 function IndicadoresPage() {
-  // Custom tooltips (Premium Glass design)
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div className="glass-strong border border-border-strong rounded-xl p-4 shadow-large backdrop-blur-2xl animate-scale">
-          <div className="font-display font-medium text-sm text-white mb-2">{label}</div>
-          <div className="space-y-1.5">
+        <div className="glass-strong rounded-xl p-4 shadow-large backdrop-blur-3xl animate-scale min-w-[170px]">
+          <div className="font-display text-[13px] font-normal italic text-white mb-2.5">{label}</div>
+          <div className="space-y-2">
             {payload.map((p: any) => (
-              <div key={p.name} className="flex items-center gap-6 justify-between text-xs">
+              <div key={p.name} className="flex items-center gap-4 justify-between text-[12px]">
                 <span className="flex items-center gap-1.5">
-                  <span className="h-2 w-2 rounded-full" style={{ backgroundColor: p.color }} />
-                  <span className="text-muted-foreground capitalize">
+                  <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: p.color }} />
+                  <span className="text-muted-foreground/70">
                     {p.name === "eficiencia" ? "Eficiência" : "Economia"}
                   </span>
                 </span>
-                <span className="font-mono font-semibold text-white">
+                <span className="font-mono font-semibold text-white text-[11px]">
                   {p.name === "eficiencia" ? `${p.value}%` : `R$ ${p.value}k`}
                 </span>
               </div>
@@ -57,37 +56,37 @@ function IndicadoresPage() {
       title="Indicadores"
       description="KPIs estratégicos que guiam a tomada de decisão financeira."
     >
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {kpis.map((k, i) => {
           const up = k.tendencia === "up";
           return (
             <Card
               key={k.titulo}
-              className="glass relative overflow-hidden border-border/60 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 animate-count-up"
+              className="glass-ethereal relative overflow-hidden transition-all duration-[420ms] hover:-translate-y-[2px] animate-count-up"
               style={{ animationDelay: `${i * 60}ms` }}
             >
-              <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-primary/10 blur-2xl transition-opacity duration-300 group-hover:bg-primary/20" />
-              <CardHeader className="pb-2">
-                <CardDescription className="uppercase tracking-widest text-[10px] font-semibold text-text-muted">
+              <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-primary/8 blur-3xl" />
+              <CardHeader className="pb-1">
+                <CardDescription className="text-[9px] font-medium uppercase tracking-[0.10em] text-muted-foreground/50">
                   {k.titulo}
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="font-mono text-3xl font-semibold tracking-tight text-white mt-1">
+                <div className="font-mono text-[26px] font-semibold tracking-tight text-white mt-2">
                   {k.valor}
                 </div>
-                <div className="mt-4 flex items-center gap-2 text-xs">
+                <div className="mt-4 flex items-center gap-2 text-[11px]">
                   <span
-                    className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 font-semibold ${
+                    className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 font-medium ${
                       up
-                        ? "bg-[color:var(--positive)]/12 text-[color:var(--positive)]"
-                        : "bg-[color:var(--negative)]/12 text-[color:var(--negative)]"
+                        ? "bg-[color:var(--positive)]/10 text-[color:var(--positive)]"
+                        : "bg-[color:var(--negative)]/10 text-[color:var(--negative)]"
                     }`}
                   >
                     {up ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
                     {k.delta}
                   </span>
-                  <span className="text-text-muted">{k.descricao}</span>
+                  <span className="text-muted-foreground/40">{k.descricao}</span>
                 </div>
               </CardContent>
             </Card>
@@ -95,55 +94,53 @@ function IndicadoresPage() {
         })}
       </div>
 
-      <div className="mt-6 grid grid-cols-1 gap-5 lg:grid-cols-3">
-        {/* Evolution curve Area/Line chart */}
-        <Card className="glass lg:col-span-2">
+      <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-3">
+        {/* Evolution curve */}
+        <Card className="glass-ethereal lg:col-span-2">
           <CardHeader>
-            <CardTitle className="font-display text-lg text-white">Evolução dos KPIs</CardTitle>
+            <CardTitle className="font-display text-[17px] font-normal italic text-white">Evolução dos KPIs</CardTitle>
             <CardDescription>Eficiência operacional e economia acumulada (últimos 6 meses)</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="h-72">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={kpiSerie} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="var(--border-soft)" vertical={false} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="oklch(1 0 0 / 0.03)" vertical={false} />
                   <XAxis
                     dataKey="mes"
                     stroke="var(--text-muted)"
-                    fontSize={11}
+                    fontSize={10}
                     tickLine={false}
                     axisLine={false}
                     dy={8}
                   />
                   <YAxis
                     stroke="var(--text-muted)"
-                    fontSize={11}
+                    fontSize={10}
                     tickLine={false}
                     axisLine={false}
                     dx={-8}
                   />
-                  <Tooltip content={<CustomTooltip />} cursor={{ stroke: "oklch(1 0 0 / 0.08)", strokeWidth: 1.5 }} />
+                  <Tooltip content={<CustomTooltip />} cursor={{ stroke: "oklch(1 0 0 / 0.06)", strokeWidth: 1 }} />
                   
-                  {/* Eficiência (Sapphire Blue look) */}
                   <Line
                     type="monotone"
                     name="eficiencia"
                     dataKey="eficiencia"
-                    stroke="oklch(0.55 0.14 240)"
-                    strokeWidth={3}
-                    dot={{ r: 4, strokeWidth: 0, fill: "oklch(0.55 0.14 240)" }}
-                    activeDot={{ r: 6 }}
+                    stroke="oklch(0.50 0.18 260)"
+                    strokeWidth={2}
+                    dot={{ r: 3.5, strokeWidth: 0, fill: "oklch(0.50 0.18 260)" }}
+                    activeDot={{ r: 5 }}
                   />
                   
-                  {/* Economia (Premium Orange look) */}
                   <Line
                     type="monotone"
                     name="economia"
                     dataKey="economia"
-                    stroke="oklch(0.65 0.145 35)"
-                    strokeWidth={3}
-                    dot={{ r: 4, strokeWidth: 0, fill: "oklch(0.65 0.145 35)" }}
-                    activeDot={{ r: 6 }}
+                    stroke="oklch(0.63 0.21 32)"
+                    strokeWidth={2}
+                    dot={{ r: 3.5, strokeWidth: 0, fill: "oklch(0.63 0.21 32)" }}
+                    activeDot={{ r: 5 }}
                   />
                 </LineChart>
               </ResponsiveContainer>
@@ -152,13 +149,13 @@ function IndicadoresPage() {
         </Card>
 
         {/* Radial Target score */}
-        <Card className="glass">
+        <Card className="glass-ethereal">
           <CardHeader>
-            <CardTitle className="font-display text-lg text-white">Meta Trimestral</CardTitle>
+            <CardTitle className="font-display text-[17px] font-normal italic text-white">Meta Trimestral</CardTitle>
             <CardDescription>Score de performance consolidado</CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col items-center">
-            <div className="h-56 w-full relative flex items-center justify-center">
+            <div className="h-52 w-full relative flex items-center justify-center">
               <ResponsiveContainer width="100%" height="100%">
                 <RadialBarChart
                   innerRadius="75%"
@@ -172,20 +169,20 @@ function IndicadoresPage() {
                   </RadialBar>
                   <defs>
                     <linearGradient id="radialGrad" x1="0" y1="0" x2="1" y2="1">
-                      <stop offset="0%" stopColor="oklch(0.65 0.145 35)" />
-                      <stop offset="100%" stopColor="oklch(0.78 0.11 85)" />
+                      <stop offset="0%" stopColor="oklch(0.63 0.21 32)" />
+                      <stop offset="100%" stopColor="oklch(0.80 0.12 80)" />
                     </linearGradient>
                   </defs>
                 </RadialBarChart>
               </ResponsiveContainer>
               <div className="absolute text-center">
-                <div className="font-display text-3xl font-bold text-white tracking-tight">87</div>
-                <div className="text-[10px] uppercase tracking-wider text-muted-foreground/80 font-medium">score</div>
+                <div className="font-display text-[28px] font-normal italic text-white tracking-tight">87</div>
+                <div className="text-[8px] uppercase tracking-[0.10em] text-muted-foreground/40 font-medium">score</div>
               </div>
             </div>
             <div className="text-center mt-2">
-              <div className="font-display text-2xl font-bold text-white">87 / 100</div>
-              <p className="mt-2 text-xs text-text-muted leading-relaxed">
+              <div className="font-display text-[22px] font-normal italic text-white">87 / 100</div>
+              <p className="mt-2 text-[12px] text-muted-foreground/40 leading-relaxed">
                 Superando a meta trimestral de 85 pontos estabelecida pelo board.
               </p>
             </div>

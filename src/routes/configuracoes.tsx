@@ -18,37 +18,37 @@ function ConfiguracoesPage() {
       title="Configurações"
       description="Personalize preferências, integrações e políticas financeiras."
     >
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-        <Card className="glass border-border/60">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <Card className="glass-ethereal">
           <CardHeader>
-            <CardTitle className="font-display text-lg text-white font-semibold">Perfil da Empresa</CardTitle>
+            <CardTitle className="font-display text-[17px] font-normal italic text-white">Perfil da Empresa</CardTitle>
             <CardDescription>Dados exibidos nos relatórios e no dashboard</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label className="text-[11px] font-semibold text-text-muted uppercase tracking-wider">Razão Social</Label>
-              <Input defaultValue={empresa.nome} className="bg-surface/60 border-border/60" />
+              <Label className="text-[10px] font-medium text-muted-foreground/40 uppercase tracking-[0.08em]">Razão Social</Label>
+              <Input defaultValue={empresa.nome} className="bg-white/[0.015] border-white/[0.05]" />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-2">
-                <Label className="text-[11px] font-semibold text-text-muted uppercase tracking-wider">CNPJ</Label>
-                <Input defaultValue="00.***.***/0001-00" className="bg-surface/60 border-border/60" />
+                <Label className="text-[10px] font-medium text-muted-foreground/40 uppercase tracking-[0.08em]">CNPJ</Label>
+                <Input defaultValue="00.***.***/0001-00" className="bg-white/[0.015] border-white/[0.05]" />
               </div>
               <div className="space-y-2">
-                <Label className="text-[11px] font-semibold text-text-muted uppercase tracking-wider">Moeda</Label>
-                <Input defaultValue="BRL" className="bg-surface/60 border-border/60" />
+                <Label className="text-[10px] font-medium text-muted-foreground/40 uppercase tracking-[0.08em]">Moeda</Label>
+                <Input defaultValue="BRL" className="bg-white/[0.015] border-white/[0.05]" />
               </div>
             </div>
             <div className="space-y-2">
-              <Label className="text-[11px] font-semibold text-text-muted uppercase tracking-wider">Período Fiscal Padrão</Label>
-              <Input defaultValue={empresa.periodo} className="bg-surface/60 border-border/60" />
+              <Label className="text-[10px] font-medium text-muted-foreground/40 uppercase tracking-[0.08em]">Período Fiscal Padrão</Label>
+              <Input defaultValue={empresa.periodo} className="bg-white/[0.015] border-white/[0.05]" />
             </div>
           </CardContent>
         </Card>
 
-        <Card className="glass border-border/60">
+        <Card className="glass-ethereal">
           <CardHeader>
-            <CardTitle className="font-display text-lg text-white font-semibold">Preferências</CardTitle>
+            <CardTitle className="font-display text-[17px] font-normal italic text-white">Preferências</CardTitle>
             <CardDescription>Alertas, notificações e comportamento da plataforma</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -58,10 +58,10 @@ function ConfiguracoesPage() {
               { t: "Detecção inteligente de anomalias", d: "IA identifica transações fora do padrão." },
               { t: "Modo alta densidade", d: "Interface compacta para telas de análise." },
             ].map((p, i) => (
-              <div key={p.t} className="flex items-start justify-between gap-4 border-b border-border/40 pb-3 last:border-0 last:pb-0">
+              <div key={p.t} className="flex items-start justify-between gap-4 border-b border-white/[0.03] pb-4 last:border-0 last:pb-0">
                 <div>
-                  <div className="text-sm font-semibold text-white">{p.t}</div>
-                  <div className="text-xs text-text-secondary mt-0.5">{p.d}</div>
+                  <div className="text-[13px] font-medium text-white">{p.t}</div>
+                  <div className="text-[12px] text-muted-foreground/40 mt-0.5">{p.d}</div>
                 </div>
                 <Switch defaultChecked={i < 3} />
               </div>
@@ -78,12 +78,12 @@ function ConfiguracoesPage() {
           </CardContent>
         </Card>
 
-        <Card className="glass border-border/60 lg:col-span-2">
+        <Card className="glass-ethereal lg:col-span-2">
           <CardHeader>
-            <CardTitle className="font-display text-lg text-white font-semibold">Integrações</CardTitle>
+            <CardTitle className="font-display text-[17px] font-normal italic text-white">Integrações</CardTitle>
             <CardDescription>Conexões com sistemas corporativos</CardDescription>
           </CardHeader>
-          <CardContent className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          <CardContent className="grid grid-cols-1 gap-3 md:grid-cols-3">
             {[
               { n: "SAP S/4HANA", s: "Conectado", ok: true },
               { n: "TOTVS Protheus", s: "Conectado", ok: true },
@@ -92,14 +92,14 @@ function ConfiguracoesPage() {
               { n: "Bling ERP", s: "Disponível", ok: false },
               { n: "Power BI", s: "Conectado", ok: true },
             ].map((i) => (
-              <div key={i.n} className="flex items-center justify-between rounded-xl border border-border/40 bg-surface/50 p-4 transition-all duration-300 hover:border-primary/20">
+              <div key={i.n} className="flex items-center justify-between rounded-xl border border-white/[0.04] bg-white/[0.012] p-4 transition-all duration-300 hover:border-white/[0.08] hover:bg-white/[0.02]">
                 <div>
-                  <div className="text-sm font-semibold text-white">{i.n}</div>
-                  <div className="text-xs text-text-secondary mt-0.5">{i.s}</div>
+                  <div className="text-[13px] font-medium text-white">{i.n}</div>
+                  <div className="text-[11px] text-muted-foreground/40 mt-0.5">{i.s}</div>
                 </div>
                 <span
-                  className={`h-2.5 w-2.5 rounded-full ${
-                    i.ok ? "bg-[color:var(--positive)] animate-pulse-glow" : "bg-muted-foreground/40"
+                  className={`h-2 w-2 rounded-full ${
+                    i.ok ? "bg-[color:var(--positive)] animate-pulse-glow" : "bg-white/[0.08]"
                   }`}
                 />
               </div>
