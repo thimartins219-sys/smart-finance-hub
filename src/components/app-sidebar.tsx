@@ -35,37 +35,37 @@ export function AppSidebar() {
   return (
     <Sidebar
       collapsible="icon"
-      className="border-r border-border/60 bg-transparent [&>[data-sidebar=sidebar]]:bg-background/40 [&>[data-sidebar=sidebar]]:backdrop-blur-2xl"
+      className="border-r border-[--divider-raw] bg-transparent [&>[data-sidebar=sidebar]]:bg-background/30 [&>[data-sidebar=sidebar]]:backdrop-blur-3xl"
     >
-      <SidebarHeader className="border-b border-border/60">
-        <div className="flex items-center gap-2.5 px-2 py-3.5">
-          <div className="relative flex h-9 w-9 items-center justify-center rounded-xl border border-border/60 bg-surface/60 overflow-hidden">
+      <SidebarHeader className="border-b border-[--divider-raw] px-4 py-4">
+        <div className="flex items-center gap-3">
+          <div className="relative flex h-9 w-9 items-center justify-center rounded-xl overflow-hidden">
             <div
-              className="absolute inset-0 opacity-90"
+              className="absolute inset-0"
               style={{ background: "var(--gradient-primary)" }}
             />
-            <span className="relative font-display text-lg font-medium text-primary-foreground leading-none">
+            <div
+              className="absolute -inset-3 opacity-30 blur-xl"
+              style={{ background: "var(--gradient-primary)" }}
+            />
+            <span className="relative font-[family-name:var(--font-display)] text-lg text-[--neutral-00] leading-none font-bold">
               e
             </span>
-            <div
-              className="absolute -inset-2 opacity-40 blur-xl"
-              style={{ background: "var(--gradient-primary)" }}
-            />
           </div>
           <div className="flex flex-col leading-tight group-data-[collapsible=icon]:hidden">
-            <span className="font-display text-base tracking-tight text-foreground">
+            <span className="font-[family-name:var(--font-display)] text-[17px] tracking-tight text-foreground font-semibold">
               The Econommy
             </span>
-            <span className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground/80">
+            <span className="text-[9px] uppercase tracking-[0.14em] text-muted-foreground/55 font-medium mt-0.5">
               Intelligence Suite
             </span>
           </div>
         </div>
       </SidebarHeader>
 
-      <SidebarContent className="px-1.5 py-3">
+      <SidebarContent className="px-2 py-4">
         <SidebarGroup>
-          <SidebarGroupLabel className="px-2 text-[10px] font-medium uppercase tracking-[0.16em] text-muted-foreground/70">
+          <SidebarGroupLabel className="px-3 mb-2 text-[9px] font-medium uppercase tracking-[0.12em] text-muted-foreground/45">
             Navegação
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -78,21 +78,17 @@ export function AppSidebar() {
                       asChild
                       isActive={active}
                       tooltip={item.title}
-                      className="group/item relative h-10 rounded-lg px-2.5 text-sm text-muted-foreground transition-all duration-300 hover:bg-white/[0.04] hover:text-foreground data-[active=true]:bg-white/[0.05] data-[active=true]:text-foreground"
+                      className="group/item relative h-10 rounded-[--radius-md] px-3 text-[13px] text-muted-foreground/70 transition-all duration-[var(--duration-smooth)] hover:bg-[oklch(1_0_0/0.025)] hover:text-white data-[active=true]:bg-[--primary-orange-soft] data-[active=true]:text-white"
                     >
                       <Link to={item.url}>
-                        {active && (
-                          <span
-                            className="absolute left-0 top-1/2 h-5 w-[2px] -translate-y-1/2 rounded-r-full"
-                            style={{ background: "var(--gradient-primary)", boxShadow: "0 0 12px var(--primary)" }}
-                          />
-                        )}
                         <item.icon
-                          className={`h-[18px] w-[18px] transition-colors duration-300 ${
-                            active ? "text-primary" : "text-muted-foreground group-hover/item:text-foreground"
+                          className={`h-[16px] w-[16px] transition-all duration-[var(--duration-smooth)] group-hover/item:translate-x-0.5 ${
+                            active ? "text-[--primary-orange] scale-105" : "text-muted-foreground/45 group-hover/item:text-white"
                           }`}
                         />
-                        <span className="font-medium tracking-tight">{item.title}</span>
+                        <span className={`font-semibold tracking-[-0.01em] transition-colors ${active ? "text-white" : ""}`}>
+                          {item.title}
+                        </span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -103,11 +99,11 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="border-t border-border/60">
-        <div className="flex items-center gap-2 px-2 py-2 group-data-[collapsible=icon]:hidden">
-          <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--positive)] animate-pulse-glow" />
-          <span className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-            v2.6 · Enterprise
+      <SidebarFooter className="border-t border-[--divider-raw]">
+        <div className="flex items-center gap-2 px-4 py-3 group-data-[collapsible=icon]:hidden">
+          <span className="h-1.5 w-1.5 rounded-full bg-[--success-raw] animate-pulse-glow" />
+          <span className="text-[9px] uppercase tracking-[0.10em] text-muted-foreground/45 font-medium">
+            v3.0 · Enterprise
           </span>
         </div>
       </SidebarFooter>

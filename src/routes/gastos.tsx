@@ -32,9 +32,9 @@ const categorias = ["Todas", "Operações", "Compras", "Logística", "Administra
 const periodos = ["Setembro 2026", "Agosto 2026", "Julho 2026", "Q3 2026"];
 
 function statusColor(s: string) {
-  if (s === "Pago") return "bg-[color:var(--positive)]/15 text-[color:var(--positive)] border-[color:var(--positive)]/30";
-  if (s === "Aprovado") return "bg-[color:var(--info)]/15 text-[color:var(--info)] border-[color:var(--info)]/30";
-  return "bg-amber-500/15 text-amber-400 border-amber-500/30";
+  if (s === "Pago") return "bg-[color:var(--positive)]/10 text-[color:var(--positive)] border-[color:var(--positive)]/20";
+  if (s === "Aprovado") return "bg-[color:var(--info)]/10 text-[color:var(--info)] border-[color:var(--info)]/20";
+  return "bg-amber-500/10 text-amber-400 border-amber-500/20";
 }
 
 function GastosPage() {
@@ -64,33 +64,34 @@ function GastosPage() {
       description="Rastreabilidade completa das transações financeiras corporativas."
       actions={
         <>
-          <Button variant="outline" className="border-border/60" onClick={() => toast.success("Filtros salvos")}>
-            <Filter className="mr-2 h-4 w-4" /> Filtros
+          <Button variant="outline" onClick={() => toast.success("Filtros salvos")}>
+            <Filter className="mr-2 h-3.5 w-3.5" /> Filtros
           </Button>
           <Button
-            className="text-primary-foreground"
+            className="text-primary-foreground shadow-[var(--shadow-glow)]"
             style={{ background: "var(--gradient-primary)" }}
             onClick={() => toast.success("Exportação iniciada")}
           >
-            <Download className="mr-2 h-4 w-4" /> Exportar
+            <Download className="mr-2 h-3.5 w-3.5" /> Exportar
           </Button>
         </>
       }
     >
-      <Card className="glass border-border/60">
-        <CardContent className="p-4 md:p-6">
-          <div className="mb-4 flex flex-wrap items-center gap-3">
-            <div className="relative flex-1 min-w-[220px]">
-              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+      <Card className="glass-ethereal">
+        <CardContent className="p-6 md:p-7">
+          {/* Filter bar */}
+          <div className="mb-6 flex flex-wrap items-center gap-3">
+            <div className="relative flex-1 min-w-[240px] group">
+              <Search className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground/40 transition-colors group-focus-within:text-primary" />
               <Input
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
                 placeholder="Buscar por fornecedor, descrição, centro de custo..."
-                className="pl-9 bg-surface/60 border-border/60"
+                className="pl-9 bg-white/[0.015] border-white/[0.05]"
               />
             </div>
             <Select value={cat} onValueChange={setCat}>
-              <SelectTrigger className="w-48 bg-surface/60 border-border/60">
+              <SelectTrigger className="w-44 bg-white/[0.015] border-white/[0.05]">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -100,7 +101,7 @@ function GastosPage() {
               </SelectContent>
             </Select>
             <Select value={periodo} onValueChange={setPeriodo}>
-              <SelectTrigger className="w-48 bg-surface/60 border-border/60">
+              <SelectTrigger className="w-44 bg-white/[0.015] border-white/[0.05]">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -111,22 +112,22 @@ function GastosPage() {
             </Select>
             <Button
               variant="outline"
-              className="border-border/60"
               onClick={() => setOrdem(ordem === "desc" ? "asc" : "desc")}
             >
-              <ArrowUpDown className="mr-2 h-4 w-4" />
+              <ArrowUpDown className="mr-2 h-3.5 w-3.5 text-primary" />
               Valor {ordem === "desc" ? "↓" : "↑"}
             </Button>
           </div>
 
-          <div className="overflow-hidden rounded-xl border border-border/60">
+          {/* Table */}
+          <div className="overflow-hidden rounded-xl border border-white/[0.04] bg-white/[0.008]">
             <Table>
               <TableHeader>
-                <TableRow className="bg-surface/50 hover:bg-surface/50">
+                <TableRow className="border-white/[0.04] hover:bg-transparent">
                   <TableHead>Data</TableHead>
                   <TableHead>Categoria</TableHead>
                   <TableHead>Fornecedor</TableHead>
-                  <TableHead>Centro de custo</TableHead>
+                  <TableHead>Centro de Custo</TableHead>
                   <TableHead>Descrição</TableHead>
                   <TableHead className="text-right">Valor</TableHead>
                   <TableHead>Status</TableHead>
@@ -134,19 +135,19 @@ function GastosPage() {
               </TableHeader>
               <TableBody>
                 {rows.map((g, i) => (
-                  <TableRow key={i} className="transition-colors hover:bg-primary/5">
-                    <TableCell className="font-mono text-xs text-muted-foreground">{g.data}</TableCell>
+                  <TableRow key={i} className="group/row border-white/[0.03] transition-colors hover:bg-white/[0.015]">
+                    <TableCell className="font-mono text-[11px] text-muted-foreground/40">{g.data}</TableCell>
                     <TableCell>
-                      <Badge variant="outline" className="border-border/60 bg-surface/60 text-xs">
+                      <Badge variant="outline" className="border-white/[0.06] bg-white/[0.02] text-[11px] font-medium">
                         {g.categoria}
                       </Badge>
                     </TableCell>
-                    <TableCell className="font-medium">{g.fornecedor}</TableCell>
-                    <TableCell className="text-muted-foreground">{g.cc}</TableCell>
-                    <TableCell className="max-w-xs truncate text-sm text-muted-foreground">{g.descricao}</TableCell>
-                    <TableCell className="text-right font-mono font-semibold">{brlFull(g.valor)}</TableCell>
+                    <TableCell className="font-medium text-white">{g.fornecedor}</TableCell>
+                    <TableCell className="text-muted-foreground/60 font-medium">{g.cc}</TableCell>
+                    <TableCell className="max-w-xs truncate text-[13px] text-muted-foreground/40">{g.descricao}</TableCell>
+                    <TableCell className="text-right font-mono font-semibold text-white text-[13px]">{brlFull(g.valor)}</TableCell>
                     <TableCell>
-                      <span className={`inline-flex rounded-full border px-2 py-0.5 text-[11px] font-medium ${statusColor(g.status)}`}>
+                      <span className={`inline-flex rounded-full border px-2.5 py-0.5 text-[10px] font-medium ${statusColor(g.status)}`}>
                         {g.status}
                       </span>
                     </TableCell>
@@ -154,7 +155,7 @@ function GastosPage() {
                 ))}
                 {rows.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={7} className="py-10 text-center text-sm text-muted-foreground">
+                    <TableCell colSpan={7} className="py-16 text-center text-[13px] text-muted-foreground/40">
                       Nenhum lançamento corresponde aos filtros.
                     </TableCell>
                   </TableRow>
@@ -163,9 +164,12 @@ function GastosPage() {
             </Table>
           </div>
 
-          <div className="mt-4 flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">{rows.length} lançamentos exibidos</span>
-            <span className="font-mono font-semibold">Total filtrado: {brlFull(total)}</span>
+          {/* Footer totals */}
+          <div className="mt-6 flex flex-wrap items-center justify-between gap-4 text-[13px]">
+            <span className="text-muted-foreground/50 font-medium">{rows.length} lançamentos exibidos</span>
+            <span className="font-mono font-semibold text-white bg-white/[0.02] border border-white/[0.05] px-4 py-2 rounded-lg">
+              Total filtrado: <span className="text-primary text-[14px] font-bold">{brlFull(total)}</span>
+            </span>
           </div>
         </CardContent>
       </Card>

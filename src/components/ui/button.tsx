@@ -5,24 +5,24 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium cursor-pointer transition-all duration-300 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/20 disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 active:scale-[0.98]",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[--radius-md] text-[13px] font-medium cursor-pointer transition-all duration-[var(--duration-smooth)] ease-[var(--ease-out-expo)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[--primary-orange-glow] disabled:pointer-events-none disabled:opacity-35 disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 active:scale-[0.97]",
   {
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground shadow-[0_1px_0_0_oklch(1_0_0/0.25)_inset,0_8px_20px_-8px_oklch(0.74_0.17_50/0.5)] hover:brightness-110 hover:-translate-y-px hover:shadow-[0_1px_0_0_oklch(1_0_0/0.3)_inset,0_12px_28px_-8px_oklch(0.74_0.17_50/0.6)]",
-        destructive: "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
+          "bg-gradient-to-br from-[--primary-orange] to-[--primary-orange-hover] text-[--neutral-00] shadow-[0_1px_0_0_oklch(1_0_0/0.14)_inset,0_6px_18px_-5px_oklch(0.65_0.22_32/0.35),0_0_10px_0_oklch(0.65_0.22_32/0.12)] hover:brightness-110 hover:-translate-y-px hover:shadow-[0_1px_0_0_oklch(1_0_0/0.22)_inset,0_12px_26px_-5px_oklch(0.65_0.22_32/0.45),0_0_20px_0_oklch(0.65_0.22_32/0.20)]",
+        destructive: "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90 active:scale-[0.97]",
         outline:
-          "border border-border/70 bg-white/[0.03] text-foreground backdrop-blur hover:bg-white/[0.06] hover:border-white/15",
+          "border border-[--glass-border-raw] bg-[--glass-surface-raw] text-foreground/90 backdrop-blur-md hover:bg-[oklch(1_0_0/0.030)] hover:border-[oklch(0.58_0.20_260/0.22)] hover:text-white hover:-translate-y-px hover:shadow-[0_0_20px_-4px_oklch(0.58_0.20_260/0.10)]",
         secondary:
-          "bg-white/[0.05] text-foreground border border-border/60 hover:bg-white/[0.08]",
-        ghost: "text-muted-foreground hover:bg-white/[0.05] hover:text-foreground",
+          "bg-[oklch(1_0_0/0.025)] text-foreground/95 border border-[--glass-border-raw] hover:bg-[oklch(1_0_0/0.045)] hover:border-[--glass-border-hover-raw] hover:text-white hover:-translate-y-px",
+        ghost: "text-muted-foreground hover:bg-[oklch(1_0_0/0.025)] hover:text-foreground",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
         default: "h-9 px-4 py-2",
-        sm: "h-8 rounded-md px-3 text-xs",
-        lg: "h-11 rounded-lg px-6 text-[15px]",
+        sm: "h-8 rounded-[--radius-sm] px-3 text-[12px]",
+        lg: "h-11 rounded-[--radius-md] px-6 text-[14px]",
         icon: "h-9 w-9",
       },
     },
