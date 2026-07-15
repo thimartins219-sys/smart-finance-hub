@@ -17,10 +17,10 @@ const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElemen
         onMouseMove={handleMove}
         className={cn(
           "group/card relative rounded-2xl border border-border/60 bg-card/50 text-card-foreground backdrop-blur-xl overflow-hidden",
-          "shadow-[0_1px_0_0_oklch(1_0_0/0.05)_inset,var(--shadow-soft)]",
-          "transition-all duration-300 hover:border-border-strong hover:-translate-y-px hover:shadow-[0_1px_0_0_oklch(1_0_0/0.08)_inset,var(--shadow-medium),var(--shadow-glow)]",
+          "shadow-[0_1px_0_0_oklch(1_0_0/0.12)_inset,0_0_1px_1px_oklch(1_0_0/0.04)_inset,var(--shadow-soft)]",
+          "transition-all duration-400 ease-out hover:border-border-strong hover:-translate-y-[3px] hover:shadow-[0_1px_0_0_oklch(1_0_0/0.18)_inset,var(--shadow-medium),var(--shadow-glow)]",
           "before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:opacity-0 before:transition-opacity before:duration-300 hover:before:opacity-100",
-          "before:bg-[radial-gradient(350px_circle_at_var(--mx,50%)_var(--my,50%),oklch(0.65_0.145_35/0.09),transparent_65%)]",
+          "before:bg-[radial-gradient(350px_circle_at_var(--mx,50%)_var(--my,50%),oklch(0.65_0.145_35/0.08),transparent_65%)]",
           className,
         )}
         {...props}
