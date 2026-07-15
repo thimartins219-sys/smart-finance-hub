@@ -74,20 +74,19 @@ const kpiCards = [
 function DashboardPage() {
   return (
     <PageShell
-      title="Dashboard Executivo"
-      description="Visão estratégica consolidada das finanças corporativas em tempo real."
+      title="Inteligência Financeira"
+description="Visão executiva dos indicadores, custos e oportunidades de economia."
     >
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {kpiCards.map((k, i) => {
           const Icon = k.icon;
           return (
             <Card
-              key={k.label}
-              className="glass relative overflow-hidden border-border/60 transition-all hover:-translate-y-0.5 hover:shadow-[var(--shadow-elevated)] animate-count-up"
-              style={{ animationDelay: `${i * 80}ms` }}
-            >
-              <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-primary/10 blur-2xl" />
-              <CardHeader className="pb-2">
+  key={k.label}
+  className="glass card-hover group relative overflow-hidden border-white/10 animate-count-up"
+  style={{ animationDelay: `${i * 80}ms` }}
+>
+<div className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-primary/20 blur-3xl transition-all duration-500 group-hover:bg-primary/30" />              <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
                   <span className="text-xs uppercase tracking-widest text-muted-foreground">
                     {k.label}
@@ -98,9 +97,9 @@ function DashboardPage() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="font-display text-2xl font-bold tracking-tight md:text-3xl">
-                  {brl(k.value)}
-                </div>
+                <div className="text-gradient-primary font-display text-3xl font-bold tracking-tight md:text-4xl">
+  {brl(k.value)}
+</div>
                 <div className="mt-2 flex items-center gap-2 text-xs">
                   <span
                     className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 font-medium ${
