@@ -10,12 +10,12 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground shadow-[0_1px_0_0_oklch(1_0_0/0.12)_inset,0_6px_18px_-6px_oklch(0.63_0.21_32/0.45),0_0_10px_0_oklch(0.63_0.21_32/0.12)] hover:brightness-110 hover:-translate-y-px hover:shadow-[0_1px_0_0_oklch(1_0_0/0.18)_inset,0_10px_24px_-6px_oklch(0.63_0.21_32/0.55),0_0_20px_0_oklch(0.63_0.21_32/0.20)]",
-        destructive: "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
+          "bg-gradient-to-br from-primary to-primary-glow text-primary-foreground shadow-[0_1px_0_0_oklch(1_0_0/0.16)_inset,0_8px_20px_-6px_oklch(0.63_0.21_32/0.40),0_0_12px_0_oklch(0.63_0.21_32/0.15)] hover:brightness-110 hover:-translate-y-px hover:shadow-[0_1px_0_0_oklch(1_0_0/0.24)_inset,0_14px_28px_-6px_oklch(0.63_0.21_32/0.50),0_0_24px_0_oklch(0.63_0.21_32/0.25)]",
+        destructive: "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90 active:scale-[0.97]",
         outline:
-          "border border-white/[0.06] bg-white/[0.015] text-foreground/90 backdrop-blur-lg hover:bg-white/[0.04] hover:border-white/[0.10] hover:text-white hover:-translate-y-px",
+          "border border-white/[0.06] bg-white/[0.015] text-foreground/90 backdrop-blur-md hover:bg-white/[0.035] hover:border-[color:var(--info)]/25 hover:text-white hover:-translate-y-px hover:shadow-[0_0_24px_-4px_oklch(0.55_0.20_260/0.12)]",
         secondary:
-          "bg-white/[0.03] text-foreground/90 border border-white/[0.05] hover:bg-white/[0.06] hover:border-white/[0.10]",
+          "bg-white/[0.03] text-foreground/95 border border-white/[0.05] hover:bg-white/[0.05] hover:border-white/[0.09] hover:text-white hover:-translate-y-px",
         ghost: "text-muted-foreground hover:bg-white/[0.03] hover:text-foreground",
         link: "text-primary underline-offset-4 hover:underline",
       },

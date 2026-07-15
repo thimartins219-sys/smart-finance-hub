@@ -47,24 +47,25 @@ import {
 } from "@/components/ui/table";
 import { brl, brlFull, centrosCusto } from "@/lib/mock-data";
 import { toast } from "sonner";
+import { AnimatedCounter } from "@/components/ui/animated-counter";
 
 export const Route = createFileRoute("/centros-custo")({
   component: CentrosCustoPage,
 });
 
 const LUXE_TONES = [
-  "oklch(0.63 0.21 32)",
-  "oklch(0.80 0.12 80)",
-  "oklch(0.50 0.18 260)",
-  "oklch(0.60 0.12 190)",
-  "oklch(0.48 0.16 300)",
-  "oklch(0.60 0.15 145)",
+  "oklch(0.63 0.21 32)",  // Premium Orange
+  "oklch(0.80 0.12 80)",  // Gold
+  "oklch(0.55 0.18 210)", // Petrol Blue
+  "oklch(0.70 0.16 155)", // Emerald Green
+  "oklch(0.55 0.18 280)", // Purple
+  "oklch(0.65 0.18 20)",  // Coral
 ];
 
 function statusStyles(s: string) {
-  if (s === "Otimizado") return "bg-[color:var(--positive)]/10 text-[color:var(--positive)] border-[color:var(--positive)]/20";
-  if (s === "Atenção") return "bg-amber-500/10 text-amber-400 border-amber-500/20";
-  return "bg-primary/8 text-primary border-primary/20";
+  if (s === "Otimizado") return "bg-[color:var(--positive)]/8 text-[color:var(--positive)] border-[color:var(--positive)]/10";
+  if (s === "Atenção") return "bg-amber-500/8 text-amber-400 border-amber-500/10";
+  return "bg-primary/8 text-primary border-primary/10";
 }
 
 function CentrosCustoPage() {
@@ -92,44 +93,50 @@ function CentrosCustoPage() {
 
   const maiorValor = dados.ordenados[0].utilizado;
 
-  const kpis = [
+  // Refined executive hierarchy
+  const kpiCards = [
     {
-      label: selectedCenter ? "Centro Selecionado" : "Maior Centro de Custo",
-      value: selectedCenterData ? selectedCenterData.nome : dados.maior.nome,
-      metric: selectedCenterData ? brl(selectedCenterData.utilizado) : brl(dados.maior.utilizado),
+      label: selectedCenter ? "Investimento do Centro" : "Maior Centro de Custo",
+      value: selectedCenterData ? selectedCenterData.utilizado : dados.maior.utilizado,
+      isCurrency: true,
+      subtext: selectedCenterData ? selectedCenterData.nome : dados.maior.nome,
       badge: selectedCenterData
         ? `${selectedCenterData.participacao.toFixed(1)}% do consolidado`
         : `${dados.maior.participacao.toFixed(1)}% do total`,
       icon: Trophy,
-      accent: "oklch(0.63 0.21 32)",
+      accent: "oklch(0.63 0.21 32)", // Orange
     },
     {
-      label: selectedCenter ? "Economia do Centro" : "Mais Econômico",
-      value: selectedCenterData ? `Savings: ${brl(selectedCenterData.savings)}` : dados.maisEconomico.nome,
-      metric: selectedCenterData ? `Gestor: ${selectedCenterData.gestor}` : brl(dados.maisEconomico.savings),
+      label: selectedCenter ? "Economia Gerada" : "Mais Econômico",
+      value: selectedCenterData ? selectedCenterData.savings : dados.maisEconomico.savings,
+      isCurrency: true,
+      subtext: selectedCenterData ? `Gestor: ${selectedCenterData.gestor}` : dados.maisEconomico.nome,
       badge: selectedCenterData
         ? `Consumo: ${selectedCenterData.consumoPct.toFixed(0)}% do orçado`
         : `${((dados.maisEconomico.savings / dados.maisEconomico.utilizado) * 100).toFixed(1)}% de economia`,
       icon: PiggyBank,
       positive: true,
-      accent: "oklch(0.70 0.16 155)",
+      accent: "oklch(0.70 0.16 155)", // Emerald
     },
     {
       label: "Total de Centros",
-      value: `${dados.enriched.length}`,
-      metric: selectedCenter ? "Visualização Filtrada" : "Unidades ativas",
+      value: dados.enriched.length,
+      isCurrency: false,
+      subtext: selectedCenter ? "Filtro ativo no Centro" : "Unidades operacionais",
       badge: selectedCenter ? "1 selecionado" : "Grupo consolidado",
       icon: Layers,
-      accent: "oklch(0.50 0.18 260)",
+      accent: "oklch(0.55 0.18 210)", // Petrol Blue
     },
     {
       label: selectedCenter ? "Status Operacional" : "Centros Ativos",
-      value: selectedCenterData ? selectedCenterData.status : `${dados.ativos}`,
-      metric: selectedCenterData ? selectedCenterData.atualizado : "Em execução",
+      value: selectedCenterData ? selectedCenterData.status : dados.ativos,
+      isCurrency: false,
+      isText: !!selectedCenterData,
+      subtext: selectedCenterData ? `Atualizado: ${selectedCenterData.atualizado}` : "Em execução real",
       badge: "Tempo real",
       icon: Activity,
       positive: selectedCenterData ? selectedCenterData.status !== "Atenção" : true,
-      accent: "oklch(0.80 0.12 80)",
+      accent: "oklch(0.80 0.12 80)", // Gold
     },
   ];
 
@@ -164,17 +171,17 @@ function CentrosCustoPage() {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
       return (
-        <div className="glass-strong rounded-xl p-4 shadow-large backdrop-blur-3xl animate-scale min-w-[180px]">
+        <div className="glass-strong rounded-xl p-4 shadow-large backdrop-blur-3xl animate-scale min-w-[200px] border border-white/[0.08]">
           <div className="font-display text-[13px] font-normal italic text-white mb-2.5">{data.nome}</div>
-          <div className="space-y-1.5">
+          <div className="space-y-2">
             {[
               { l: "Orçamento:", v: brlFull(data.orcamento) },
               { l: "Utilizado:", v: brlFull(data.utilizado), bold: true },
               { l: "Savings:", v: brlFull(data.savings), color: "text-[color:var(--positive)]" },
             ].map((r) => (
               <div key={r.l} className="flex items-center gap-4 justify-between text-[12px]">
-                <span className="text-muted-foreground/60">{r.l}</span>
-                <span className={cn("font-mono text-[11px]", r.color || "text-white", r.bold && "font-semibold")}>{r.v}</span>
+                <span className="text-white/60">{r.l}</span>
+                <span className={cn("font-mono text-[11.5px]", r.color || "text-white", r.bold && "font-semibold")}>{r.v}</span>
               </div>
             ))}
           </div>
@@ -197,12 +204,12 @@ function CentrosCustoPage() {
               onClick={() => setSelectedCenter(null)}
               className="border-primary/25 bg-primary/[0.06] text-primary hover:bg-primary/[0.10] hover:border-primary/40 animate-scale mr-2"
             >
-              <X className="h-3.5 w-3.5 mr-1" />
+              <X className="h-3.5 w-3.5 mr-1.5" />
               Limpar Filtro
             </Button>
           )}
           <Select defaultValue="set-2026">
-            <SelectTrigger className="w-40 bg-white/[0.015] border-white/[0.05]">
+            <SelectTrigger className="w-40 bg-white/[0.012] border-white/[0.05]">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -212,7 +219,7 @@ function CentrosCustoPage() {
             </SelectContent>
           </Select>
           <Select defaultValue="todas">
-            <SelectTrigger className="w-40 bg-white/[0.015] border-white/[0.05]">
+            <SelectTrigger className="w-40 bg-white/[0.012] border-white/[0.05]">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -238,14 +245,14 @@ function CentrosCustoPage() {
         </>
       }
     >
-      {/* KPIs */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {kpis.map((k, i) => {
+      {/* KPIs Grid */}
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
+        {kpiCards.map((k, i) => {
           const Icon = k.icon;
           return (
             <Card
               key={k.label}
-              className="glass-ethereal group relative overflow-hidden transition-all duration-[420ms] hover:-translate-y-[2px] animate-count-up"
+              className="glass-ethereal group relative overflow-hidden transition-all duration-[420ms] animate-count-up"
               style={{ animationDelay: `${i * 70}ms` }}
             >
               <div
@@ -254,7 +261,7 @@ function CentrosCustoPage() {
               />
               <CardContent className="relative p-6">
                 <div className="flex items-start justify-between">
-                  <span className="text-[9px] font-medium uppercase tracking-[0.10em] text-muted-foreground/50">
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground/50">
                     {k.label}
                   </span>
                   <div
@@ -264,19 +271,26 @@ function CentrosCustoPage() {
                     <Icon className="h-3.5 w-3.5" style={{ color: k.accent }} />
                   </div>
                 </div>
-                <div className="mt-5 font-display text-[22px] font-normal italic tracking-tight text-white">
-                  {k.value}
+                <div className="mt-5 font-mono text-[24px] font-bold tracking-tight text-white">
+                  {k.isText ? (
+                    <span className="animate-fade">{k.value}</span>
+                  ) : k.isCurrency ? (
+                    <AnimatedCounter value={Number(k.value)} formatter={brl} />
+                  ) : (
+                    <AnimatedCounter value={Number(k.value)} />
+                  )}
                 </div>
                 <div className="mt-2 flex items-baseline gap-2">
-                  <span className="font-mono text-[12px] text-foreground/60">{k.metric}</span>
+                  <span className="text-[12px] text-white/55 font-medium">{k.subtext}</span>
                 </div>
                 <div className="mt-4 flex items-center gap-2">
                   <span
-                    className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-medium ${
+                    className={cn(
+                      "inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[10px] font-semibold",
                       k.positive
-                        ? "border-[color:var(--positive)]/20 bg-[color:var(--positive)]/8 text-[color:var(--positive)]"
-                        : "border-primary/20 bg-primary/8 text-primary"
-                    }`}
+                        ? "border-[color:var(--positive)]/10 bg-[color:var(--positive)]/8 text-[color:var(--positive)]"
+                        : "border-primary/10 bg-primary/8 text-primary"
+                    )}
                   >
                     <Sparkles className="h-2.5 w-2.5" /> {k.badge}
                   </span>
@@ -288,24 +302,24 @@ function CentrosCustoPage() {
       </div>
 
       {/* Ranking + Donut */}
-      <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-5">
+      <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-5">
         <Card className="glass-ethereal lg:col-span-3">
           <CardHeader className="pb-2">
             <div className="flex items-start justify-between">
               <div>
-                <CardTitle className="font-display text-[17px] font-normal italic text-white">Ranking dos Centros de Custo</CardTitle>
-                <CardDescription>
+                <CardTitle className="font-display text-[19px] font-normal italic text-white">Ranking dos Centros de Custo</CardTitle>
+                <CardDescription className="mt-1">
                   {selectedCenter
                     ? `Filtrado por: ${selectedCenter}`
                     : "Ordenados por consumo — clique para inspecionar"}
                 </CardDescription>
               </div>
-              <Badge variant="outline" className="border-primary/20 bg-primary/8 text-primary text-[10px]">
+              <Badge variant="outline" className="border-primary/20 bg-primary/8 text-primary text-[10px] font-semibold">
                 {dados.enriched.length} centros
               </Badge>
             </div>
           </CardHeader>
-          <CardContent className="space-y-2.5 pt-4">
+          <CardContent className="space-y-3 pt-4">
             {dados.ordenados.map((c, i) => {
               const barPct = (c.utilizado / maiorValor) * 100;
               const up = c.varPct > 0;
@@ -318,10 +332,10 @@ function CentrosCustoPage() {
                   className={cn(
                     "group/row relative rounded-xl border p-4 transition-all duration-300 hover:-translate-y-0.5 cursor-pointer animate-count-up",
                     selectedCenter === c.nome
-                      ? "border-primary/30 bg-primary/[0.06] shadow-[0_0_20px_-6px_oklch(0.63_0.21_32/0.20)]"
+                      ? "border-primary/30 bg-primary/[0.04] shadow-[0_0_24px_-6px_oklch(0.63_0.21_32/0.25)]"
                       : selectedCenter
-                      ? "border-transparent bg-white/[0.008] opacity-35 hover:opacity-70"
-                      : "border-transparent bg-white/[0.015] hover:border-white/[0.06] hover:bg-white/[0.025]"
+                      ? "border-transparent bg-white/[0.005] opacity-25 hover:opacity-60"
+                      : "border-transparent bg-white/[0.012] hover:border-white/[0.06] hover:bg-white/[0.02]"
                   )}
                   style={{ animationDelay: `${i * 50}ms` }}
                 >
@@ -334,29 +348,30 @@ function CentrosCustoPage() {
                         <Building2 className="h-3.5 w-3.5" style={{ color: c.tone }} />
                       </div>
                       <div className="min-w-0">
-                        <div className="truncate text-[13px] font-medium text-white">{c.nome}</div>
-                        <div className="text-[10px] text-muted-foreground/40 mt-0.5">
-                          {c.participacao.toFixed(1)}% do total · savings {brl(c.savings)}
+                        <div className="truncate text-[13.5px] font-semibold text-white/95">{c.nome}</div>
+                        <div className="text-[10px] text-muted-foreground/45 mt-1 font-semibold">
+                          {c.participacao.toFixed(1)}% do total · economia gerada: {brl(c.savings)}
                         </div>
                       </div>
                     </div>
                     <div className="flex items-center gap-3 shrink-0">
                       <span
-                        className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium ${
+                        className={cn(
+                          "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold",
                           up
-                            ? "bg-[color:var(--negative)]/10 text-[color:var(--negative)]"
-                            : "bg-[color:var(--positive)]/10 text-[color:var(--positive)]"
-                        }`}
+                            ? "bg-[color:var(--negative)]/8 text-[color:var(--negative)] border border-[color:var(--negative)]/10"
+                            : "bg-[color:var(--positive)]/8 text-[color:var(--positive)] border border-[color:var(--positive)]/10"
+                        )}
                       >
                         {up ? <ArrowUpRight className="h-2.5 w-2.5" /> : <ArrowDownRight className="h-2.5 w-2.5" />}
                         {Math.abs(c.varPct).toFixed(1)}%
                       </span>
-                      <span className="font-mono text-[13px] font-semibold tabular-nums text-white">
+                      <span className="font-mono text-[13.5px] font-bold tabular-nums text-white">
                         {brl(c.utilizado)}
                       </span>
                     </div>
                   </div>
-                  <div className="mt-3 h-1 overflow-hidden rounded-full bg-white/[0.03]">
+                  <div className="mt-3.5 h-1.5 overflow-hidden rounded-full bg-white/[0.03]">
                     <div
                       className="h-full rounded-full transition-all duration-700 ease-out"
                       style={{
@@ -374,8 +389,8 @@ function CentrosCustoPage() {
 
         <Card className="glass-ethereal lg:col-span-2">
           <CardHeader className="pb-2">
-            <CardTitle className="font-display text-[17px] font-normal italic text-white">Participação dos Centros</CardTitle>
-            <CardDescription>Distribuição percentual do orçamento consumido</CardDescription>
+            <CardTitle className="font-display text-[19px] font-normal italic text-white">Participação dos Centros</CardTitle>
+            <CardDescription className="mt-1">Distribuição percentual do orçamento consumido</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="relative h-52 flex items-center justify-center">
@@ -387,7 +402,7 @@ function CentrosCustoPage() {
                     nameKey="nome"
                     innerRadius={65}
                     outerRadius={92}
-                    paddingAngle={2}
+                    paddingAngle={3}
                     stroke="none"
                   >
                     {dados.enriched.map((c) => {
@@ -396,7 +411,7 @@ function CentrosCustoPage() {
                         <Cell
                           key={c.nome}
                           fill={c.tone}
-                          opacity={isSelected ? 1 : 0.20}
+                          opacity={isSelected ? 1 : 0.15}
                           cursor="pointer"
                           className="outline-none"
                           onClick={() => setSelectedCenter(selectedCenter === c.nome ? null : c.nome)}
@@ -408,15 +423,15 @@ function CentrosCustoPage() {
                 </PieChart>
               </ResponsiveContainer>
               <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-                <div className="text-[8px] uppercase tracking-[0.10em] text-muted-foreground/40 font-medium">
-                  {selectedCenter ? "Selecionado" : "Total"}
+                <div className="text-[8px] uppercase tracking-[0.12em] text-muted-foreground/40 font-bold">
+                  {selectedCenter ? "Selecionado" : "Consolidado"}
                 </div>
-                <div className="font-display text-[19px] font-normal italic text-white mt-0.5">
+                <div className="font-display text-[20px] font-normal italic text-white mt-1">
                   {brl(selectedCenterData ? selectedCenterData.utilizado : dados.total)}
                 </div>
               </div>
             </div>
-            <ul className="mt-4 space-y-1.5">
+            <ul className="mt-5 space-y-1.5">
               {dados.enriched.map((c) => {
                 const isSelected = !selectedCenter || selectedCenter === c.nome;
                 return (
@@ -424,19 +439,19 @@ function CentrosCustoPage() {
                     key={c.nome}
                     onClick={() => setSelectedCenter(selectedCenter === c.nome ? null : c.nome)}
                     className={cn(
-                      "flex items-center justify-between rounded-lg px-2.5 py-2 text-[12px] cursor-pointer transition-all duration-200",
+                      "flex items-center justify-between rounded-xl border px-3 py-2 text-[12px] cursor-pointer transition-all duration-200",
                       selectedCenter === c.nome
-                        ? "bg-white/[0.035] border border-white/[0.08]"
+                        ? "bg-white/[0.04] border-white/[0.08] shadow-[0_1px_0_0_oklch(1_0_0/0.04)_inset]"
                         : selectedCenter
-                        ? "opacity-30"
-                        : "hover:bg-white/[0.025]"
+                        ? "opacity-25 border-transparent"
+                        : "hover:bg-white/[0.02] border-transparent"
                     )}
                   >
                     <span className="flex items-center gap-2">
-                      <span className="h-1.5 w-1.5 rounded-full" style={{ background: c.tone }} />
+                      <span className="h-2 w-2 rounded-full" style={{ background: c.tone }} />
                       <span className="text-foreground/80 font-medium">{c.nome}</span>
                     </span>
-                    <span className="font-mono tabular-nums text-[11px] text-muted-foreground/50 font-medium">
+                    <span className="font-mono tabular-nums text-[11.5px] text-muted-foreground/50 font-semibold">
                       {c.participacao.toFixed(1)}%
                     </span>
                   </li>
@@ -448,14 +463,14 @@ function CentrosCustoPage() {
       </div>
 
       {/* Tabela */}
-      <Card className="glass-ethereal mt-6">
+      <Card className="glass-ethereal mt-8">
         <CardHeader className="pb-2">
           <div className="flex items-start justify-between">
             <div>
-              <CardTitle className="font-display text-[17px] font-normal italic text-white">Detalhamento por Centro</CardTitle>
-              <CardDescription>Gestores, savings e status operacional</CardDescription>
+              <CardTitle className="font-display text-[19px] font-normal italic text-white">Detalhamento por Centro</CardTitle>
+              <CardDescription className="mt-1">Gestores, savings e status operacional</CardDescription>
             </div>
-            <Badge variant="outline" className="border-white/[0.06] bg-white/[0.02] text-[9px] text-muted-foreground/50 font-medium">
+            <Badge variant="outline" className="border-white/[0.06] bg-white/[0.015] text-[9px] text-muted-foreground/45 font-bold uppercase tracking-wider">
               Atualizado em tempo real
             </Badge>
           </div>
@@ -484,21 +499,21 @@ function CentrosCustoPage() {
                       className={cn(
                         "group/row border-white/[0.03] cursor-pointer transition-all duration-300 hover:bg-white/[0.015]",
                         selectedCenter === c.nome
-                          ? "bg-primary/[0.04]"
+                          ? "bg-primary/[0.03]"
                           : selectedCenter
-                          ? "opacity-30 hover:opacity-70"
+                          ? "opacity-25 hover:opacity-60"
                           : ""
                       )}
                     >
                       <TableCell>
                         <div className="flex items-center gap-3">
                           <span
-                            className="h-6 w-6 rounded-md flex items-center justify-center transition-transform duration-300 group-hover/row:scale-110"
+                            className="h-6.5 w-6.5 rounded-lg flex items-center justify-center transition-transform duration-300 group-hover/row:scale-110"
                             style={{ background: `color-mix(in oklch, ${c.tone}, transparent 88%)` }}
                           >
                             <Building2 className="h-3 w-3" style={{ color: c.tone }} />
                           </span>
-                          <span className="font-medium text-white text-[13px]">{c.nome}</span>
+                          <span className="font-semibold text-white/90 text-[13px]">{c.nome}</span>
                         </div>
                       </TableCell>
                       <TableCell className="text-muted-foreground/50 font-medium">{c.gestor}</TableCell>
@@ -508,15 +523,15 @@ function CentrosCustoPage() {
                       <TableCell className="text-right font-mono font-semibold tabular-nums text-[color:var(--positive)] text-[13px]">
                         {brl(c.savings)}
                       </TableCell>
-                      <TableCell className="text-right font-mono tabular-nums text-muted-foreground/40 text-[12px]">
+                      <TableCell className="text-right font-mono tabular-nums text-muted-foreground/45 text-[12px]">
                         {c.participacao.toFixed(1)}%
                       </TableCell>
                       <TableCell>
-                        <span className={`inline-flex rounded-full border px-2.5 py-0.5 text-[10px] font-medium ${statusStyles(c.status)}`}>
+                        <span className={`inline-flex rounded-full border px-2.5 py-0.5 text-[10px] font-semibold ${statusStyles(c.status)}`}>
                           {c.status}
                         </span>
                       </TableCell>
-                      <TableCell className="text-right text-[11px] text-muted-foreground/35">{c.atualizado}</TableCell>
+                      <TableCell className="text-right text-[11px] text-muted-foreground/35 font-medium">{c.atualizado}</TableCell>
                     </TableRow>
                   );
                 })}
@@ -527,27 +542,27 @@ function CentrosCustoPage() {
       </Card>
 
       {/* Insights */}
-      <div className="mt-6">
+      <div className="mt-8">
         <div className="mb-4 flex items-center justify-between">
           <div>
-            <h2 className="font-display text-[17px] font-normal italic text-white">Insights Inteligentes</h2>
-            <p className="text-[12px] text-muted-foreground/40 mt-0.5">Gerados por IA a partir do consumo consolidado</p>
+            <h2 className="font-display text-[19px] font-normal italic text-white">Insights Inteligentes</h2>
+            <p className="text-[12px] text-muted-foreground/40 mt-1">Gerados por IA a partir do consumo consolidado</p>
           </div>
-          <Badge variant="outline" className="border-primary/20 bg-primary/8 text-primary text-[10px]">
-            <Sparkles className="mr-1 h-2.5 w-2.5" /> IA
+          <Badge variant="outline" className="border-primary/20 bg-primary/8 text-primary text-[10px] font-semibold tracking-wider">
+            <Sparkles className="mr-1.5 h-2.5 w-2.5" /> IA
           </Badge>
         </div>
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
           {insights.map((ins, i) => {
             const Icon = ins.icon;
             const toneClass =
               ins.tone === "positive"
-                ? "text-[color:var(--positive)] bg-[color:var(--positive)]/8 border-[color:var(--positive)]/20"
+                ? "text-[color:var(--positive)] bg-[color:var(--positive)]/8 border-[color:var(--positive)]/15"
                 : ins.tone === "warning"
-                ? "text-amber-400 bg-amber-500/8 border-amber-500/20"
+                ? "text-amber-400 bg-amber-500/8 border-amber-500/15"
                 : ins.tone === "info"
-                ? "text-[color:var(--info)] bg-[color:var(--info)]/8 border-[color:var(--info)]/20"
-                : "text-primary bg-primary/8 border-primary/20";
+                ? "text-[color:var(--info)] bg-[color:var(--info)]/8 border-[color:var(--info)]/15"
+                : "text-primary bg-primary/8 border-primary/15";
             return (
               <Card
                 key={ins.badge + i}
@@ -556,16 +571,16 @@ function CentrosCustoPage() {
               >
                 <CardContent className="relative p-5">
                   <div className="flex items-center justify-between">
-                    <div className={`flex h-8 w-8 items-center justify-center rounded-lg border ${toneClass} transition-transform duration-300 group-hover/card:scale-110`}>
+                    <div className={cn("flex h-8 w-8 items-center justify-center rounded-lg border transition-transform duration-300 group-hover/card:scale-110", toneClass)}>
                       <Icon className="h-3.5 w-3.5" />
                     </div>
-                    <Badge variant="outline" className={`text-[9px] uppercase tracking-wider ${toneClass}`}>
+                    <Badge variant="outline" className={cn("text-[9px] uppercase tracking-wider font-semibold", toneClass)}>
                       {ins.badge}
                     </Badge>
                   </div>
-                  <p className="mt-4 text-[13px] leading-relaxed text-foreground/80">{ins.text}</p>
-                  <div className="mt-4 flex items-center gap-1 text-[10px] text-muted-foreground/30 opacity-0 transition-opacity duration-300 group-hover/card:opacity-100">
-                    <AlertTriangle className="h-2.5 w-2.5" /> Ação recomendada disponível
+                  <p className="mt-4 text-[13px] leading-relaxed text-foreground/80 font-medium">{ins.text}</p>
+                  <div className="mt-4 flex items-center gap-1.5 text-[10px] text-muted-foreground/30 opacity-0 transition-opacity duration-300 group-hover/card:opacity-100 font-semibold uppercase tracking-wider">
+                    <AlertTriangle className="h-3 w-3" /> Ação disponível
                   </div>
                 </CardContent>
               </Card>

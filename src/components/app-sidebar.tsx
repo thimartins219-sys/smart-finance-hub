@@ -78,15 +78,15 @@ export function AppSidebar() {
                       asChild
                       isActive={active}
                       tooltip={item.title}
-                      className="group/item relative h-9 rounded-lg px-3 text-[13px] text-muted-foreground transition-all duration-300 hover:bg-white/[0.035] hover:text-foreground data-[active=true]:bg-primary/[0.12] data-[active=true]:text-foreground"
+                      className="group/item relative h-10 rounded-xl px-3 text-[13px] text-muted-foreground/70 transition-all duration-300 hover:bg-white/[0.03] hover:text-white data-[active=true]:bg-primary/[0.12] data-[active=true]:text-white"
                     >
                       <Link to={item.url}>
                         <item.icon
-                          className={`h-[17px] w-[17px] transition-all duration-300 ${
-                            active ? "text-primary" : "text-muted-foreground group-hover/item:text-foreground"
+                          className={`h-[16px] w-[16px] transition-all duration-300 group-hover/item:translate-x-0.5 ${
+                            active ? "text-primary scale-105" : "text-muted-foreground/50 group-hover/item:text-white"
                           }`}
                         />
-                        <span className={`font-medium tracking-[-0.01em] ${active ? "text-foreground" : ""}`}>
+                        <span className={`font-semibold tracking-[-0.01em] transition-colors ${active ? "text-white" : ""}`}>
                           {item.title}
                         </span>
                       </Link>
