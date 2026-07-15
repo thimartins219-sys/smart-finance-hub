@@ -20,7 +20,7 @@ export const Route = createFileRoute("/indicadores")({
 });
 
 const radialData = [
-  { name: "Meta", value: 87, fill: "oklch(0.72 0.19 45)" },
+  { name: "Meta", value: 87, fill: "oklch(0.65 0.145 35)" },
 ];
 
 function IndicadoresPage() {
@@ -75,28 +75,29 @@ function IndicadoresPage() {
             <div className="h-72">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={kpiSerie}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="oklch(1 0 0 / 0.06)" />
-                  <XAxis dataKey="mes" stroke="oklch(0.68 0.02 260)" fontSize={12} />
-                  <YAxis stroke="oklch(0.68 0.02 260)" fontSize={12} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+                  <XAxis dataKey="mes" stroke="var(--text-muted)" fontSize={11} tickLine={false} />
+                  <YAxis stroke="var(--text-muted)" fontSize={11} tickLine={false} />
                   <Tooltip
                     contentStyle={{
-                      background: "oklch(0.185 0.014 260)",
-                      border: "1px solid oklch(1 0 0 / 0.1)",
+                      background: "var(--surface-elevated)",
+                      border: "1px solid var(--border-strong)",
                       borderRadius: 12,
-                      color: "white",
+                      color: "var(--text-primary)",
+                      boxShadow: "var(--shadow-medium)",
                     }}
                   />
                   <Line
                     type="monotone"
                     dataKey="eficiencia"
-                    stroke="oklch(0.68 0.16 245)"
+                    stroke="oklch(0.68 0.12 235)"
                     strokeWidth={2.5}
                     dot={{ r: 3 }}
                   />
                   <Line
                     type="monotone"
                     dataKey="economia"
-                    stroke="oklch(0.72 0.19 45)"
+                    stroke="oklch(0.65 0.145 35)"
                     strokeWidth={2.5}
                     dot={{ r: 3 }}
                   />

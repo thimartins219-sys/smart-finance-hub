@@ -98,7 +98,7 @@ function DashboardPage() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="font-display text-2xl font-bold tracking-tight md:text-3xl">
+                <div className="text-metric font-semibold text-2xl md:text-3xl">
                   {brl(k.value)}
                 </div>
                 <div className="mt-2 flex items-center gap-2 text-xs">
@@ -142,43 +142,45 @@ function DashboardPage() {
                 <AreaChart data={evolucaoMensal}>
                   <defs>
                     <linearGradient id="grad-desp" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="oklch(0.72 0.19 45)" stopOpacity={0.7} />
-                      <stop offset="100%" stopColor="oklch(0.72 0.19 45)" stopOpacity={0} />
+                      <stop offset="0%" stopColor="oklch(0.65 0.145 35)" stopOpacity={0.4} />
+                      <stop offset="100%" stopColor="oklch(0.65 0.145 35)" stopOpacity={0} />
                     </linearGradient>
                     <linearGradient id="grad-rec" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="oklch(0.68 0.16 245)" stopOpacity={0.5} />
-                      <stop offset="100%" stopColor="oklch(0.68 0.16 245)" stopOpacity={0} />
+                      <stop offset="0%" stopColor="oklch(0.68 0.12 235)" stopOpacity={0.3} />
+                      <stop offset="100%" stopColor="oklch(0.68 0.12 235)" stopOpacity={0} />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="oklch(1 0 0 / 0.06)" />
-                  <XAxis dataKey="mes" stroke="oklch(0.68 0.02 260)" fontSize={12} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+                  <XAxis dataKey="mes" stroke="var(--text-muted)" fontSize={11} tickLine={false} />
                   <YAxis
-                    stroke="oklch(0.68 0.02 260)"
-                    fontSize={12}
+                    stroke="var(--text-muted)"
+                    fontSize={11}
+                    tickLine={false}
                     tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`}
                   />
                   <Tooltip
                     contentStyle={{
-                      background: "oklch(0.185 0.014 260)",
-                      border: "1px solid oklch(1 0 0 / 0.1)",
+                      background: "var(--surface-elevated)",
+                      border: "1px solid var(--border-strong)",
                       borderRadius: 12,
-                      color: "white",
+                      color: "var(--text-primary)",
+                      boxShadow: "var(--shadow-medium)",
                     }}
                     formatter={(v: number) => brlFull(v)}
                   />
                   <Area
                     type="monotone"
                     dataKey="receita"
-                    stroke="oklch(0.68 0.16 245)"
+                    stroke="oklch(0.68 0.12 235)"
                     fill="url(#grad-rec)"
                     strokeWidth={2}
                   />
                   <Area
                     type="monotone"
                     dataKey="despesas"
-                    stroke="oklch(0.72 0.19 45)"
+                    stroke="oklch(0.65 0.145 35)"
                     fill="url(#grad-desp)"
-                    strokeWidth={2.5}
+                    strokeWidth={2}
                   />
                 </AreaChart>
               </ResponsiveContainer>
@@ -210,10 +212,11 @@ function DashboardPage() {
                   </Pie>
                   <Tooltip
                     contentStyle={{
-                      background: "oklch(0.185 0.014 260)",
-                      border: "1px solid oklch(1 0 0 / 0.1)",
+                      background: "var(--surface-elevated)",
+                      border: "1px solid var(--border-strong)",
                       borderRadius: 12,
-                      color: "white",
+                      color: "var(--text-primary)",
+                      boxShadow: "var(--shadow-medium)",
                     }}
                     formatter={(v: number) => brlFull(v)}
                   />
@@ -245,24 +248,26 @@ function DashboardPage() {
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={evolucaoMensal}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="oklch(1 0 0 / 0.06)" />
-                  <XAxis dataKey="mes" stroke="oklch(0.68 0.02 260)" fontSize={12} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+                  <XAxis dataKey="mes" stroke="var(--text-muted)" fontSize={11} tickLine={false} />
                   <YAxis
-                    stroke="oklch(0.68 0.02 260)"
-                    fontSize={12}
+                    stroke="var(--text-muted)"
+                    fontSize={11}
+                    tickLine={false}
                     tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`}
                   />
                   <Tooltip
                     contentStyle={{
-                      background: "oklch(0.185 0.014 260)",
-                      border: "1px solid oklch(1 0 0 / 0.1)",
+                      background: "var(--surface-elevated)",
+                      border: "1px solid var(--border-strong)",
                       borderRadius: 12,
-                      color: "white",
+                      color: "var(--text-primary)",
+                      boxShadow: "var(--shadow-medium)",
                     }}
                     formatter={(v: number) => brlFull(v)}
                   />
-                  <Bar dataKey="receita" fill="oklch(0.68 0.16 245)" radius={[6, 6, 0, 0]} />
-                  <Bar dataKey="despesas" fill="oklch(0.72 0.19 45)" radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="receita" fill="oklch(0.68 0.12 235)" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="despesas" fill="oklch(0.65 0.145 35)" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -285,8 +290,8 @@ function DashboardPage() {
                   />
                   <defs>
                     <linearGradient id="gradPerf" x1="0" x2="1">
-                      <stop offset="0%" stopColor="oklch(0.72 0.19 45)" />
-                      <stop offset="100%" stopColor="oklch(0.78 0.21 55)" />
+                      <stop offset="0%" stopColor="oklch(0.65 0.145 35)" />
+                      <stop offset="100%" stopColor="oklch(0.72 0.16 35)" />
                     </linearGradient>
                   </defs>
                 </svg>

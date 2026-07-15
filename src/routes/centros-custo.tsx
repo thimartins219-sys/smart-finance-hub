@@ -50,14 +50,14 @@ export const Route = createFileRoute("/centros-custo")({
   component: CentrosCustoPage,
 });
 
-// tons de laranja derivados de oklch(0.72 0.19 45)
+// tons de laranja derivados de oklch(0.65 0.145 35)
 const ORANGE_TONES = [
-  "oklch(0.78 0.21 55)",
-  "oklch(0.72 0.19 45)",
-  "oklch(0.66 0.18 40)",
-  "oklch(0.58 0.16 35)",
-  "oklch(0.5 0.14 32)",
-  "oklch(0.42 0.11 30)",
+  "oklch(0.72 0.16 35)",
+  "oklch(0.65 0.145 35)",
+  "oklch(0.58 0.13 35)",
+  "oklch(0.51 0.115 35)",
+  "oklch(0.44 0.10 35)",
+  "oklch(0.37 0.085 35)",
 ];
 
 function statusStyles(s: string) {
@@ -286,8 +286,8 @@ function CentrosCustoPage() {
                       className="h-full rounded-full transition-all duration-700 ease-out"
                       style={{
                         width: `${barPct}%`,
-                        background: `linear-gradient(90deg, ${c.tone}, oklch(0.78 0.21 55))`,
-                        boxShadow: "0 0 20px -6px oklch(0.72 0.19 45 / 0.6)",
+                        background: `linear-gradient(90deg, ${c.tone}, oklch(0.72 0.16 35))`,
+                        boxShadow: "0 0 20px -6px oklch(0.65 0.145 35 / 0.4)",
                       }}
                     />
                   </div>
@@ -321,11 +321,12 @@ function CentrosCustoPage() {
                   </Pie>
                   <Tooltip
                     contentStyle={{
-                      background: "oklch(0.185 0.014 260)",
-                      border: "1px solid oklch(1 0 0 / 0.1)",
+                      background: "var(--surface-elevated)",
+                      border: "1px solid var(--border-strong)",
                       borderRadius: 12,
-                      color: "white",
-                      fontSize: 12,
+                      color: "var(--text-primary)",
+                      fontSize: 11,
+                      boxShadow: "var(--shadow-medium)",
                     }}
                     formatter={(v: number) => brl(v)}
                   />
