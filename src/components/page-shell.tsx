@@ -1,4 +1,15 @@
 import type { ReactNode } from "react";
+import { Link, useRouterState } from "@tanstack/react-router";
+import { ChevronRight, Home } from "lucide-react";
+
+const ROUTE_LABELS: Record<string, string> = {
+  "": "Dashboard",
+  gastos: "Gastos",
+  "centros-custo": "Centros de Custo",
+  relatorios: "Relatórios",
+  indicadores: "Indicadores",
+  configuracoes: "Configurações",
+};
 
 export function PageShell({
   title,
@@ -11,8 +22,14 @@ export function PageShell({
   actions?: ReactNode;
   children: ReactNode;
 }) {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const segments = pathname.split("/").filter(Boolean);
+
   return (
-    <div className="relative min-h-[calc(100vh-4rem)] px-4 py-8 md:px-10 md:py-12">
+    <div
+      key={pathname}
+      className="relative min-h-[calc(100vh-4rem)] px-4 py-8 md:px-10 md:py-12 animate-page-in"
+    >
       {/* Ambient hero gradient */}
       <div
         className="pointer-events-none absolute inset-x-0 -top-10 h-[420px] opacity-90"
@@ -22,6 +39,31 @@ export function PageShell({
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[420px] grid-bg opacity-40" />
 
       <div className="relative mx-auto max-w-[1400px]">
+        {/* Breadcrumb */}
+        <nav className="mb-6 flex items-center gap-1.5 text-xs text-muted-foreground/80">
+          <Link
+            to="/"
+            className="flex items-center gap-1 transition-colors hover:text-foreground"
+          >
+            <Home className="h-3 w-3" />
+            <span>Início</span>
+          </Link>
+          {segments.map((seg, i) => (
+            <span key={seg} className="flex items-center gap-1.5">
+              <ChevronRight className="h-3 w-3 text-muted-foreground/50" />
+              <span
+                className={
+                  i === segments.length - 1
+                    ? "text-foreground/90 font-medium"
+                    : "text-muted-foreground/80"
+                }
+              >
+                {ROUTE_LABELS[seg] ?? seg}
+              </span>
+            </span>
+          ))}
+        </nav>
+
         <div className="mb-8 flex flex-wrap items-end justify-between gap-4 animate-count-up">
           <div className="max-w-2xl">
             <div className="mb-2 flex items-center gap-2">
