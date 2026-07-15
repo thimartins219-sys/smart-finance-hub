@@ -18,29 +18,29 @@ function ConfiguracoesPage() {
       title="Configurações"
       description="Personalize preferências, integrações e políticas financeiras."
     >
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
         <Card className="glass border-border/60">
           <CardHeader>
-            <CardTitle className="font-display">Perfil da empresa</CardTitle>
+            <CardTitle className="font-display text-lg text-white font-semibold">Perfil da Empresa</CardTitle>
             <CardDescription>Dados exibidos nos relatórios e no dashboard</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="space-y-1.5">
-              <Label>Razão social</Label>
+            <div className="space-y-2">
+              <Label className="text-[11px] font-semibold text-text-muted uppercase tracking-wider">Razão Social</Label>
               <Input defaultValue={empresa.nome} className="bg-surface/60 border-border/60" />
             </div>
             <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-1.5">
-                <Label>CNPJ</Label>
+              <div className="space-y-2">
+                <Label className="text-[11px] font-semibold text-text-muted uppercase tracking-wider">CNPJ</Label>
                 <Input defaultValue="00.***.***/0001-00" className="bg-surface/60 border-border/60" />
               </div>
-              <div className="space-y-1.5">
-                <Label>Moeda</Label>
+              <div className="space-y-2">
+                <Label className="text-[11px] font-semibold text-text-muted uppercase tracking-wider">Moeda</Label>
                 <Input defaultValue="BRL" className="bg-surface/60 border-border/60" />
               </div>
             </div>
-            <div className="space-y-1.5">
-              <Label>Período fiscal padrão</Label>
+            <div className="space-y-2">
+              <Label className="text-[11px] font-semibold text-text-muted uppercase tracking-wider">Período Fiscal Padrão</Label>
               <Input defaultValue={empresa.periodo} className="bg-surface/60 border-border/60" />
             </div>
           </CardContent>
@@ -48,7 +48,7 @@ function ConfiguracoesPage() {
 
         <Card className="glass border-border/60">
           <CardHeader>
-            <CardTitle className="font-display">Preferências</CardTitle>
+            <CardTitle className="font-display text-lg text-white font-semibold">Preferências</CardTitle>
             <CardDescription>Alertas, notificações e comportamento da plataforma</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -58,21 +58,21 @@ function ConfiguracoesPage() {
               { t: "Detecção inteligente de anomalias", d: "IA identifica transações fora do padrão." },
               { t: "Modo alta densidade", d: "Interface compacta para telas de análise." },
             ].map((p, i) => (
-              <div key={p.t} className="flex items-start justify-between gap-4 border-b border-border/60 pb-3 last:border-0 last:pb-0">
+              <div key={p.t} className="flex items-start justify-between gap-4 border-b border-border/40 pb-3 last:border-0 last:pb-0">
                 <div>
-                  <div className="text-sm font-medium">{p.t}</div>
-                  <div className="text-xs text-muted-foreground">{p.d}</div>
+                  <div className="text-sm font-semibold text-white">{p.t}</div>
+                  <div className="text-xs text-text-secondary mt-0.5">{p.d}</div>
                 </div>
                 <Switch defaultChecked={i < 3} />
               </div>
             ))}
-            <div className="flex justify-end">
+            <div className="flex justify-end pt-2">
               <Button
-                className="text-primary-foreground"
+                className="text-primary-foreground shadow-[var(--shadow-glow)]"
                 style={{ background: "var(--gradient-primary)" }}
                 onClick={() => toast.success("Preferências salvas")}
               >
-                Salvar alterações
+                Salvar Alterações
               </Button>
             </div>
           </CardContent>
@@ -80,10 +80,10 @@ function ConfiguracoesPage() {
 
         <Card className="glass border-border/60 lg:col-span-2">
           <CardHeader>
-            <CardTitle className="font-display">Integrações</CardTitle>
+            <CardTitle className="font-display text-lg text-white font-semibold">Integrações</CardTitle>
             <CardDescription>Conexões com sistemas corporativos</CardDescription>
           </CardHeader>
-          <CardContent className="grid grid-cols-1 gap-3 md:grid-cols-3">
+          <CardContent className="grid grid-cols-1 gap-4 md:grid-cols-3">
             {[
               { n: "SAP S/4HANA", s: "Conectado", ok: true },
               { n: "TOTVS Protheus", s: "Conectado", ok: true },
@@ -92,10 +92,10 @@ function ConfiguracoesPage() {
               { n: "Bling ERP", s: "Disponível", ok: false },
               { n: "Power BI", s: "Conectado", ok: true },
             ].map((i) => (
-              <div key={i.n} className="flex items-center justify-between rounded-xl border border-border/60 bg-surface/50 p-4">
+              <div key={i.n} className="flex items-center justify-between rounded-xl border border-border/40 bg-surface/50 p-4 transition-all duration-300 hover:border-primary/20">
                 <div>
-                  <div className="text-sm font-semibold">{i.n}</div>
-                  <div className="text-xs text-muted-foreground">{i.s}</div>
+                  <div className="text-sm font-semibold text-white">{i.n}</div>
+                  <div className="text-xs text-text-secondary mt-0.5">{i.s}</div>
                 </div>
                 <span
                   className={`h-2.5 w-2.5 rounded-full ${

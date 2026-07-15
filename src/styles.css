@@ -200,15 +200,15 @@
     inset: 0;
     z-index: -2;
     background:
-      /* Radial Glow Top Left (Accent orange glow) */
-      radial-gradient(1100px 700px at 15% -10%, oklch(0.65 0.145 35 / 0.08), transparent 65%),
-      /* Radial Glow Top Right (Cooler blue contrast) */
-      radial-gradient(1000px 800px at 85% 15%, oklch(0.68 0.12 235 / 0.06), transparent 60%),
-      /* Radial Glow Bottom Center */
-      radial-gradient(800px 600px at 50% 110%, oklch(0.78 0.11 85 / 0.04), transparent 65%),
-      /* Vignette effect */
-      radial-gradient(circle at center, transparent 30%, oklch(0.08 0.004 250 / 0.55) 100%),
-      /* Solid charcoal base */
+      /* Stellar-style Top Center Main Orange Glow */
+      radial-gradient(1200px 600px at 50% -15%, oklch(0.65 0.145 35 / 0.18), transparent 70%),
+      /* Stellar-style Side Ambient glow */
+      radial-gradient(800px 600px at 10% 20%, oklch(0.78 0.11 85 / 0.06), transparent 60%),
+      /* Deep Radial Glow Bottom Center */
+      radial-gradient(900px 700px at 50% 110%, oklch(0.68 0.12 235 / 0.05), transparent 65%),
+      /* Vignette effect: very dramatic, dark edges, glowing center */
+      radial-gradient(circle at 50% 30%, transparent 20%, oklch(0.06 0.003 250 / 0.75) 100%),
+      /* Premium charcoal base */
       var(--background);
     pointer-events: none;
   }

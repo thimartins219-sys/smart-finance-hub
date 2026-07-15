@@ -68,7 +68,7 @@ function GastosPage() {
             <Filter className="mr-2 h-4 w-4" /> Filtros
           </Button>
           <Button
-            className="text-primary-foreground"
+            className="text-primary-foreground shadow-[var(--shadow-glow)]"
             style={{ background: "var(--gradient-primary)" }}
             onClick={() => toast.success("Exportação iniciada")}
           >
@@ -78,10 +78,10 @@ function GastosPage() {
       }
     >
       <Card className="glass border-border/60">
-        <CardContent className="p-4 md:p-6">
-          <div className="mb-4 flex flex-wrap items-center gap-3">
-            <div className="relative flex-1 min-w-[220px]">
-              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+        <CardContent className="p-6 md:p-8">
+          <div className="mb-6 flex flex-wrap items-center gap-3">
+            <div className="relative flex-1 min-w-[240px] group">
+              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-primary" />
               <Input
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
@@ -111,42 +111,42 @@ function GastosPage() {
             </Select>
             <Button
               variant="outline"
-              className="border-border/60"
+              className="border-border/60 hover:border-primary/40"
               onClick={() => setOrdem(ordem === "desc" ? "asc" : "desc")}
             >
-              <ArrowUpDown className="mr-2 h-4 w-4" />
+              <ArrowUpDown className="mr-2 h-4 w-4 text-primary" />
               Valor {ordem === "desc" ? "↓" : "↑"}
             </Button>
           </div>
 
-          <div className="overflow-hidden rounded-xl border border-border/60">
+          <div className="overflow-hidden rounded-2xl border border-border/40 bg-surface/10">
             <Table>
               <TableHeader>
-                <TableRow className="bg-surface/50 hover:bg-surface/50">
-                  <TableHead>Data</TableHead>
-                  <TableHead>Categoria</TableHead>
-                  <TableHead>Fornecedor</TableHead>
-                  <TableHead>Centro de custo</TableHead>
-                  <TableHead>Descrição</TableHead>
-                  <TableHead className="text-right">Valor</TableHead>
-                  <TableHead>Status</TableHead>
+                <TableRow className="border-border/40 bg-surface/40 hover:bg-surface/40">
+                  <TableHead className="text-xs uppercase tracking-wider font-semibold">Data</TableHead>
+                  <TableHead className="text-xs uppercase tracking-wider font-semibold">Categoria</TableHead>
+                  <TableHead className="text-xs uppercase tracking-wider font-semibold">Fornecedor</TableHead>
+                  <TableHead className="text-xs uppercase tracking-wider font-semibold">Centro de Custo</TableHead>
+                  <TableHead className="text-xs uppercase tracking-wider font-semibold">Descrição</TableHead>
+                  <TableHead className="text-right text-xs uppercase tracking-wider font-semibold">Valor</TableHead>
+                  <TableHead className="text-xs uppercase tracking-wider font-semibold">Status</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {rows.map((g, i) => (
-                  <TableRow key={i} className="transition-colors hover:bg-primary/5">
-                    <TableCell className="font-mono text-xs text-muted-foreground">{g.data}</TableCell>
+                  <TableRow key={i} className="group/row border-border/30 transition-colors hover:bg-primary/[0.03]">
+                    <TableCell className="font-mono text-xs text-text-muted">{g.data}</TableCell>
                     <TableCell>
                       <Badge variant="outline" className="border-border/60 bg-surface/60 text-xs">
                         {g.categoria}
                       </Badge>
                     </TableCell>
-                    <TableCell className="font-medium">{g.fornecedor}</TableCell>
-                    <TableCell className="text-muted-foreground">{g.cc}</TableCell>
-                    <TableCell className="max-w-xs truncate text-sm text-muted-foreground">{g.descricao}</TableCell>
-                    <TableCell className="text-right font-mono font-semibold">{brlFull(g.valor)}</TableCell>
+                    <TableCell className="font-semibold text-white">{g.fornecedor}</TableCell>
+                    <TableCell className="text-text-secondary font-medium">{g.cc}</TableCell>
+                    <TableCell className="max-w-xs truncate text-sm text-text-muted">{g.descricao}</TableCell>
+                    <TableCell className="text-right font-mono font-semibold text-white">{brlFull(g.valor)}</TableCell>
                     <TableCell>
-                      <span className={`inline-flex rounded-full border px-2 py-0.5 text-[11px] font-medium ${statusColor(g.status)}`}>
+                      <span className={`inline-flex rounded-full border px-2.5 py-0.5 text-[11px] font-semibold ${statusColor(g.status)}`}>
                         {g.status}
                       </span>
                     </TableCell>
@@ -154,7 +154,7 @@ function GastosPage() {
                 ))}
                 {rows.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={7} className="py-10 text-center text-sm text-muted-foreground">
+                    <TableCell colSpan={7} className="py-12 text-center text-sm text-text-muted">
                       Nenhum lançamento corresponde aos filtros.
                     </TableCell>
                   </TableRow>
@@ -163,9 +163,11 @@ function GastosPage() {
             </Table>
           </div>
 
-          <div className="mt-4 flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">{rows.length} lançamentos exibidos</span>
-            <span className="font-mono font-semibold">Total filtrado: {brlFull(total)}</span>
+          <div className="mt-6 flex flex-wrap items-center justify-between gap-4 text-sm">
+            <span className="text-text-secondary font-medium">{rows.length} lançamentos exibidos</span>
+            <span className="font-mono font-semibold text-white bg-surface/40 border border-border-soft px-4 py-2 rounded-xl">
+              Total filtrado: <span className="text-primary text-base font-bold">{brlFull(total)}</span>
+            </span>
           </div>
         </CardContent>
       </Card>
