@@ -92,7 +92,7 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { Typewriter } from "@/components/experience/Typewriter";
 import { CountUp } from "@/components/experience/CountUp";
-import { GlassPanel, ModuleShell, StatusPill, tooltipStyle } from "@/components/experience/ui";
+import { GlassPanel, KpiCard, ModuleShell, StatusPill, tooltipStyle } from "@/components/experience/ui";
 import {
   brl,
   centrosCusto as seedCentros,
