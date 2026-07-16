@@ -127,11 +127,11 @@
   --gold-raw: oklch(0.82 0.10 85);
 
   /* ── Glass Surface ── */
-  --glass-surface-raw: oklch(1 0 0 / 0.020);
-  --glass-border-raw: oklch(1 0 0 / 0.06);
-  --glass-border-hover-raw: oklch(1 0 0 / 0.10);
-  --glass-border-strong-raw: oklch(1 0 0 / 0.14);
-  --divider-raw: oklch(1 0 0 / 0.04);
+  --glass-surface-raw: oklch(1 0 0 / 0.045);
+  --glass-border-raw: oklch(1 0 0 / 0.10);
+  --glass-border-hover-raw: oklch(1 0 0 / 0.16);
+  --glass-border-strong-raw: oklch(1 0 0 / 0.22);
+  --divider-raw: oklch(1 0 0 / 0.07);
 
   /* ── Semantic Status ── */
   --success-raw: oklch(0.72 0.17 155);
