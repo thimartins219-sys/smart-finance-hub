@@ -109,40 +109,53 @@ export function FloatingNav({ sections }: { sections: NavSection[] }) {
         </div>
       </motion.header>
 
-      {/* Right-edge dot indicator */}
-      <nav className="fixed right-5 top-1/2 z-[70] hidden -translate-y-1/2 flex-col gap-3 lg:flex">
-        {sections.map((s) => {
-          const isActive = active === s.id;
-          return (
-            <button
-              key={s.id}
-              onClick={() => scrollTo(s.id)}
-              className="group relative flex items-center justify-end gap-3"
-              aria-label={s.label}
-            >
-              <span
-                className={`whitespace-nowrap text-[10.5px] font-medium uppercase tracking-[0.14em] transition-all duration-300 ${
-                  isActive
-                    ? "text-white/90 opacity-100 translate-x-0"
-                    : "text-white/50 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0"
-                }`}
+      {/* Right-edge minimal indicator — hairline rail + refined dots */}
+      <nav className="fixed right-6 top-1/2 z-[70] hidden -translate-y-1/2 lg:block">
+        <div className="relative flex flex-col items-end gap-4 py-2">
+          {/* vertical hairline behind dots */}
+          <span
+            aria-hidden
+            className="pointer-events-none absolute right-[3px] top-0 h-full w-px bg-gradient-to-b from-transparent via-white/[0.08] to-transparent"
+          />
+          {sections.map((s) => {
+            const isActive = active === s.id;
+            return (
+              <button
+                key={s.id}
+                onClick={() => scrollTo(s.id)}
+                className="group relative flex items-center justify-end gap-3"
+                aria-label={s.label}
               >
-                {s.label}
-              </span>
-              <span
-                className={`block rounded-full transition-all duration-300 ${
-                  isActive
-                    ? "h-1.5 w-6 bg-[--primary-orange] shadow-[0_0_10px_oklch(0.65_0.22_32/0.7)]"
-                    : "h-1.5 w-1.5 bg-white/25 group-hover:bg-white/60"
-                }`}
-              />
-            </button>
-          );
-        })}
+                <span
+                  className={`whitespace-nowrap text-[10px] font-medium uppercase tracking-[0.18em] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                    isActive
+                      ? "text-white/80 opacity-100 translate-x-0"
+                      : "text-white/45 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0"
+                  }`}
+                >
+                  {s.label}
+                </span>
+                <motion.span
+                  initial={false}
+                  animate={{
+                    scale: isActive ? 1 : 0.7,
+                    opacity: isActive ? 1 : 0.45,
+                  }}
+                  transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                  className={`block h-[7px] w-[7px] rounded-full border transition-colors duration-500 ${
+                    isActive
+                      ? "border-[--primary-orange] bg-[--primary-orange] shadow-[0_0_10px_oklch(0.65_0.22_32/0.45)]"
+                      : "border-white/25 bg-transparent group-hover:border-white/55"
+                  }`}
+                />
+              </button>
+            );
+          })}
+        </div>
       </nav>
 
       {/* Bottom section label — mobile */}
-      <div className="fixed bottom-4 left-1/2 z-[70] flex -translate-x-1/2 items-center gap-2 rounded-full border border-white/[0.06] bg-black/40 px-4 py-1.5 text-[10px] uppercase tracking-[0.16em] text-white/60 backdrop-blur-xl lg:hidden">
+      <div className="fixed bottom-4 left-1/2 z-[70] flex -translate-x-1/2 items-center gap-2 rounded-full border border-white/[0.06] bg-black/40 px-4 py-1.5 text-[10px] uppercase tracking-[0.18em] text-white/60 backdrop-blur-xl lg:hidden">
         <span className="h-1 w-1 rounded-full bg-[--primary-orange] shadow-[0_0_6px_var(--primary-orange)]" />
         {activeSection?.label}
       </div>
