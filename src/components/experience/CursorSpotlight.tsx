@@ -1,10 +1,9 @@
 import { useEffect, useRef } from "react";
 
 /**
- * Elegant cursor spotlight — a soft radial glow that follows the pointer
- * across the entire viewport. Uses rAF-throttled updates via CSS variables
- * on a single fixed element for GPU-friendly, 60fps interaction. Hidden on
- * touch devices.
+ * Discreet cursor spotlight — a barely-there radial highlight that follows
+ * the pointer. Kept intentionally subtle: small radius, low opacity, no
+ * flashlight sensation. Hidden on touch devices.
  */
 export function CursorSpotlight() {
   const ref = useRef<HTMLDivElement>(null);
@@ -12,28 +11,37 @@ export function CursorSpotlight() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (window.matchMedia("(pointer: coarse)").matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const el = ref.current;
     if (!el) return;
 
     let raf = 0;
-    let x = window.innerWidth / 2;
-    let y = window.innerHeight / 2;
+    let tx = window.innerWidth / 2;
+    let ty = window.innerHeight / 2;
+    let cx = tx;
+    let cy = ty;
 
     const paint = () => {
-      raf = 0;
-      el.style.setProperty("--sx", `${x}px`);
-      el.style.setProperty("--sy", `${y}px`);
+      // gentle easing towards target for smoother, more natural feel
+      cx += (tx - cx) * 0.18;
+      cy += (ty - cy) * 0.18;
+      el.style.setProperty("--sx", `${cx}px`);
+      el.style.setProperty("--sy", `${cy}px`);
+      if (Math.abs(tx - cx) > 0.5 || Math.abs(ty - cy) > 0.5) {
+        raf = requestAnimationFrame(paint);
+      } else {
+        raf = 0;
+      }
     };
 
     const onMove = (e: MouseEvent) => {
-      x = e.clientX;
-      y = e.clientY;
+      tx = e.clientX;
+      ty = e.clientY;
       if (!raf) raf = requestAnimationFrame(paint);
     };
 
     window.addEventListener("pointermove", onMove, { passive: true });
-    paint();
 
     return () => {
       window.removeEventListener("pointermove", onMove);
@@ -45,11 +53,10 @@ export function CursorSpotlight() {
     <div
       ref={ref}
       aria-hidden
-      className="pointer-events-none fixed inset-0 z-[5] hidden md:block"
+      className="pointer-events-none fixed inset-0 z-[5] hidden opacity-70 md:block"
       style={{
         background:
-          "radial-gradient(520px circle at var(--sx, 50%) var(--sy, 50%), oklch(0.75 0.20 40 / 0.10), transparent 55%)",
-        mixBlendMode: "screen",
+          "radial-gradient(220px circle at var(--sx, 50%) var(--sy, 50%), oklch(0.85 0.10 40 / 0.035), transparent 60%)",
       }}
     />
   );
