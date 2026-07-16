@@ -15,6 +15,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { CinematicIntro } from "@/components/cinematic-intro";
 import { AmbientBackground } from "@/components/experience/AmbientBackground";
 import { FloatingNav } from "@/components/experience/FloatingNav";
+import { CursorSpotlight } from "@/components/experience/CursorSpotlight";
 
 const NAV_SECTIONS = [
   { id: "hero", label: "Início" },
