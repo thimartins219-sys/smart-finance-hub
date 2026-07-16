@@ -18,17 +18,14 @@ import { FloatingNav } from "@/components/experience/FloatingNav";
 
 const NAV_SECTIONS = [
   { id: "hero", label: "Início" },
-  { id: "overview", label: "Visão" },
-  { id: "kpis", label: "KPIs" },
-  { id: "revenue", label: "Receita" },
-  { id: "expenses", label: "Despesas" },
-  { id: "cashflow", label: "Caixa" },
-  { id: "categories", label: "Categorias" },
-  { id: "cost-centers", label: "Centros" },
-  { id: "performance", label: "Performance" },
-  { id: "forecast", label: "Forecast" },
-  { id: "ai-insights", label: "IA" },
-  { id: "reports", label: "Relatórios" },
+  { id: "dashboard", label: "Dashboard" },
+  { id: "receitas", label: "Receitas" },
+  { id: "despesas", label: "Despesas" },
+  { id: "cashflow", label: "Fluxo" },
+  { id: "categorias", label: "Categorias" },
+  { id: "centros", label: "Centros" },
+  { id: "indicadores", label: "Indicadores" },
+  { id: "ai", label: "IA" },
   { id: "settings", label: "Config" },
 ];
 
