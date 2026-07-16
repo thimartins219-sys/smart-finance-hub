@@ -523,7 +523,7 @@ function CrudTableModule<T extends Row>({
 }: {
   id: string;
   eyebrow: string;
-  title: ReactNodeLike;
+  title: ReactNode;
   description: string;
   accent: string;
   seed: T[];
@@ -533,7 +533,6 @@ function CrudTableModule<T extends Row>({
   addLabel: string;
   searchKeys: (keyof T & string)[];
 }) {
-  type ReactNodeLike = React.ReactNode;
   const [rows, setRows] = useState<T[]>(seed);
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState<string>("all");
