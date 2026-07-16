@@ -386,6 +386,144 @@ export function ExecutiveModule() {
         </GlassPanel>
       </div>
 
+      {/* ── Executive secondary row: composition, top cost centers, cashflow health ── */}
+      <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-3">
+        {/* Composition of expenses */}
+        <GlassPanel className="p-6">
+          <div className="mb-4 flex items-center justify-between">
+            <div>
+              <div className="text-[10px] uppercase tracking-[0.16em] text-white/45">Composição</div>
+              <div className="mt-0.5 font-[family-name:var(--font-display)] text-[15px] font-semibold text-white">Despesas por categoria</div>
+            </div>
+            <Layers className="h-4 w-4 text-white/40" />
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="relative h-[140px] w-[140px] shrink-0">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={seedCategorias}
+                    dataKey="valor"
+                    nameKey="categoria"
+                    innerRadius={44}
+                    outerRadius={64}
+                    paddingAngle={3}
+                    stroke="none"
+                  >
+                    {seedCategorias.map((c, i) => (
+                      <Cell key={i} fill={c.cor} />
+                    ))}
+                  </Pie>
+                  <RTooltip contentStyle={tooltipStyle} formatter={(v: number) => brl(v)} />
+                </PieChart>
+              </ResponsiveContainer>
+              <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
+                <div className="text-[9.5px] uppercase tracking-[0.16em] text-white/40">Total</div>
+                <div className="font-[family-name:var(--font-display)] text-[15px] font-semibold text-white">
+                  {brl(seedCategorias.reduce((s, c) => s + c.valor, 0))}
+                </div>
+              </div>
+            </div>
+            <div className="flex-1 space-y-2">
+              {seedCategorias.slice(0, 5).map((c) => {
+                const total = seedCategorias.reduce((s, x) => s + x.valor, 0);
+                const pct = Math.round((c.valor / total) * 100);
+                return (
+                  <div key={c.categoria} className="flex items-center justify-between text-[11.5px]">
+                    <div className="flex min-w-0 items-center gap-2">
+                      <span className="h-2 w-2 shrink-0 rounded-full" style={{ background: c.cor }} />
+                      <span className="truncate text-white/75">{c.categoria}</span>
+                    </div>
+                    <span className="tabular-nums text-white/50">{pct}%</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </GlassPanel>
+
+        {/* Top cost centers */}
+        <GlassPanel className="p-6">
+          <div className="mb-4 flex items-center justify-between">
+            <div>
+              <div className="text-[10px] uppercase tracking-[0.16em] text-white/45">Centros de custo</div>
+              <div className="mt-0.5 font-[family-name:var(--font-display)] text-[15px] font-semibold text-white">Consumo orçamentário</div>
+            </div>
+            <Building2 className="h-4 w-4 text-white/40" />
+          </div>
+          <div className="space-y-3.5">
+            {seedCentros.slice(0, 5).map((c) => {
+              const pct = Math.min(100, Math.round((c.utilizado / c.orcamento) * 100));
+              const tint = pct > 85 ? "oklch(0.72 0.20 25)" : pct > 70 ? "oklch(0.80 0.14 75)" : "oklch(0.72 0.17 155)";
+              return (
+                <div key={c.nome}>
+                  <div className="mb-1 flex items-center justify-between text-[11.5px]">
+                    <span className="truncate text-white/80">{c.nome}</span>
+                    <span className="tabular-nums text-white/50">{pct}%</span>
+                  </div>
+                  <div className="h-1.5 overflow-hidden rounded-full bg-white/[0.05]">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      whileInView={{ width: `${pct}%` }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+                      className="h-full rounded-full"
+                      style={{ background: `linear-gradient(90deg, ${tint}, ${tint}cc)` }}
+                    />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </GlassPanel>
+
+        {/* Cashflow health */}
+        <GlassPanel className="p-6">
+          <div className="mb-4 flex items-center justify-between">
+            <div>
+              <div className="text-[10px] uppercase tracking-[0.16em] text-white/45">Fluxo</div>
+              <div className="mt-0.5 font-[family-name:var(--font-display)] text-[15px] font-semibold text-white">Saúde do caixa</div>
+            </div>
+            <Activity className="h-4 w-4 text-white/40" />
+          </div>
+          <div className="flex items-baseline gap-2">
+            <div className="font-[family-name:var(--font-display)] text-[32px] font-semibold leading-none tracking-[-0.02em] text-white">
+              <CountUp to={92} suffix="%" />
+            </div>
+            <span className="text-[11px] text-[--positive]">+4,2 p.p.</span>
+          </div>
+          <div className="mt-1 text-[11px] text-white/45">Índice consolidado de liquidez</div>
+          <div className="mt-4 h-[90px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={evolucaoMensal}>
+                <defs>
+                  <linearGradient id="cash-fill" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="oklch(0.72 0.17 155)" stopOpacity={0.5} />
+                    <stop offset="100%" stopColor="oklch(0.72 0.17 155)" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <Area type="monotone" dataKey="receita" stroke="oklch(0.72 0.17 155)" strokeWidth={2} fill="url(#cash-fill)" />
+                <XAxis dataKey="mes" hide /><YAxis hide />
+                <RTooltip contentStyle={tooltipStyle} formatter={(v: number) => brl(v)} />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+          <div className="mt-2 grid grid-cols-3 gap-2 text-center">
+            {[
+              { label: "Entradas", value: "R$ 2,45M", tint: "oklch(0.72 0.17 155)" },
+              { label: "Saídas", value: "R$ 487k", tint: "oklch(0.65 0.22 32)" },
+              { label: "Saldo", value: "R$ 1,96M", tint: "oklch(0.55 0.20 260)" },
+            ].map((s) => (
+              <div key={s.label} className="rounded-lg border border-white/[0.05] bg-white/[0.015] px-1.5 py-2">
+                <div className="text-[9.5px] uppercase tracking-[0.14em] text-white/40">{s.label}</div>
+                <div className="mt-0.5 text-[11.5px] font-medium tabular-nums" style={{ color: s.tint }}>{s.value}</div>
+              </div>
+            ))}
+          </div>
+        </GlassPanel>
+      </div>
+
+
       <Dialog open={!!drill} onOpenChange={(o) => !o && setDrill(null)}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
