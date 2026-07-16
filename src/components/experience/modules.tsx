@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, type ReactNode } from "react";
 import { motion, useMotionValue, useScroll, useTransform } from "framer-motion";
 import {
   Activity,
