@@ -96,25 +96,25 @@
    All raw values defined once, referenced everywhere.
    ═══════════════════════════════════════════════════════════════════════ */
 :root {
-  /* ── Graphite Scale (backgrounds & surfaces) ── */
-  --graphite-950: oklch(0.085 0.005 260);
-  --graphite-900: oklch(0.105 0.006 260);
-  --graphite-800: oklch(0.135 0.007 260);
-  --graphite-700: oklch(0.165 0.008 260);
-  --graphite-600: oklch(0.195 0.009 260);
+  /* ── Graphite Scale — lifted, deep-indigo atmosphere, never pure black ── */
+  --graphite-950: oklch(0.155 0.022 260);
+  --graphite-900: oklch(0.185 0.024 260);
+  --graphite-800: oklch(0.215 0.022 260);
+  --graphite-700: oklch(0.250 0.020 260);
+  --graphite-600: oklch(0.290 0.018 260);
 
   /* ── Charcoal Scale (borders, muted text) ── */
-  --charcoal-500: oklch(0.28 0.008 260);
-  --charcoal-400: oklch(0.38 0.007 260);
-  --charcoal-300: oklch(0.48 0.006 260);
+  --charcoal-500: oklch(0.42 0.010 260);
+  --charcoal-400: oklch(0.56 0.008 260);
+  --charcoal-300: oklch(0.70 0.006 260);
 
   /* ── Slate Scale (secondary text) ── */
-  --slate-200: oklch(0.62 0.005 260);
-  --slate-100: oklch(0.78 0.004 260);
+  --slate-200: oklch(0.78 0.006 260);
+  --slate-100: oklch(0.88 0.004 260);
 
   /* ── Neutral Scale (primary text) ── */
-  --neutral-50: oklch(0.93 0.003 260);
-  --neutral-00: oklch(0.98 0.001 260);
+  --neutral-50: oklch(0.965 0.003 260);
+  --neutral-00: oklch(0.99 0.001 260);
 
   /* ── Primary: Electric Orange (Sanity FF5500) ── */
   --primary-orange: oklch(0.65 0.22 32);
