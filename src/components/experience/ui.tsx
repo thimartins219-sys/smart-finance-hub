@@ -32,24 +32,24 @@ export function ModuleShell({
     <section id={id} className={`relative min-h-screen w-full px-6 py-24 md:px-12 md:py-28 ${className}`}>
       <div className="mx-auto flex max-w-[1440px] flex-col gap-10">
         <motion.header
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-120px" }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
           className="flex flex-wrap items-end justify-between gap-6"
         >
           <div className="max-w-2xl">
             <div className="mb-3 flex items-center gap-2">
               <span className="h-1 w-1 rounded-full bg-[--primary-orange] shadow-[0_0_8px_var(--primary-orange)]" />
-              <span className="text-[10px] font-semibold uppercase tracking-[0.20em] text-white/50">
+              <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white/45">
                 {eyebrow}
               </span>
             </div>
-            <h2 className="font-[family-name:var(--font-display)] text-[clamp(28px,3.6vw,44px)] font-semibold leading-[1.05] tracking-[-0.02em] text-white">
+            <h2 className="font-[family-name:var(--font-display)] text-[clamp(30px,3.6vw,46px)] font-semibold leading-[1.02] tracking-[-0.028em] text-white">
               {title}
             </h2>
             {description && (
-              <p className="mt-2 text-[13.5px] leading-relaxed text-white/50">
+              <p className="mt-3 text-[13.5px] leading-relaxed text-white/50">
                 {description}
               </p>
             )}
@@ -58,10 +58,10 @@ export function ModuleShell({
         </motion.header>
 
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 22 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.8, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 1, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
         >
           {children}
         </motion.div>
