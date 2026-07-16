@@ -289,8 +289,15 @@ export function ExecutiveModule() {
     >
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
         {kpis.map((k) => (
-          <button
+          <KpiCard
             key={k.key}
+            label={k.label}
+            value={<CountUp to={k.value} prefix="R$ " />}
+            delta={k.delta}
+            positive={k.up}
+            icon={k.icon}
+            tint={k.tint}
+            footnote="toque para detalhar"
             onClick={() =>
               setDrill({
                 title: k.label,
@@ -298,21 +305,7 @@ export function ExecutiveModule() {
                 series: evolucaoMensal.map((m) => ({ mes: m.mes, v: k.key === "despesas" ? m.despesas : m.receita })),
               })
             }
-            className="group relative overflow-hidden rounded-2xl border border-white/[0.07] bg-white/[0.02] p-5 text-left backdrop-blur-xl transition-all hover:-translate-y-0.5 hover:border-white/[0.14] hover:bg-white/[0.04]"
-          >
-            <div className="absolute -right-8 -top-8 h-28 w-28 rounded-full opacity-30 blur-2xl" style={{ background: k.tint }} />
-            <div className="relative flex items-center justify-between">
-              <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/50">{k.label}</div>
-              <k.icon className="h-3.5 w-3.5" style={{ color: k.tint }} />
-            </div>
-            <div className="relative mt-3 font-[family-name:var(--font-display)] text-[30px] font-semibold text-white">
-              <CountUp to={k.value} prefix="R$ " />
-            </div>
-            <div className={`relative mt-1.5 flex items-center gap-1 text-[11px] ${k.up ? "text-[--positive]" : "text-[--negative]"}`}>
-              {k.up ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
-              {k.delta} · toque para detalhar
-            </div>
-          </button>
+          />
         ))}
       </div>
 
