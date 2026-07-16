@@ -153,16 +153,10 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <CinematicIntro />
-      <SidebarProvider>
-        <AppSidebar />
-        <SidebarInset className="bg-background">
-          <AppHeader />
-          <div className="flex-1">
-            <Outlet />
-          </div>
-        </SidebarInset>
-        <Toaster />
-      </SidebarProvider>
+      <AmbientBackground />
+      <FloatingNav sections={NAV_SECTIONS} />
+      <Outlet />
+      <Toaster />
     </QueryClientProvider>
   );
 }
