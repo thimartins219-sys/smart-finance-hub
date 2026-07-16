@@ -152,6 +152,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <CinematicIntro />
       <AmbientBackground />
+      <CursorSpotlight />
       <FloatingNav sections={NAV_SECTIONS} />
       <Outlet />
       <Toaster />
