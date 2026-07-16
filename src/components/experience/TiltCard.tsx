@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { useRef } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion, useMotionTemplate, useMotionValue, useSpring, useTransform } from "framer-motion";
 
 export function TiltCard({
   children,
@@ -16,8 +16,9 @@ export function TiltCard({
   const my = useMotionValue(0);
   const rx = useSpring(useTransform(my, [-0.5, 0.5], [intensity, -intensity]), { stiffness: 200, damping: 22 });
   const ry = useSpring(useTransform(mx, [-0.5, 0.5], [-intensity, intensity]), { stiffness: 200, damping: 22 });
-  const gx = useTransform(mx, [-0.5, 0.5], ["0%", "100%"]);
-  const gy = useTransform(my, [-0.5, 0.5], ["0%", "100%"]);
+  const gx = useTransform(mx, [-0.5, 0.5], [0, 100]);
+  const gy = useTransform(my, [-0.5, 0.5], [0, 100]);
+  const glow = useMotionTemplate`radial-gradient(320px circle at ${gx}% ${gy}%, oklch(0.65 0.22 32 / 0.18), transparent 60%)`;
 
   return (
     <motion.div
@@ -39,13 +40,7 @@ export function TiltCard({
       <motion.div
         aria-hidden
         className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-        style={{
-          background: useTransform(
-            [gx, gy] as unknown as ReturnType<typeof useMotionValue<string>>[],
-            ([x, y]: unknown[]) =>
-              `radial-gradient(320px circle at ${x} ${y}, oklch(0.65 0.22 32 / 0.18), transparent 60%)`,
-          ),
-        }}
+        style={{ background: glow }}
       />
     </motion.div>
   );
