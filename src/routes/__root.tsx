@@ -11,11 +11,26 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
-import { AppHeader } from "@/components/app-header";
 import { Toaster } from "@/components/ui/sonner";
 import { CinematicIntro } from "@/components/cinematic-intro";
+import { AmbientBackground } from "@/components/experience/AmbientBackground";
+import { FloatingNav } from "@/components/experience/FloatingNav";
+
+const NAV_SECTIONS = [
+  { id: "hero", label: "Início" },
+  { id: "overview", label: "Visão" },
+  { id: "kpis", label: "KPIs" },
+  { id: "revenue", label: "Receita" },
+  { id: "expenses", label: "Despesas" },
+  { id: "cashflow", label: "Caixa" },
+  { id: "categories", label: "Categorias" },
+  { id: "cost-centers", label: "Centros" },
+  { id: "performance", label: "Performance" },
+  { id: "forecast", label: "Forecast" },
+  { id: "ai-insights", label: "IA" },
+  { id: "reports", label: "Relatórios" },
+  { id: "settings", label: "Config" },
+];
 
 function NotFoundComponent() {
   return (
