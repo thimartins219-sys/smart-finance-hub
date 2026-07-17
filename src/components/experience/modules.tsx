@@ -621,15 +621,35 @@ export function ExecutiveModule() {
             <DialogDescription>Detalhamento mensal · período {period}</DialogDescription>
           </DialogHeader>
           <div className="text-[10px] uppercase tracking-[0.16em] text-white/45">Total</div>
-          <div className="font-[family-name:var(--font-display)] text-[36px] font-semibold text-white">{brl(drill?.total ?? 0)}</div>
-          <div className="mt-2 h-52">
+          <div className="font-[family-name:var(--font-display)] text-[44px] font-semibold tracking-[-0.03em] text-white">{brl(drill?.total ?? 0)}</div>
+          <div className="mt-2 h-56">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={drill?.series ?? []}>
-                <CartesianGrid strokeDasharray="3 6" stroke="oklch(1 0 0 / 0.05)" vertical={false} />
-                <XAxis dataKey="mes" stroke="oklch(1 0 0 / 0.35)" fontSize={11} tickLine={false} axisLine={false} />
-                <YAxis stroke="oklch(1 0 0 / 0.35)" fontSize={11} tickLine={false} axisLine={false} tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`} />
-                <RTooltip contentStyle={tooltipStyle} formatter={(v: number) => brl(v)} />
-                <Bar dataKey="v" fill="oklch(0.65 0.22 32)" radius={[6, 6, 0, 0]} />
+              <BarChart
+                data={drill?.series ?? []}
+                onMouseMove={(s: any) => typeof s?.activeTooltipIndex === "number" && setActiveIdx(s.activeTooltipIndex)}
+                onMouseLeave={() => setActiveIdx(null)}
+              >
+                <defs>
+                  <linearGradient id="drill-bar" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="oklch(0.75 0.20 38)" />
+                    <stop offset="100%" stopColor="oklch(0.62 0.22 22)" />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="2 6" stroke="oklch(1 0 0 / 0.06)" vertical={false} />
+                <XAxis dataKey="mes" stroke="oklch(1 0 0 / 0.4)" fontSize={11.5} tickLine={false} axisLine={false} dy={6} />
+                <YAxis stroke="oklch(1 0 0 / 0.4)" fontSize={11.5} tickLine={false} axisLine={false} tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`} width={44} />
+                <RTooltip cursor={{ fill: "oklch(1 0 0 / 0.04)" }} content={<PremiumTooltip formatter={(v: number) => brl(v)} />} />
+                <Bar dataKey="v" radius={[8, 8, 0, 0]} animationDuration={900}>
+                  {(drill?.series ?? []).map((_, i) => (
+                    <Cell
+                      key={i}
+                      fill="url(#drill-bar)"
+                      fillOpacity={activeIdx === null || activeIdx === i ? 1 : 0.28}
+                      stroke={activeIdx === i ? "oklch(0.85 0.20 38)" : "transparent"}
+                      strokeWidth={activeIdx === i ? 1.5 : 0}
+                    />
+                  ))}
+                </Bar>
               </BarChart>
             </ResponsiveContainer>
           </div>
