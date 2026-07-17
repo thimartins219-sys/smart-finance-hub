@@ -235,7 +235,7 @@ export function KpiCard({
         )}
       </div>
 
-      <div className="relative mt-4 font-[family-name:var(--font-display)] text-[36px] font-semibold leading-none tracking-[-0.025em] text-white">
+      <div className="relative mt-5 font-[family-name:var(--font-display)] text-[44px] font-semibold leading-[0.95] tracking-[-0.03em] text-white">
         {value}
       </div>
 
