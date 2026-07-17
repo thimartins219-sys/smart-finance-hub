@@ -2,14 +2,71 @@ import type { ReactNode } from "react";
 import { motion } from "framer-motion";
 
 export const tooltipStyle = {
-  background: "oklch(0.11 0.006 260 / 0.95)",
-  border: "1px solid oklch(1 0 0 / 0.08)",
-  borderRadius: 12,
-  padding: "10px 14px",
+  background: "oklch(0.14 0.01 260 / 0.98)",
+  border: "1px solid oklch(1 0 0 / 0.12)",
+  borderRadius: 14,
+  padding: "12px 16px",
   color: "white",
-  fontSize: 12,
-  backdropFilter: "blur(20px)",
+  fontSize: 12.5,
+  boxShadow: "0 24px 60px -18px oklch(0 0 0 / 0.7), 0 0 0 1px oklch(1 0 0 / 0.04) inset",
+  backdropFilter: "blur(24px)",
 } as const;
+
+/**
+ * Premium chart tooltip — high-contrast, tabular numerics, colored series dots.
+ * Use as `content={<PremiumTooltip formatter={brl} />}` on any recharts chart.
+ */
+export function PremiumTooltip({
+  active,
+  payload,
+  label,
+  formatter = (v: number) => String(v),
+  labelSuffix,
+}: {
+  active?: boolean;
+  payload?: any[];
+  label?: string | number;
+  formatter?: (v: number) => string;
+  labelSuffix?: string;
+}) {
+  if (!active || !payload || payload.length === 0) return null;
+  // dedupe by dataKey (Area+Line pairs can double up)
+  const seen = new Set<string>();
+  const items = payload.filter((p) => {
+    const k = String(p.dataKey ?? p.name);
+    if (seen.has(k)) return false;
+    seen.add(k);
+    return true;
+  });
+  return (
+    <div
+      className="min-w-[180px] rounded-[14px] border border-white/[0.12] bg-[oklch(0.13_0.01_260/0.98)] p-3.5 shadow-[0_24px_60px_-18px_oklch(0_0_0/0.7)] backdrop-blur-2xl"
+      style={{ boxShadow: "0 24px 60px -18px oklch(0 0 0 / 0.7), 0 0 0 1px oklch(1 0 0 / 0.04) inset" }}
+    >
+      {label !== undefined && (
+        <div className="mb-2 text-[10.5px] font-semibold uppercase tracking-[0.18em] text-white/50">
+          {label}{labelSuffix ? ` · ${labelSuffix}` : ""}
+        </div>
+      )}
+      <div className="space-y-1.5">
+        {items.map((p, i) => (
+          <div key={i} className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-2">
+              <span
+                className="h-2 w-2 rounded-full ring-2"
+                style={{ background: p.color ?? p.stroke ?? p.fill, boxShadow: `0 0 8px ${p.color ?? p.stroke ?? p.fill}` , ["--tw-ring-color" as any]: `${p.color ?? p.stroke ?? p.fill}22` }}
+              />
+              <span className="text-[11.5px] text-white/70">{p.name}</span>
+            </div>
+            <span className="font-[family-name:var(--font-display)] text-[13.5px] font-semibold tabular-nums text-white">
+              {formatter(Number(p.value))}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export function ModuleShell({
   id,
