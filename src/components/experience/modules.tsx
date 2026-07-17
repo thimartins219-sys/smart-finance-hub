@@ -322,33 +322,102 @@ export function ExecutiveModule() {
           <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
             <div>
               <div className="text-[10px] uppercase tracking-[0.16em] text-white/45">Evolução consolidada</div>
-              <div className="font-[family-name:var(--font-display)] text-[20px] font-semibold text-white">
-                {metric === "receita" ? "Receita mensal" : "Despesas mensais"}
+              <div className="font-[family-name:var(--font-display)] text-[22px] font-semibold tracking-[-0.02em] text-white">
+                Receita <span className="text-white/40">vs</span> Despesa <span className="text-white/40">·</span> <span className="italic text-white/70">saldo</span>
               </div>
             </div>
-            <Tabs value={metric} onValueChange={(v) => setMetric(v as "receita" | "despesas")}>
-              <TabsList className="border border-white/[0.06] bg-white/[0.02]">
-                <TabsTrigger value="receita">Receita</TabsTrigger>
-                <TabsTrigger value="despesas">Despesas</TabsTrigger>
-              </TabsList>
-            </Tabs>
+            <div className="flex items-center gap-4 text-[11px]">
+              {[
+                { name: "Receita", color: "oklch(0.72 0.17 155)" },
+                { name: "Despesa", color: "oklch(0.65 0.22 32)" },
+                { name: "Saldo", color: "oklch(0.62 0.18 260)" },
+              ].map((s) => (
+                <div key={s.name} className="flex items-center gap-2 text-white/70">
+                  <span className="h-2 w-2 rounded-full" style={{ background: s.color, boxShadow: `0 0 10px ${s.color}` }} />
+                  {s.name}
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="h-[280px]">
+          <div className="h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={evolucaoMensal}>
+              <AreaChart
+                data={chartData}
+                margin={{ top: 16, right: 12, bottom: 4, left: 0 }}
+                onMouseMove={(s: any) => typeof s?.activeTooltipIndex === "number" && setActiveIdx(s.activeTooltipIndex)}
+                onMouseLeave={() => setActiveIdx(null)}
+              >
                 <defs>
-                  <linearGradient id="exec-fill" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor={metric === "receita" ? "oklch(0.72 0.17 155)" : "oklch(0.65 0.22 32)"} stopOpacity={0.45} />
-                    <stop offset="100%" stopColor={metric === "receita" ? "oklch(0.72 0.17 155)" : "oklch(0.65 0.22 32)"} stopOpacity={0} />
+                  <linearGradient id="exec-receita" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="oklch(0.72 0.17 155)" stopOpacity={0.42} />
+                    <stop offset="100%" stopColor="oklch(0.72 0.17 155)" stopOpacity={0} />
                   </linearGradient>
+                  <linearGradient id="exec-despesa" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="oklch(0.65 0.22 32)" stopOpacity={0.38} />
+                    <stop offset="100%" stopColor="oklch(0.65 0.22 32)" stopOpacity={0} />
+                  </linearGradient>
+                  <linearGradient id="exec-saldo" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="oklch(0.62 0.18 260)" stopOpacity={0.22} />
+                    <stop offset="100%" stopColor="oklch(0.62 0.18 260)" stopOpacity={0} />
+                  </linearGradient>
+                  <linearGradient id="stroke-receita" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stopColor="oklch(0.78 0.17 155)" />
+                    <stop offset="100%" stopColor="oklch(0.68 0.20 165)" />
+                  </linearGradient>
+                  <linearGradient id="stroke-despesa" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stopColor="oklch(0.72 0.22 38)" />
+                    <stop offset="100%" stopColor="oklch(0.62 0.22 22)" />
+                  </linearGradient>
+                  <linearGradient id="stroke-saldo" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stopColor="oklch(0.68 0.18 260)" />
+                    <stop offset="100%" stopColor="oklch(0.60 0.20 285)" />
+                  </linearGradient>
+                  <filter id="glow-line" x="-20%" y="-20%" width="140%" height="140%">
+                    <feGaussianBlur stdDeviation="2.4" result="b" />
+                    <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+                  </filter>
                 </defs>
-                <CartesianGrid strokeDasharray="3 6" stroke="oklch(1 0 0 / 0.05)" vertical={false} />
-                <XAxis dataKey="mes" stroke="oklch(1 0 0 / 0.35)" fontSize={11} tickLine={false} axisLine={false} />
-                <YAxis stroke="oklch(1 0 0 / 0.35)" fontSize={11} tickLine={false} axisLine={false} tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`} />
-                <RTooltip contentStyle={tooltipStyle} formatter={(v: number) => brl(v)} />
-                <Area type="monotone" dataKey={metric} stroke={metric === "receita" ? "oklch(0.72 0.17 155)" : "oklch(0.65 0.22 32)"} strokeWidth={2.5} fill="url(#exec-fill)" animationDuration={1200} />
+                <CartesianGrid strokeDasharray="2 6" stroke="oklch(1 0 0 / 0.06)" vertical={false} />
+                <XAxis dataKey="mes" stroke="oklch(1 0 0 / 0.4)" fontSize={11.5} tickLine={false} axisLine={false} dy={6} />
+                <YAxis stroke="oklch(1 0 0 / 0.4)" fontSize={11.5} tickLine={false} axisLine={false} tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`} width={44} />
+                <RTooltip
+                  cursor={{ stroke: "oklch(1 0 0 / 0.18)", strokeWidth: 1, strokeDasharray: "3 4" }}
+                  content={<PremiumTooltip formatter={(v) => brl(v)} />}
+                />
+                <Area type="monotone" name="Saldo" dataKey="saldo" stroke="url(#stroke-saldo)" strokeWidth={1.5} fill="url(#exec-saldo)" animationDuration={1400} animationEasing="ease-out" isAnimationActive />
+                <Area type="monotone" name="Despesa" dataKey="despesas" stroke="url(#stroke-despesa)" strokeWidth={2.5} fill="url(#exec-despesa)" style={{ filter: "url(#glow-line)" }} animationDuration={1500} animationBegin={120} animationEasing="ease-out" isAnimationActive
+                  dot={(props: any) => props.payload.mes === peakDespesa.mes ? (
+                    <g><circle cx={props.cx} cy={props.cy} r={5} fill="oklch(0.72 0.22 32)" stroke="white" strokeWidth={1.5} /><circle cx={props.cx} cy={props.cy} r={10} fill="oklch(0.72 0.22 32 / 0.25)" /></g>
+                  ) : (<g />)}
+                  activeDot={{ r: 5, stroke: "white", strokeWidth: 2, fill: "oklch(0.68 0.22 32)" }}
+                />
+                <Area type="monotone" name="Receita" dataKey="receita" stroke="url(#stroke-receita)" strokeWidth={2.5} fill="url(#exec-receita)" style={{ filter: "url(#glow-line)" }} animationDuration={1500} animationBegin={220} animationEasing="ease-out" isAnimationActive
+                  dot={(props: any) => props.payload.mes === peakReceita.mes ? (
+                    <g><circle cx={props.cx} cy={props.cy} r={5} fill="oklch(0.78 0.17 155)" stroke="white" strokeWidth={1.5} /><circle cx={props.cx} cy={props.cy} r={10} fill="oklch(0.78 0.17 155 / 0.25)" /></g>
+                  ) : (<g />)}
+                  activeDot={{ r: 5, stroke: "white", strokeWidth: 2, fill: "oklch(0.78 0.17 155)" }}
+                />
               </AreaChart>
             </ResponsiveContainer>
+          </div>
+          {/* Live selection strip */}
+          <div className="mt-4 grid grid-cols-3 gap-3 border-t border-white/[0.05] pt-4">
+            {(() => {
+              const row = chartData[activeIdx ?? chartData.length - 1];
+              const items = [
+                { label: "Receita", value: row.receita, color: "oklch(0.78 0.17 155)" },
+                { label: "Despesa", value: row.despesas, color: "oklch(0.72 0.22 32)" },
+                { label: "Saldo", value: row.saldo, color: row.saldo >= 0 ? "oklch(0.68 0.18 260)" : "oklch(0.72 0.22 25)" },
+              ];
+              return items.map((s) => (
+                <div key={s.label} className="flex flex-col">
+                  <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.16em] text-white/40">
+                    <span className="h-1.5 w-1.5 rounded-full" style={{ background: s.color }} />{s.label} · {row.mes}
+                  </div>
+                  <div className="mt-1 font-[family-name:var(--font-display)] text-[18px] font-semibold tabular-nums text-white">{brl(s.value)}</div>
+                </div>
+              ));
+            })()}
           </div>
         </GlassPanel>
 
@@ -367,17 +436,30 @@ export function ExecutiveModule() {
                 Nenhum alerta ativo.
               </div>
             )}
-            {alerts.map((a) => {
+            {alerts.map((a, i) => {
               const tint = a.level === "critical" ? "oklch(0.62 0.22 25)" : a.level === "warning" ? "oklch(0.80 0.14 75)" : "oklch(0.55 0.20 260)";
               return (
-                <div key={a.id} className="group rounded-xl border border-white/[0.06] bg-white/[0.015] p-3.5 transition-colors hover:bg-white/[0.03]">
-                  <div className="flex items-start gap-3">
-                    <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg" style={{ background: `${tint}22`, color: tint }}>
+                <motion.div
+                  key={a.id}
+                  initial={{ opacity: 0, x: 12 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.55, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                  className="group relative overflow-hidden rounded-xl border border-white/[0.07] p-3.5 transition-all duration-500 hover:-translate-y-[1px] hover:border-white/[0.14]"
+                  style={{
+                    background: `linear-gradient(135deg, ${tint}0e 0%, oklch(1 0 0 / 0.015) 45%, transparent 100%)`,
+                  }}
+                >
+                  {/* subtle side glow */}
+                  <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0 w-[2px]" style={{ background: `linear-gradient(180deg, transparent, ${tint}, transparent)`, boxShadow: `0 0 12px ${tint}` }} />
+                  <div aria-hidden className="pointer-events-none absolute -right-10 -top-10 h-24 w-24 rounded-full opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-40" style={{ background: tint }} />
+                  <div className="relative flex items-start gap-3">
+                    <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg ring-1 ring-white/[0.06]" style={{ background: `${tint}22`, color: tint, boxShadow: `inset 0 0 12px ${tint}20` }}>
                       <AlertTriangle className="h-3.5 w-3.5" />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <div className="text-[12.5px] font-medium text-white/90">{a.title}</div>
-                      <div className="mt-0.5 text-[11.5px] text-white/50">{a.body}</div>
+                      <div className="text-[13px] font-medium leading-snug text-white/95">{a.title}</div>
+                      <div className="mt-1 text-[11.5px] leading-relaxed text-white/55">{a.body}</div>
                     </div>
                     <button
                       onClick={() => setAlerts((cur) => cur.filter((x) => x.id !== a.id))}
@@ -387,7 +469,7 @@ export function ExecutiveModule() {
                       ✕
                     </button>
                   </div>
-                </div>
+                </motion.div>
               );
             })}
           </div>
