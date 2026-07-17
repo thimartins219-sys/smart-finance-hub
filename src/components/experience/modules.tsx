@@ -253,9 +253,9 @@ const INITIAL_ALERTS: Alert[] = [
 
 export function ExecutiveModule() {
   const [period, setPeriod] = useState("30d");
-  const [metric, setMetric] = useState<"receita" | "despesas">("receita");
   const [alerts, setAlerts] = useState(INITIAL_ALERTS);
   const [drill, setDrill] = useState<null | { title: string; total: number; series: { mes: string; v: number }[] }>(null);
+  const [activeIdx, setActiveIdx] = useState<number | null>(null);
 
   const factor = period === "7d" ? 0.25 : period === "30d" ? 1 : period === "90d" ? 3 : 9;
   const kpis = [
@@ -264,6 +264,14 @@ export function ExecutiveModule() {
     { key: "economia" as const, label: "Economia", value: Math.round(kpisDashboard.economia * factor), delta: "+18,2%", up: true, icon: Sparkles, tint: "oklch(0.55 0.20 260)" },
     { key: "operacional" as const, label: "Operacional", value: Math.round(kpisDashboard.operacionais * factor), delta: "+3,1%", up: true, icon: Activity, tint: "oklch(0.78 0.14 70)" },
   ];
+
+  // Unified series with derived saldo for the executive comparison chart
+  const chartData = useMemo(
+    () => evolucaoMensal.map((m) => ({ ...m, saldo: m.receita - m.despesas })),
+    []
+  );
+  const peakReceita = chartData.reduce((a, b) => (b.receita > a.receita ? b : a), chartData[0]);
+  const peakDespesa = chartData.reduce((a, b) => (b.despesas > a.despesas ? b : a), chartData[0]);
 
   return (
     <ModuleShell
