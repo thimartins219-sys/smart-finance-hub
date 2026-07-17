@@ -220,16 +220,21 @@ export function HeroModule() {
                 </div>
               ))}
             </div>
-            <div className="mt-4 h-24">
+            <div className="mt-4 h-28">
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={kpiSerie}>
+                <AreaChart data={evolucaoMensal.map((m) => ({ ...m, saldo: m.receita - m.despesas }))}>
                   <defs>
-                    <linearGradient id="hero-fill" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="oklch(0.75 0.20 38)" stopOpacity={0.5} />
-                      <stop offset="100%" stopColor="oklch(0.75 0.20 38)" stopOpacity={0} />
+                    <linearGradient id="hero-rev" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="oklch(0.78 0.17 155)" stopOpacity={0.5} />
+                      <stop offset="100%" stopColor="oklch(0.78 0.17 155)" stopOpacity={0} />
+                    </linearGradient>
+                    <linearGradient id="hero-exp" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="oklch(0.72 0.22 32)" stopOpacity={0.4} />
+                      <stop offset="100%" stopColor="oklch(0.72 0.22 32)" stopOpacity={0} />
                     </linearGradient>
                   </defs>
-                  <Area dataKey="eficiencia" stroke="oklch(0.75 0.20 38)" strokeWidth={2} fill="url(#hero-fill)" />
+                  <Area type="monotone" dataKey="receita" stroke="oklch(0.78 0.17 155)" strokeWidth={2} fill="url(#hero-rev)" animationDuration={1400} />
+                  <Area type="monotone" dataKey="despesas" stroke="oklch(0.72 0.22 32)" strokeWidth={2} fill="url(#hero-exp)" animationDuration={1400} animationBegin={140} />
                   <XAxis dataKey="mes" hide /><YAxis hide />
                 </AreaChart>
               </ResponsiveContainer>
