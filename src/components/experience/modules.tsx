@@ -382,7 +382,7 @@ export function ExecutiveModule() {
                 <YAxis stroke="oklch(1 0 0 / 0.4)" fontSize={11.5} tickLine={false} axisLine={false} tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`} width={44} />
                 <RTooltip
                   cursor={{ stroke: "oklch(1 0 0 / 0.18)", strokeWidth: 1, strokeDasharray: "3 4" }}
-                  content={<PremiumTooltip formatter={(v) => brl(v)} />}
+                  content={<PremiumTooltip formatter={(v: number) => brl(v)} />}
                 />
                 <Area type="monotone" name="Saldo" dataKey="saldo" stroke="url(#stroke-saldo)" strokeWidth={1.5} fill="url(#exec-saldo)" animationDuration={1400} animationEasing="ease-out" isAnimationActive />
                 <Area type="monotone" name="Despesa" dataKey="despesas" stroke="url(#stroke-despesa)" strokeWidth={2.5} fill="url(#exec-despesa)" style={{ filter: "url(#glow-line)" }} animationDuration={1500} animationBegin={120} animationEasing="ease-out" isAnimationActive
