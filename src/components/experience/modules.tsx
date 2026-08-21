@@ -4,10 +4,8 @@ import {
   Activity,
   AlertTriangle,
   ArrowDown,
-  ArrowDownRight,
   ArrowRight,
   ArrowUp,
-  ArrowUpRight,
   Bell,
   BellRing,
   Brain,
@@ -39,8 +37,8 @@ import {
   BarChart,
   CartesianGrid,
   Cell,
+  ComposedChart,
   Line,
-  LineChart,
   Pie,
   PieChart,
   ResponsiveContainer,
@@ -62,7 +60,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
   DialogDescription,
 } from "@/components/ui/dialog";
 import {
@@ -105,13 +102,13 @@ import {
 } from "@/lib/mock-data";
 
 /* ═══════════════════════════════════════════════════════════════════
-   HERO — quick entry into the product
+   HERO — entry point only. No duplicated KPIs or charts.
    ═══════════════════════════════════════════════════════════════════ */
 export function HeroModule() {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], [0, 180]);
-  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  const y = useTransform(scrollYProgress, [0, 1], [0, 140]);
+  const opacity = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
 
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
@@ -124,130 +121,95 @@ export function HeroModule() {
         mx.set((e.clientX / window.innerWidth - 0.5) * 30);
         my.set((e.clientY / window.innerHeight - 0.5) * 20);
       }}
-      className="relative flex min-h-[92vh] items-center overflow-hidden px-6 md:px-12"
+      className="relative flex min-h-[100svh] items-center justify-center overflow-hidden px-6"
     >
       <motion.div
         aria-hidden
         style={{ x: mx, y: my }}
-        className="pointer-events-none absolute left-[8%] top-[15%] h-[40vh] w-[40vh] rounded-full blur-[110px] opacity-70"
+        className="pointer-events-none absolute left-[12%] top-[18%] h-[42vh] w-[42vh] rounded-full opacity-70 blur-[110px]"
       >
         <div className="h-full w-full rounded-full" style={{ background: "radial-gradient(circle, oklch(0.65 0.22 32 / 0.55), transparent 65%)" }} />
       </motion.div>
       <motion.div
         aria-hidden
         style={{ x: useTransform(mx, (v) => -v), y: useTransform(my, (v) => -v) }}
-        className="pointer-events-none absolute right-[6%] top-[30%] h-[45vh] w-[45vh] rounded-full blur-[130px] opacity-60"
+        className="pointer-events-none absolute right-[10%] top-[34%] h-[46vh] w-[46vh] rounded-full opacity-60 blur-[130px]"
       >
         <div className="h-full w-full rounded-full" style={{ background: "radial-gradient(circle, oklch(0.55 0.22 260 / 0.5), transparent 65%)" }} />
       </motion.div>
 
-      <motion.div style={{ y, opacity }} className="relative z-10 mx-auto grid w-full max-w-[1440px] grid-cols-1 gap-16 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
-        <div>
-          <motion.div
-            initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1.5 text-[11px] text-white/70 backdrop-blur-xl"
-          >
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[--primary-orange] opacity-75" />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[--primary-orange]" />
-            </span>
-            {empresa.nome} · {empresa.periodo} · {empresa.usuario.cargo} {empresa.usuario.nome}
-          </motion.div>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-6 font-[family-name:var(--font-display)] text-[clamp(44px,7vw,88px)] font-semibold leading-[0.98] tracking-[-0.035em] text-white"
-          >
-            Bem-vindo de volta,
-            <br />
-            <span className="italic" style={{ background: "linear-gradient(120deg, oklch(0.75 0.20 38), oklch(0.55 0.22 260) 60%, oklch(0.72 0.17 155))", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>
-              {empresa.usuario.nome.split(" ")[0]}.
-            </span>
-          </motion.h1>
-
-          <motion.div
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.35, duration: 0.8 }}
-            className="mt-6 flex flex-wrap items-center gap-2 text-[15px] text-white/60"
-          >
-            <span>Seu painel está</span>
-            <Typewriter className="min-w-[140px] font-[family-name:var(--font-display)] italic text-white" words={["atualizado", "priorizando alertas", "pronto para decisões"]} />
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55, duration: 0.7 }}
-            className="mt-8 flex flex-wrap items-center gap-3"
-          >
-            <button
-              onClick={() => document.getElementById("dashboard")?.scrollIntoView({ behavior: "smooth" })}
-              className="group inline-flex items-center gap-2 rounded-full px-6 py-3 text-[13px] font-semibold text-white shadow-[0_20px_60px_-15px_oklch(0.65_0.22_32/0.7)] transition-transform hover:scale-[1.03]"
-              style={{ background: "var(--gradient-primary)" }}
-            >
-              Entrar no sistema <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-            </button>
-            <button
-              onClick={() => document.getElementById("ai")?.scrollIntoView({ behavior: "smooth" })}
-              className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-6 py-3 text-[13px] font-medium text-white/85 backdrop-blur-xl transition-colors hover:bg-white/[0.06]"
-            >
-              <Sparkles className="h-3.5 w-3.5" /> Perguntar à IA
-            </button>
-          </motion.div>
-        </div>
-
-        {/* Live quick-glance panel */}
+      <motion.div style={{ y, opacity }} className="relative z-10 mx-auto flex max-w-3xl flex-col items-center text-center">
         <motion.div
-          initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+          initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
+          className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1.5 text-[11px] text-white/70 backdrop-blur-xl"
         >
-          <GlassPanel className="p-6">
-            <div className="mb-4 flex items-center justify-between">
-              <div className="text-[10px] uppercase tracking-[0.18em] text-white/45">Resumo em tempo real</div>
-              <span className="text-[10px] text-white/40">atualizado agora</span>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              {[
-                { label: "Receita", value: kpisDashboard.receita, icon: DollarSign, tint: "oklch(0.72 0.17 155)" },
-                { label: "Despesas", value: kpisDashboard.despesas, icon: Wallet, tint: "oklch(0.65 0.22 32)" },
-                { label: "Economia", value: kpisDashboard.economia, icon: Sparkles, tint: "oklch(0.55 0.20 260)" },
-                { label: "Operacional", value: kpisDashboard.operacionais, icon: Activity, tint: "oklch(0.78 0.14 70)" },
-              ].map((k) => (
-                <div key={k.label} className="rounded-xl border border-white/[0.05] bg-white/[0.015] p-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] uppercase tracking-[0.14em] text-white/45">{k.label}</span>
-                    <k.icon className="h-3.5 w-3.5" style={{ color: k.tint }} />
-                  </div>
-                  <div className="mt-2 font-[family-name:var(--font-display)] text-[22px] font-semibold text-white">
-                    <CountUp to={k.value} prefix="R$ " />
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="mt-4 h-28">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={evolucaoMensal.map((m) => ({ ...m, saldo: m.receita - m.despesas }))}>
-                  <defs>
-                    <linearGradient id="hero-rev" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="oklch(0.78 0.17 155)" stopOpacity={0.5} />
-                      <stop offset="100%" stopColor="oklch(0.78 0.17 155)" stopOpacity={0} />
-                    </linearGradient>
-                    <linearGradient id="hero-exp" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="oklch(0.72 0.22 32)" stopOpacity={0.4} />
-                      <stop offset="100%" stopColor="oklch(0.72 0.22 32)" stopOpacity={0} />
-                    </linearGradient>
-                  </defs>
-                  <Area type="monotone" dataKey="receita" stroke="oklch(0.78 0.17 155)" strokeWidth={2} fill="url(#hero-rev)" animationDuration={1400} />
-                  <Area type="monotone" dataKey="despesas" stroke="oklch(0.72 0.22 32)" strokeWidth={2} fill="url(#hero-exp)" animationDuration={1400} animationBegin={140} />
-                  <XAxis dataKey="mes" hide /><YAxis hide />
-                </AreaChart>
-              </ResponsiveContainer>
-            </div>
-          </GlassPanel>
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[--primary-orange] opacity-75" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[--primary-orange]" />
+          </span>
+          {empresa.nome} · {empresa.periodo}
+        </motion.div>
+
+        <motion.h1
+          initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-7 font-[family-name:var(--font-display)] text-[clamp(46px,7.5vw,92px)] font-semibold leading-[0.98] tracking-[-0.035em] text-white"
+        >
+          Bem-vindo de volta,
+          <br />
+          <span className="italic" style={{ background: "linear-gradient(120deg, oklch(0.75 0.20 38), oklch(0.55 0.22 260) 60%, oklch(0.72 0.17 155))", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>
+            {empresa.usuario.nome.split(" ")[0]}.
+          </span>
+        </motion.h1>
+
+        <motion.div
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.35, duration: 0.8 }}
+          className="mt-6 flex flex-wrap items-center justify-center gap-2 text-[15px] text-white/60"
+        >
+          <span>Seu painel está</span>
+          <Typewriter className="min-w-[150px] text-left font-[family-name:var(--font-display)] italic text-white" words={["atualizado", "priorizando alertas", "pronto para decisões"]} />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55, duration: 0.7 }}
+          className="mt-9 flex flex-wrap items-center justify-center gap-3"
+        >
+          <button
+            onClick={() => document.getElementById("dashboard")?.scrollIntoView({ behavior: "smooth" })}
+            className="group inline-flex items-center gap-2 rounded-full px-6 py-3 text-[13px] font-semibold text-white shadow-[0_20px_60px_-15px_oklch(0.65_0.22_32/0.7)] transition-transform hover:scale-[1.03]"
+            style={{ background: "var(--gradient-primary)" }}
+          >
+            Entrar no sistema <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+          </button>
+          <button
+            onClick={() => document.getElementById("ai")?.scrollIntoView({ behavior: "smooth" })}
+            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-6 py-3 text-[13px] font-medium text-white/85 backdrop-blur-xl transition-colors hover:bg-white/[0.06]"
+          >
+            <Sparkles className="h-3.5 w-3.5" /> Perguntar à IA
+          </button>
         </motion.div>
       </motion.div>
+
+      {/* Scroll cue */}
+      <motion.button
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.2, duration: 0.8 }}
+        onClick={() => document.getElementById("dashboard")?.scrollIntoView({ behavior: "smooth" })}
+        className="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2 text-white/40 transition-colors hover:text-white/80"
+        aria-label="Rolar para o dashboard"
+      >
+        <span className="text-[9px] font-medium uppercase tracking-[0.24em]">Explorar</span>
+        <motion.span animate={{ y: [0, 6, 0] }} transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}>
+          <ArrowDown className="h-3.5 w-3.5" />
+        </motion.span>
+      </motion.button>
     </section>
   );
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   EXECUTIVE DASHBOARD
+   DASHBOARD — visão geral: KPIs, evolução consolidada, alertas.
+   (Composição por categoria → Distribuição · Caixa → Fluxo de Caixa)
    ═══════════════════════════════════════════════════════════════════ */
 type Alert = { id: string; level: "critical" | "warning" | "info"; title: string; body: string };
 const INITIAL_ALERTS: Alert[] = [
@@ -344,7 +306,7 @@ export function ExecutiveModule() {
               ))}
             </div>
           </div>
-          <div className="h-[300px]">
+          <div className="h-[320px]">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart
                 data={chartData}
@@ -478,146 +440,20 @@ export function ExecutiveModule() {
               );
             })}
           </div>
-        </GlassPanel>
-      </div>
 
-      {/* ── Executive secondary row: composition, top cost centers, cashflow health ── */}
-      <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-3">
-        {/* Composition of expenses */}
-        <GlassPanel className="p-6">
-          <div className="mb-4 flex items-center justify-between">
-            <div>
-              <div className="text-[10px] uppercase tracking-[0.16em] text-white/45">Composição</div>
-              <div className="mt-0.5 font-[family-name:var(--font-display)] text-[15px] font-semibold text-white">Despesas por categoria</div>
+          {/* Executive summary — unique to the dashboard */}
+          <div className="mt-5 rounded-xl border border-white/[0.06] bg-white/[0.015] p-4">
+            <div className="mb-2 flex items-center gap-2 text-[10px] uppercase tracking-[0.16em] text-white/45">
+              <Sparkles className="h-3 w-3 text-[--primary-orange]" /> Resumo executivo
             </div>
-            <Layers className="h-4 w-4 text-white/40" />
-          </div>
-          <div className="flex items-center gap-4">
-            <div className="relative h-[140px] w-[140px] shrink-0">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={seedCategorias}
-                    dataKey="valor"
-                    nameKey="categoria"
-                    innerRadius={44}
-                    outerRadius={64}
-                    paddingAngle={3}
-                    stroke="none"
-                  >
-                    {seedCategorias.map((c, i) => (
-                      <Cell key={i} fill={c.cor} />
-                    ))}
-                  </Pie>
-                  <RTooltip contentStyle={tooltipStyle} formatter={(v: number) => brl(v)} />
-                </PieChart>
-              </ResponsiveContainer>
-              <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-                <div className="text-[9.5px] uppercase tracking-[0.16em] text-white/40">Total</div>
-                <div className="font-[family-name:var(--font-display)] text-[15px] font-semibold text-white">
-                  {brl(seedCategorias.reduce((s, c) => s + c.valor, 0))}
-                </div>
-              </div>
-            </div>
-            <div className="flex-1 space-y-2">
-              {seedCategorias.slice(0, 5).map((c) => {
-                const total = seedCategorias.reduce((s, x) => s + x.valor, 0);
-                const pct = Math.round((c.valor / total) * 100);
-                return (
-                  <div key={c.categoria} className="flex items-center justify-between text-[11.5px]">
-                    <div className="flex min-w-0 items-center gap-2">
-                      <span className="h-2 w-2 shrink-0 rounded-full" style={{ background: c.cor }} />
-                      <span className="truncate text-white/75">{c.categoria}</span>
-                    </div>
-                    <span className="tabular-nums text-white/50">{pct}%</span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </GlassPanel>
-
-        {/* Top cost centers */}
-        <GlassPanel className="p-6">
-          <div className="mb-4 flex items-center justify-between">
-            <div>
-              <div className="text-[10px] uppercase tracking-[0.16em] text-white/45">Centros de custo</div>
-              <div className="mt-0.5 font-[family-name:var(--font-display)] text-[15px] font-semibold text-white">Consumo orçamentário</div>
-            </div>
-            <Building2 className="h-4 w-4 text-white/40" />
-          </div>
-          <div className="space-y-3.5">
-            {seedCentros.slice(0, 5).map((c) => {
-              const pct = Math.min(100, Math.round((c.utilizado / c.orcamento) * 100));
-              const tint = pct > 85 ? "oklch(0.72 0.20 25)" : pct > 70 ? "oklch(0.80 0.14 75)" : "oklch(0.72 0.17 155)";
-              return (
-                <div key={c.nome}>
-                  <div className="mb-1 flex items-center justify-between text-[11.5px]">
-                    <span className="truncate text-white/80">{c.nome}</span>
-                    <span className="tabular-nums text-white/50">{pct}%</span>
-                  </div>
-                  <div className="h-1.5 overflow-hidden rounded-full bg-white/[0.05]">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      whileInView={{ width: `${pct}%` }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
-                      className="h-full rounded-full"
-                      style={{ background: `linear-gradient(90deg, ${tint}, ${tint}cc)` }}
-                    />
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </GlassPanel>
-
-        {/* Cashflow health */}
-        <GlassPanel className="p-6">
-          <div className="mb-4 flex items-center justify-between">
-            <div>
-              <div className="text-[10px] uppercase tracking-[0.16em] text-white/45">Fluxo</div>
-              <div className="mt-0.5 font-[family-name:var(--font-display)] text-[15px] font-semibold text-white">Saúde do caixa</div>
-            </div>
-            <Activity className="h-4 w-4 text-white/40" />
-          </div>
-          <div className="flex items-baseline gap-2">
-            <div className="font-[family-name:var(--font-display)] text-[32px] font-semibold leading-none tracking-[-0.02em] text-white">
-              <CountUp to={92} suffix="%" />
-            </div>
-            <span className="text-[11px] text-[--positive]">+4,2 p.p.</span>
-          </div>
-          <div className="mt-1 text-[11px] text-white/45">Índice consolidado de liquidez</div>
-          <div className="mt-4 h-[90px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={evolucaoMensal}>
-                <defs>
-                  <linearGradient id="cash-fill" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="oklch(0.72 0.17 155)" stopOpacity={0.5} />
-                    <stop offset="100%" stopColor="oklch(0.72 0.17 155)" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <Area type="monotone" dataKey="receita" stroke="oklch(0.72 0.17 155)" strokeWidth={2} fill="url(#cash-fill)" />
-                <XAxis dataKey="mes" hide /><YAxis hide />
-                <RTooltip contentStyle={tooltipStyle} formatter={(v: number) => brl(v)} />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
-          <div className="mt-2 grid grid-cols-3 gap-2 text-center">
-            {[
-              { label: "Entradas", value: "R$ 2,45M", tint: "oklch(0.72 0.17 155)" },
-              { label: "Saídas", value: "R$ 487k", tint: "oklch(0.65 0.22 32)" },
-              { label: "Saldo", value: "R$ 1,96M", tint: "oklch(0.55 0.20 260)" },
-            ].map((s) => (
-              <div key={s.label} className="rounded-lg border border-white/[0.05] bg-white/[0.015] px-1.5 py-2">
-                <div className="text-[9.5px] uppercase tracking-[0.14em] text-white/40">{s.label}</div>
-                <div className="mt-0.5 text-[11.5px] font-medium tabular-nums" style={{ color: s.tint }}>{s.value}</div>
-              </div>
-            ))}
+            <p className="text-[12.5px] leading-relaxed text-white/65">
+              Setembro fecha com margem de <strong className="text-white">80,1%</strong> e despesas{" "}
+              <strong className="text-white">4,8% abaixo do plano</strong>. Prioridade: renegociar o
+              contrato de energia antes do reajuste de outubro.
+            </p>
           </div>
         </GlassPanel>
       </div>
-
 
       <Dialog open={!!drill} onOpenChange={(o) => !o && setDrill(null)}>
         <DialogContent className="max-w-2xl">
@@ -665,7 +501,108 @@ export function ExecutiveModule() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   RECEITAS — synthesized invoice table with CRUD
+   FLUXO DE CAIXA — pergunta única: quanto sobra e como o caixa acumula.
+   (A comparação receita × despesa vive apenas no Dashboard.)
+   ═══════════════════════════════════════════════════════════════════ */
+export function CashFlowModule() {
+  const [range, setRange] = useState("9m");
+
+  const monthsCount = range === "3m" ? 3 : range === "6m" ? 6 : 9;
+  const base = evolucaoMensal.slice(-monthsCount);
+  let acc = 0;
+  const data = base.map((m) => {
+    const saldo = m.receita - m.despesas;
+    acc += saldo;
+    return { mes: m.mes, saldo, acumulado: acc };
+  });
+  const saldoPeriodo = data.reduce((s, d) => s + d.saldo, 0);
+  const melhor = data.reduce((a, b) => (b.saldo > a.saldo ? b : a), data[0]);
+  const acumuladoFinal = data[data.length - 1]?.acumulado ?? 0;
+
+  return (
+    <ModuleShell
+      id="cashflow"
+      eyebrow="Fluxo de Caixa"
+      title={<>Quanto sobra — <span className="italic text-white/60">e como acumula.</span></>}
+      description="Saldo líquido mensal e a trajetória do caixa acumulado no período."
+      actions={
+        <Tabs value={range} onValueChange={setRange}>
+          <TabsList className="border border-white/[0.06] bg-white/[0.02]">
+            <TabsTrigger value="3m">3m</TabsTrigger>
+            <TabsTrigger value="6m">6m</TabsTrigger>
+            <TabsTrigger value="9m">9m</TabsTrigger>
+          </TabsList>
+        </Tabs>
+      }
+    >
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        {[
+          { label: "Saldo líquido do período", value: brl(saldoPeriodo), tint: "oklch(0.72 0.17 155)", icon: TrendingUp, sub: `${monthsCount} meses consolidados` },
+          { label: "Caixa acumulado", value: brl(acumuladoFinal), tint: "oklch(0.55 0.20 260)", icon: Wallet, sub: "posição ao fim do período" },
+          { label: "Melhor mês", value: brl(melhor.saldo), tint: "oklch(0.78 0.14 70)", icon: TrendingDown, sub: `${melhor.mes} · maior superávit` },
+        ].map((c) => (
+          <GlassPanel key={c.label} className="p-6">
+            <div className="flex items-center justify-between">
+              <div className="text-[10px] uppercase tracking-[0.14em] text-white/45">{c.label}</div>
+              <c.icon className="h-3.5 w-3.5" style={{ color: c.tint }} />
+            </div>
+            <div className="mt-2 font-[family-name:var(--font-display)] text-[30px] font-semibold" style={{ color: c.tint }}>
+              {c.value}
+            </div>
+            <div className="mt-1 text-[11px] text-white/40">{c.sub}</div>
+          </GlassPanel>
+        ))}
+      </div>
+
+      <GlassPanel className="mt-4 p-6">
+        <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <div className="text-[10px] uppercase tracking-[0.16em] text-white/45">Posição de caixa</div>
+            <div className="font-[family-name:var(--font-display)] text-[18px] font-semibold tracking-[-0.02em] text-white">
+              Saldo mensal <span className="text-white/40">×</span> <span className="italic text-white/70">acumulado</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-4 text-[11px]">
+            <div className="flex items-center gap-2 text-white/70">
+              <span className="h-2 w-2 rounded-[3px]" style={{ background: "oklch(0.72 0.17 155)", boxShadow: "0 0 10px oklch(0.72 0.17 155)" }} />
+              Saldo mensal
+            </div>
+            <div className="flex items-center gap-2 text-white/70">
+              <span className="h-2 w-2 rounded-full" style={{ background: "oklch(0.62 0.18 260)", boxShadow: "0 0 10px oklch(0.62 0.18 260)" }} />
+              Acumulado
+            </div>
+          </div>
+        </div>
+        <div className="h-[360px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <ComposedChart data={data} margin={{ top: 10, right: 12, bottom: 4, left: 0 }}>
+              <defs>
+                <linearGradient id="cf-bar" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="oklch(0.75 0.18 155)" />
+                  <stop offset="100%" stopColor="oklch(0.60 0.17 160)" />
+                </linearGradient>
+                <filter id="cf-glow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="2.4" result="b" />
+                  <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+                </filter>
+              </defs>
+              <CartesianGrid strokeDasharray="3 6" stroke="oklch(1 0 0 / 0.05)" vertical={false} />
+              <XAxis dataKey="mes" stroke="oklch(1 0 0 / 0.35)" fontSize={11} tickLine={false} axisLine={false} />
+              <YAxis stroke="oklch(1 0 0 / 0.35)" fontSize={11} tickLine={false} axisLine={false} tickFormatter={(v) => `${(v / 1_000_000).toFixed(1)}M`} />
+              <RTooltip cursor={{ fill: "oklch(1 0 0 / 0.04)" }} content={<PremiumTooltip formatter={(v: number) => brl(v)} />} />
+              <Bar name="Saldo mensal" dataKey="saldo" fill="url(#cf-bar)" radius={[7, 7, 0, 0]} maxBarSize={38} animationDuration={900} />
+              <Line type="monotone" name="Caixa acumulado" dataKey="acumulado" stroke="oklch(0.68 0.18 260)" strokeWidth={2.5} dot={{ r: 3.5, fill: "oklch(0.68 0.18 260)", strokeWidth: 0 }} style={{ filter: "url(#cf-glow)" }} animationDuration={1200} />
+            </ComposedChart>
+          </ResponsiveContainer>
+        </div>
+      </GlassPanel>
+    </ModuleShell>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   MOVIMENTAÇÕES — tabelas, filtros, exportação e CRUD.
+   Receitas e Despesas unificadas em uma única superfície com abas.
    ═══════════════════════════════════════════════════════════════════ */
 type Receita = { id: string; data: string; cliente: string; contrato: string; valor: number; status: "Pago" | "Aprovado" | "Pendente" };
 const seedReceitas: Receita[] = [
@@ -681,32 +618,6 @@ const seedReceitas: Receita[] = [
   { id: "r10", data: "20/08/2026", cliente: "PIL Shipping", contrato: "PIL-3390", valor: 132_700, status: "Pago" },
 ];
 
-export function ReceitasModule() {
-  return (
-    <CrudTableModule
-      id="receitas"
-      eyebrow="Receitas"
-      title={<>Contratos e <span className="italic text-white/60">recebíveis.</span></>}
-      description="Cada linha é um contrato ativo. Filtre, edite e exporte sem sair da tela."
-      accent="oklch(0.72 0.17 155)"
-      seed={seedReceitas}
-      columns={[
-        { key: "data", label: "Data", width: "110px" },
-        { key: "cliente", label: "Cliente" },
-        { key: "contrato", label: "Contrato", width: "140px", mono: true },
-        { key: "valor", label: "Valor", numeric: true, width: "140px" },
-        { key: "status", label: "Status", width: "120px" },
-      ]}
-      totalLabel="Total recebível"
-      addLabel="Nova receita"
-      searchKeys={["cliente", "contrato"]}
-    />
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════════════
-   DESPESAS — full CRUD table using mock gastos
-   ═══════════════════════════════════════════════════════════════════ */
 type Despesa = { id: string; data: string; categoria: string; cliente: string; contrato: string; valor: number; status: "Pago" | "Aprovado" | "Pendente" };
 const seedDespesas: Despesa[] = seedGastos.map((g, i) => ({
   id: `d${i}`,
@@ -718,34 +629,64 @@ const seedDespesas: Despesa[] = seedGastos.map((g, i) => ({
   status: g.status as Despesa["status"],
 }));
 
-export function DespesasModule() {
+export function MovimentacoesModule() {
   return (
-    <CrudTableModule
-      id="despesas"
-      eyebrow="Despesas"
-      title={<>Cada centavo, <span className="italic text-white/60">rastreado.</span></>}
-      description="Aprove, edite ou reclassifique despesas. Filtros por categoria e status."
-      accent="oklch(0.65 0.22 32)"
-      seed={seedDespesas}
-      columns={[
-        { key: "data", label: "Data", width: "110px" },
-        { key: "categoria", label: "Categoria", width: "140px" },
-        { key: "cliente", label: "Fornecedor" },
-        { key: "contrato", label: "Centro de custo", width: "180px" },
-        { key: "valor", label: "Valor", numeric: true, width: "140px" },
-        { key: "status", label: "Status", width: "120px" },
-      ]}
-      filterKey="categoria"
-      totalLabel="Total"
-      addLabel="Nova despesa"
-      searchKeys={["cliente", "contrato", "categoria"]}
-    />
+    <ModuleShell
+      id="movimentacoes"
+      eyebrow="Movimentações"
+      title={<>Cada lançamento, <span className="italic text-white/60">rastreado.</span></>}
+      description="Receitas e despesas em uma única superfície: filtre, edite, aprove e exporte sem sair da tela."
+      actions={
+        <Button variant="outline" size="sm" onClick={() => toast.success("Exportado (CSV)")}>
+          <Download className="mr-1.5 h-3.5 w-3.5" /> Exportar
+        </Button>
+      }
+    >
+      <Tabs defaultValue="receitas" className="w-full">
+        <TabsList className="mb-5 border border-white/[0.06] bg-white/[0.02]">
+          <TabsTrigger value="receitas" className="px-4">Receitas</TabsTrigger>
+          <TabsTrigger value="despesas" className="px-4">Despesas</TabsTrigger>
+        </TabsList>
+        <TabsContent value="receitas">
+          <CrudTable
+            accent="oklch(0.72 0.17 155)"
+            seed={seedReceitas}
+            columns={[
+              { key: "data", label: "Data", width: "110px" },
+              { key: "cliente", label: "Cliente" },
+              { key: "contrato", label: "Contrato", width: "140px", mono: true },
+              { key: "valor", label: "Valor", numeric: true, width: "140px" },
+              { key: "status", label: "Status", width: "120px" },
+            ]}
+            totalLabel="Total recebível"
+            addLabel="Nova receita"
+            searchKeys={["cliente", "contrato"]}
+          />
+        </TabsContent>
+        <TabsContent value="despesas">
+          <CrudTable
+            accent="oklch(0.65 0.22 32)"
+            seed={seedDespesas}
+            columns={[
+              { key: "data", label: "Data", width: "110px" },
+              { key: "categoria", label: "Categoria", width: "140px" },
+              { key: "cliente", label: "Fornecedor" },
+              { key: "contrato", label: "Centro de custo", width: "180px" },
+              { key: "valor", label: "Valor", numeric: true, width: "140px" },
+              { key: "status", label: "Status", width: "120px" },
+            ]}
+            filterKey="categoria"
+            totalLabel="Total"
+            addLabel="Nova despesa"
+            searchKeys={["cliente", "contrato", "categoria"]}
+          />
+        </TabsContent>
+      </Tabs>
+    </ModuleShell>
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   Shared CRUD table module used by Receitas & Despesas
-   ═══════════════════════════════════════════════════════════════════ */
+/* ── Shared CRUD table used by the Receitas & Despesas tabs ── */
 type Column<T> = {
   key: keyof T & string;
   label: string;
@@ -764,13 +705,9 @@ type Row = {
   status: "Pago" | "Aprovado" | "Pendente";
 };
 
-function CrudTableModule<T extends Row>({
-  id, eyebrow, title, description, accent, seed, columns, filterKey, totalLabel, addLabel, searchKeys,
+function CrudTable<T extends Row>({
+  accent, seed, columns, filterKey, totalLabel, addLabel, searchKeys,
 }: {
-  id: string;
-  eyebrow: string;
-  title: ReactNode;
-  description: string;
   accent: string;
   seed: T[];
   columns: Column<T>[];
@@ -840,22 +777,7 @@ function CrudTableModule<T extends Row>({
   };
 
   return (
-    <ModuleShell
-      id={id}
-      eyebrow={eyebrow}
-      title={title}
-      description={description}
-      actions={
-        <>
-          <Button variant="outline" size="sm" onClick={() => toast.success("Exportado (CSV)")}>
-            <Download className="mr-1.5 h-3.5 w-3.5" /> Exportar
-          </Button>
-          <Button size="sm" onClick={openNew} style={{ background: accent, color: "white" }} className="border-transparent hover:opacity-90">
-            <Plus className="mr-1.5 h-3.5 w-3.5" /> {addLabel}
-          </Button>
-        </>
-      }
-    >
+    <>
       {/* Summary strip */}
       <div className="mb-5 grid grid-cols-2 gap-3 md:grid-cols-4">
         <GlassPanel className="p-4">
@@ -912,7 +834,12 @@ function CrudTableModule<T extends Row>({
               <SelectItem value="Pendente">Pendente</SelectItem>
             </SelectContent>
           </Select>
-          <div className="ml-auto text-[11px] text-white/45">{sorted.length} resultados</div>
+          <div className="ml-auto flex items-center gap-3">
+            <span className="text-[11px] text-white/45">{sorted.length} resultados</span>
+            <Button size="sm" onClick={openNew} style={{ background: accent, color: "white" }} className="border-transparent hover:opacity-90">
+              <Plus className="mr-1.5 h-3.5 w-3.5" /> {addLabel}
+            </Button>
+          </div>
         </div>
 
         <div className="overflow-x-auto">
@@ -1049,237 +976,45 @@ function CrudTableModule<T extends Row>({
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </ModuleShell>
+    </>
   );
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   FLUXO DE CAIXA
-   ═══════════════════════════════════════════════════════════════════ */
-export function CashFlowModule() {
-  const [range, setRange] = useState("9m");
-  const [view, setView] = useState<"linha" | "barra">("linha");
-
-  const monthsCount = range === "3m" ? 3 : range === "6m" ? 6 : 9;
-  const base = evolucaoMensal.slice(-monthsCount);
-  const data = base.map((m) => ({
-    mes: m.mes,
-    entrada: m.receita,
-    saida: m.despesas,
-    saldo: m.receita - m.despesas,
-  }));
-  const totals = data.reduce((a, d) => ({ e: a.e + d.entrada, s: a.s + d.saida }), { e: 0, s: 0 });
-
-  return (
-    <ModuleShell
-      id="cashflow"
-      eyebrow="Fluxo de Caixa"
-      title={<>Entradas, saídas <span className="italic text-white/60">e o saldo real.</span></>}
-      description="Ajuste janela e visualização. Cada movimento traz contexto de origem."
-      actions={
-        <>
-          <Tabs value={range} onValueChange={setRange}>
-            <TabsList className="border border-white/[0.06] bg-white/[0.02]">
-              <TabsTrigger value="3m">3m</TabsTrigger>
-              <TabsTrigger value="6m">6m</TabsTrigger>
-              <TabsTrigger value="9m">9m</TabsTrigger>
-            </TabsList>
-          </Tabs>
-          <Tabs value={view} onValueChange={(v) => setView(v as "linha" | "barra")}>
-            <TabsList className="border border-white/[0.06] bg-white/[0.02]">
-              <TabsTrigger value="linha">Linha</TabsTrigger>
-              <TabsTrigger value="barra">Barras</TabsTrigger>
-            </TabsList>
-          </Tabs>
-        </>
-      }
-    >
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        {[
-          { label: "Entradas", value: totals.e, tint: "oklch(0.72 0.17 155)", icon: TrendingUp },
-          { label: "Saídas", value: totals.s, tint: "oklch(0.65 0.22 32)", icon: TrendingDown },
-          { label: "Saldo líquido", value: totals.e - totals.s, tint: "oklch(0.55 0.20 260)", icon: Wallet },
-        ].map((c) => (
-          <GlassPanel key={c.label} className="p-6">
-            <div className="flex items-center justify-between">
-              <div className="text-[10px] uppercase tracking-[0.14em] text-white/45">{c.label}</div>
-              <c.icon className="h-3.5 w-3.5" style={{ color: c.tint }} />
-            </div>
-            <div className="mt-2 font-[family-name:var(--font-display)] text-[30px] font-semibold" style={{ color: c.tint }}>
-              <CountUp to={c.value} prefix="R$ " />
-            </div>
-          </GlassPanel>
-        ))}
-      </div>
-
-      <GlassPanel className="mt-4 p-6">
-        <div className="h-[360px]">
-          <ResponsiveContainer width="100%" height="100%">
-            {view === "linha" ? (
-              <LineChart data={data}>
-                <CartesianGrid strokeDasharray="3 6" stroke="oklch(1 0 0 / 0.05)" vertical={false} />
-                <XAxis dataKey="mes" stroke="oklch(1 0 0 / 0.35)" fontSize={11} tickLine={false} axisLine={false} />
-                <YAxis stroke="oklch(1 0 0 / 0.35)" fontSize={11} tickLine={false} axisLine={false} tickFormatter={(v) => `${(v / 1_000_000).toFixed(1)}M`} />
-                <RTooltip contentStyle={tooltipStyle} formatter={(v: number) => brl(v)} />
-                <Line type="monotone" dataKey="entrada" stroke="oklch(0.72 0.17 155)" strokeWidth={2.5} dot={{ r: 3 }} />
-                <Line type="monotone" dataKey="saida" stroke="oklch(0.65 0.22 32)" strokeWidth={2.5} dot={{ r: 3 }} />
-                <Line type="monotone" dataKey="saldo" stroke="oklch(0.55 0.20 260)" strokeWidth={2.5} dot={{ r: 3 }} strokeDasharray="6 4" />
-              </LineChart>
-            ) : (
-              <BarChart data={data}>
-                <CartesianGrid strokeDasharray="3 6" stroke="oklch(1 0 0 / 0.05)" vertical={false} />
-                <XAxis dataKey="mes" stroke="oklch(1 0 0 / 0.35)" fontSize={11} tickLine={false} axisLine={false} />
-                <YAxis stroke="oklch(1 0 0 / 0.35)" fontSize={11} tickLine={false} axisLine={false} tickFormatter={(v) => `${(v / 1_000_000).toFixed(1)}M`} />
-                <RTooltip contentStyle={tooltipStyle} formatter={(v: number) => brl(v)} />
-                <Bar dataKey="entrada" fill="oklch(0.72 0.17 155)" radius={[6, 6, 0, 0]} />
-                <Bar dataKey="saida" fill="oklch(0.65 0.22 32)" radius={[6, 6, 0, 0]} />
-              </BarChart>
-            )}
-          </ResponsiveContainer>
-        </div>
-      </GlassPanel>
-    </ModuleShell>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════════════
-   CATEGORIAS — CRUD
-   ═══════════════════════════════════════════════════════════════════ */
-type Categoria = { id: string; nome: string; valor: number; cor: string; meta: number };
-const seedCategoriasRich: Categoria[] = seedCategorias.map((c, i) => ({
-  id: `c${i}`, nome: c.categoria, valor: c.valor, cor: c.cor, meta: Math.round(c.valor * 1.15),
-}));
-
-export function CategoriasModule() {
-  const [items, setItems] = useState<Categoria[]>(seedCategoriasRich);
-  const [editing, setEditing] = useState<Categoria | null>(null);
-  const [open, setOpen] = useState(false);
-
-  const total = items.reduce((s, i) => s + i.valor, 0);
-  const totalMeta = items.reduce((s, i) => s + i.meta, 0);
-
-  const openNew = () => { setEditing({ id: `c${Date.now()}`, nome: "", valor: 0, cor: "hsl(24 95% 60%)", meta: 0 }); setOpen(true); };
-  const save = () => {
-    if (!editing) return;
-    setItems((cur) => cur.some((i) => i.id === editing.id) ? cur.map((i) => i.id === editing.id ? editing : i) : [...cur, editing]);
-    setOpen(false); toast.success("Categoria salva");
-  };
-  const remove = (id: string) => { setItems((cur) => cur.filter((i) => i.id !== id)); toast.success("Removida"); };
-
-  return (
-    <ModuleShell
-      id="categorias"
-      eyebrow="Categorias"
-      title={<>Organize o gasto <span className="italic text-white/60">por natureza.</span></>}
-      description="Crie, edite e monitore o consumo por categoria vs. meta."
-      actions={
-        <Button size="sm" onClick={openNew} className="bg-[--primary-orange] text-white hover:bg-[--primary-orange]/90 border-transparent">
-          <Plus className="mr-1.5 h-3.5 w-3.5" /> Nova categoria
-        </Button>
-      }
-    >
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[380px_1fr]">
-        <GlassPanel className="p-6">
-          <div className="text-[10px] uppercase tracking-[0.14em] text-white/45">Consumo x meta</div>
-          <div className="mt-1 font-[family-name:var(--font-display)] text-[28px] font-semibold text-white">
-            {brl(total)} <span className="text-[13px] text-white/45">/ {brl(totalMeta)}</span>
-          </div>
-          <Progress value={Math.min(100, (total / totalMeta) * 100)} className="mt-4 h-2 bg-white/[0.04]" />
-          <div className="mt-8 h-56">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie data={items} dataKey="valor" nameKey="nome" innerRadius="55%" outerRadius="90%" paddingAngle={2} stroke="none">
-                  {items.map((i) => <Cell key={i.id} fill={i.cor} />)}
-                </Pie>
-                <RTooltip contentStyle={tooltipStyle} formatter={(v: number) => brl(v)} />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-        </GlassPanel>
-
-        <GlassPanel className="p-2">
-          <div className="flex flex-col divide-y divide-white/[0.04]">
-            {items.map((i) => {
-              const pct = Math.min(100, (i.valor / i.meta) * 100);
-              const over = i.valor > i.meta;
-              return (
-                <div key={i.id} className="group flex items-center gap-4 px-4 py-3.5 transition-colors hover:bg-white/[0.02]">
-                  <span className="h-3 w-3 shrink-0 rounded-full" style={{ background: i.cor, boxShadow: `0 0 10px ${i.cor}` }} />
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center justify-between gap-4">
-                      <span className="text-[13.5px] font-medium text-white/90">{i.nome}</span>
-                      <span className="font-mono text-[12.5px] text-white/70">{brl(i.valor)} / {brl(i.meta)}</span>
-                    </div>
-                    <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-white/[0.04]">
-                      <motion.div
-                        initial={{ width: 0 }} whileInView={{ width: `${pct}%` }} viewport={{ once: true }}
-                        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                        className="h-full rounded-full" style={{ background: over ? "oklch(0.62 0.22 25)" : i.cor }}
-                      />
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">
-                    <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => { setEditing(i); setOpen(true); }}>
-                      <Edit3 className="h-3.5 w-3.5" />
-                    </Button>
-                    <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => remove(i.id)}>
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </Button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </GlassPanel>
-      </div>
-
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent>
-          <DialogHeader><DialogTitle>{items.some((i) => i.id === editing?.id) ? "Editar categoria" : "Nova categoria"}</DialogTitle></DialogHeader>
-          {editing && (
-            <div className="grid gap-4">
-              <div>
-                <Label className="text-[11px] text-white/60">Nome</Label>
-                <Input value={editing.nome} onChange={(e) => setEditing({ ...editing, nome: e.target.value })} />
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <Label className="text-[11px] text-white/60">Consumo atual</Label>
-                  <Input type="number" value={editing.valor} onChange={(e) => setEditing({ ...editing, valor: Number(e.target.value) })} />
-                </div>
-                <div>
-                  <Label className="text-[11px] text-white/60">Meta</Label>
-                  <Input type="number" value={editing.meta} onChange={(e) => setEditing({ ...editing, meta: Number(e.target.value) })} />
-                </div>
-              </div>
-              <div>
-                <Label className="text-[11px] text-white/60">Cor (HSL)</Label>
-                <div className="flex items-center gap-3">
-                  <span className="h-8 w-8 rounded-md" style={{ background: editing.cor }} />
-                  <Input value={editing.cor} onChange={(e) => setEditing({ ...editing, cor: e.target.value })} />
-                </div>
-              </div>
-            </div>
-          )}
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setOpen(false)}>Cancelar</Button>
-            <Button onClick={save}>Salvar</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </ModuleShell>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════════════
-   CENTRO DE CUSTOS — CRUD table + drill
+   DISTRIBUIÇÃO — onde o dinheiro vive: por centro de custo e por
+   natureza (categoria). Duas visões da mesma pergunta, unificadas.
    ═══════════════════════════════════════════════════════════════════ */
 type Centro = { id: string; nome: string; gestor: string; orcamento: number; utilizado: number; savings: number; status: "Saudável" | "Otimizado" | "Atenção" | "Crítico" };
 const seedCentrosRich: Centro[] = seedCentros.map((c, i) => ({
   id: `cc${i}`, nome: c.nome, gestor: c.gestor, orcamento: c.orcamento, utilizado: c.utilizado, savings: c.savings, status: c.status as Centro["status"],
 }));
 
-export function CentrosModule() {
+type Categoria = { id: string; nome: string; valor: number; cor: string; meta: number };
+const seedCategoriasRich: Categoria[] = seedCategorias.map((c, i) => ({
+  id: `c${i}`, nome: c.categoria, valor: c.valor, cor: c.cor, meta: Math.round(c.valor * 1.15),
+}));
+
+export function DistribuicaoModule() {
+  return (
+    <ModuleShell
+      id="distribuicao"
+      eyebrow="Distribuição de Gastos"
+      title={<>Onde o dinheiro <span className="italic text-white/60">vive.</span></>}
+      description="Compare centros de custo e categorias: participação, evolução e gestão inline."
+    >
+      <Tabs defaultValue="centros" className="w-full">
+        <TabsList className="mb-5 border border-white/[0.06] bg-white/[0.02]">
+          <TabsTrigger value="centros" className="px-4">Centros de custo</TabsTrigger>
+          <TabsTrigger value="categorias" className="px-4">Categorias</TabsTrigger>
+        </TabsList>
+        <TabsContent value="centros"><CentrosContent /></TabsContent>
+        <TabsContent value="categorias"><CategoriasContent /></TabsContent>
+      </Tabs>
+    </ModuleShell>
+  );
+}
+
+function CentrosContent() {
   const [items, setItems] = useState<Centro[]>(seedCentrosRich);
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState("all");
@@ -1303,17 +1038,7 @@ export function CentrosModule() {
   const remove = (id: string) => { setItems((cur) => cur.filter((c) => c.id !== id)); toast.success("Removido"); };
 
   return (
-    <ModuleShell
-      id="centros"
-      eyebrow="Centros de Custo"
-      title={<>Estrutura orçamentária <span className="italic text-white/60">por gestor.</span></>}
-      description="Acompanhe consumo por unidade de negócio com gestão inline."
-      actions={
-        <Button size="sm" onClick={openNew} className="bg-[--primary-orange] text-white hover:bg-[--primary-orange]/90 border-transparent">
-          <Plus className="mr-1.5 h-3.5 w-3.5" /> Novo centro
-        </Button>
-      }
-    >
+    <>
       <div className="mb-5 grid grid-cols-2 gap-3 md:grid-cols-4">
         <GlassPanel className="p-4"><div className="text-[10px] uppercase tracking-[0.14em] text-white/45">Centros</div><div className="mt-1 font-[family-name:var(--font-display)] text-[22px] font-semibold text-white">{filtered.length}</div></GlassPanel>
         <GlassPanel className="p-4"><div className="text-[10px] uppercase tracking-[0.14em] text-white/45">Orçamento</div><div className="mt-1 font-[family-name:var(--font-display)] text-[22px] font-semibold text-white">{brl(totalOrc)}</div></GlassPanel>
@@ -1337,7 +1062,12 @@ export function CentrosModule() {
               <SelectItem value="Crítico">Crítico</SelectItem>
             </SelectContent>
           </Select>
-          <div className="ml-auto text-[11px] text-white/45">{filtered.length} centros</div>
+          <div className="ml-auto flex items-center gap-3">
+            <span className="text-[11px] text-white/45">{filtered.length} centros</span>
+            <Button size="sm" onClick={openNew} className="border-transparent bg-[--primary-orange] text-white hover:bg-[--primary-orange]/90">
+              <Plus className="mr-1.5 h-3.5 w-3.5" /> Novo centro
+            </Button>
+          </div>
         </div>
         <Table>
           <TableHeader>
@@ -1414,12 +1144,130 @@ export function CentrosModule() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </ModuleShell>
+    </>
+  );
+}
+
+function CategoriasContent() {
+  const [items, setItems] = useState<Categoria[]>(seedCategoriasRich);
+  const [editing, setEditing] = useState<Categoria | null>(null);
+  const [open, setOpen] = useState(false);
+
+  const total = items.reduce((s, i) => s + i.valor, 0);
+  const totalMeta = items.reduce((s, i) => s + i.meta, 0);
+
+  const openNew = () => { setEditing({ id: `c${Date.now()}`, nome: "", valor: 0, cor: "hsl(24 95% 60%)", meta: 0 }); setOpen(true); };
+  const save = () => {
+    if (!editing) return;
+    setItems((cur) => cur.some((i) => i.id === editing.id) ? cur.map((i) => i.id === editing.id ? editing : i) : [...cur, editing]);
+    setOpen(false); toast.success("Categoria salva");
+  };
+  const remove = (id: string) => { setItems((cur) => cur.filter((i) => i.id !== id)); toast.success("Removida"); };
+
+  return (
+    <>
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[380px_1fr]">
+        <GlassPanel className="p-6">
+          <div className="text-[10px] uppercase tracking-[0.14em] text-white/45">Consumo x meta</div>
+          <div className="mt-1 font-[family-name:var(--font-display)] text-[28px] font-semibold text-white">
+            {brl(total)} <span className="text-[13px] text-white/45">/ {brl(totalMeta)}</span>
+          </div>
+          <Progress value={Math.min(100, (total / totalMeta) * 100)} className="mt-4 h-2 bg-white/[0.04]" />
+          <div className="mt-8 h-56">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie data={items} dataKey="valor" nameKey="nome" innerRadius="55%" outerRadius="90%" paddingAngle={2} stroke="none">
+                  {items.map((i) => <Cell key={i.id} fill={i.cor} />)}
+                </Pie>
+                <RTooltip contentStyle={tooltipStyle} formatter={(v: number) => brl(v)} />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </GlassPanel>
+
+        <GlassPanel className="p-2">
+          <div className="flex items-center justify-between px-4 pb-1 pt-3">
+            <span className="text-[10px] uppercase tracking-[0.14em] text-white/45">Consumo por natureza</span>
+            <Button size="sm" variant="outline" onClick={openNew} className="h-7 rounded-full text-[11px]">
+              <Plus className="mr-1 h-3 w-3" /> Nova categoria
+            </Button>
+          </div>
+          <div className="flex flex-col divide-y divide-white/[0.04]">
+            {items.map((i) => {
+              const pct = Math.min(100, (i.valor / i.meta) * 100);
+              const over = i.valor > i.meta;
+              return (
+                <div key={i.id} className="group flex items-center gap-4 px-4 py-3.5 transition-colors hover:bg-white/[0.02]">
+                  <span className="h-3 w-3 shrink-0 rounded-full" style={{ background: i.cor, boxShadow: `0 0 10px ${i.cor}` }} />
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center justify-between gap-4">
+                      <span className="text-[13.5px] font-medium text-white/90">{i.nome}</span>
+                      <span className="font-mono text-[12.5px] text-white/70">{brl(i.valor)} / {brl(i.meta)}</span>
+                    </div>
+                    <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-white/[0.04]">
+                      <motion.div
+                        initial={{ width: 0 }} whileInView={{ width: `${pct}%` }} viewport={{ once: true }}
+                        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                        className="h-full rounded-full" style={{ background: over ? "oklch(0.62 0.22 25)" : i.cor }}
+                      />
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">
+                    <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => { setEditing(i); setOpen(true); }}>
+                      <Edit3 className="h-3.5 w-3.5" />
+                    </Button>
+                    <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => remove(i.id)}>
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </Button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </GlassPanel>
+      </div>
+
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent>
+          <DialogHeader><DialogTitle>{items.some((i) => i.id === editing?.id) ? "Editar categoria" : "Nova categoria"}</DialogTitle></DialogHeader>
+          {editing && (
+            <div className="grid gap-4">
+              <div>
+                <Label className="text-[11px] text-white/60">Nome</Label>
+                <Input value={editing.nome} onChange={(e) => setEditing({ ...editing, nome: e.target.value })} />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <Label className="text-[11px] text-white/60">Consumo atual</Label>
+                  <Input type="number" value={editing.valor} onChange={(e) => setEditing({ ...editing, valor: Number(e.target.value) })} />
+                </div>
+                <div>
+                  <Label className="text-[11px] text-white/60">Meta</Label>
+                  <Input type="number" value={editing.meta} onChange={(e) => setEditing({ ...editing, meta: Number(e.target.value) })} />
+                </div>
+              </div>
+              <div>
+                <Label className="text-[11px] text-white/60">Cor (HSL)</Label>
+                <div className="flex items-center gap-3">
+                  <span className="h-8 w-8 rounded-md" style={{ background: editing.cor }} />
+                  <Input value={editing.cor} onChange={(e) => setEditing({ ...editing, cor: e.target.value })} />
+                </div>
+              </div>
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setOpen(false)}>Cancelar</Button>
+            <Button onClick={save}>Salvar</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   INDICADORES — analytical dashboard with filters
+   INDICADORES — performance estratégica: margem, liquidez, ticket,
+   crescimento, ROI e eficiência. Nenhum valor repetido do dashboard.
    ═══════════════════════════════════════════════════════════════════ */
 export function IndicadoresModule() {
   const [period, setPeriod] = useState("6m");
@@ -1427,19 +1275,34 @@ export function IndicadoresModule() {
   const months = period === "3m" ? 3 : period === "6m" ? 6 : 9;
   const serie = kpiSerie.slice(-Math.min(months, kpiSerie.length));
 
+  const margem = ((kpisDashboard.receita - kpisDashboard.despesas) / kpisDashboard.receita) * 100;
+  const liquidez = kpisDashboard.receita / kpisDashboard.despesas;
+  const ticketMedio = seedGastos.reduce((s, g) => s + g.valor, 0) / seedGastos.length;
+  const crescimento = ((evolucaoMensal[evolucaoMensal.length - 1].receita - evolucaoMensal[0].receita) / evolucaoMensal[0].receita) * 100;
+  const economiaYtd = kpisDashboard.economia * 9;
+
+  const cards = [
+    { label: "Margem operacional", value: `${margem.toFixed(1).replace(".", ",")}%`, tip: "+2,3 p.p. vs. ago", up: true },
+    { label: "Liquidez corrente", value: `${liquidez.toFixed(1).replace(".", ",")}x`, tip: "cobertura de saídas", up: true },
+    { label: "Ticket médio (despesa)", value: brl(Math.round(ticketMedio)), tip: "por lançamento", up: true },
+    { label: "Crescimento de receita", value: `+${crescimento.toFixed(1).replace(".", ",")}%`, tip: "jan → set 2026", up: true },
+    { label: "ROI de iniciativas", value: "3,4x", tip: "+0,6x no trimestre", up: true },
+    { label: "Economia acumulada", value: brl(economiaYtd), tip: "YTD 2026", up: true },
+  ];
+
   return (
     <ModuleShell
       id="indicadores"
       eyebrow="Indicadores"
-      title={<>Analítico <span className="italic text-white/60">multidimensional.</span></>}
-      description="Combine dimensão e período. Explore comportamento por área."
+      title={<>Performance <span className="italic text-white/60">estratégica.</span></>}
+      description="Os números que o board acompanha: margem, liquidez, eficiência e retorno."
       actions={
         <>
           <Select value={dim} onValueChange={setDim}>
             <SelectTrigger className="h-8 w-[180px] border-white/[0.06] bg-white/[0.02] text-[12px]"><SelectValue /></SelectTrigger>
             <SelectContent>
               <SelectItem value="eficiencia">Eficiência operacional</SelectItem>
-              <SelectItem value="economia">Economia acumulada</SelectItem>
+              <SelectItem value="economia">Economia mensal</SelectItem>
             </SelectContent>
           </Select>
           <Tabs value={period} onValueChange={setPeriod}>
@@ -1452,13 +1315,13 @@ export function IndicadoresModule() {
         </>
       }
     >
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-6 md:grid-rows-2">
-        <GlassPanel className="p-6 md:col-span-4 md:row-span-2">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+        <GlassPanel className="p-6 lg:col-span-2">
           <div className="mb-2 flex items-center justify-between">
             <div>
-              <div className="text-[10px] uppercase tracking-[0.14em] text-white/45">{dim === "eficiencia" ? "Eficiência operacional" : "Economia acumulada"}</div>
+              <div className="text-[10px] uppercase tracking-[0.14em] text-white/45">{dim === "eficiencia" ? "Eficiência operacional" : "Economia mensal (R$ mil)"}</div>
               <div className="mt-1 font-[family-name:var(--font-display)] text-[36px] font-semibold text-white">
-                <CountUp to={dim === "eficiencia" ? 88 : 82} suffix={dim === "eficiencia" ? "%" : "%"} />
+                <CountUp to={dim === "eficiencia" ? 88 : 82} suffix={dim === "eficiencia" ? "%" : "k"} />
               </div>
             </div>
             <div className="rounded-full border border-[--positive]/25 bg-[--positive]/[0.08] px-2 py-0.5 text-[10px] text-[--positive]">+5,1 p.p.</div>
@@ -1481,18 +1344,16 @@ export function IndicadoresModule() {
             </ResponsiveContainer>
           </div>
         </GlassPanel>
-        {[
-          { label: "Meta trimestral", value: "87%", tip: "5 p.p. acima" },
-          { label: "ROI iniciativas", value: "3,4x", tip: "+0,6x" },
-          { label: "Desvio orçamento", value: "-4,8%", tip: "abaixo do plano" },
-          { label: "NPS interno", value: "72", tip: "+8 pts" },
-        ].map((k) => (
-          <GlassPanel key={k.label} className="p-5">
-            <div className="text-[10px] uppercase tracking-[0.14em] text-white/45">{k.label}</div>
-            <div className="mt-2 font-[family-name:var(--font-display)] text-[26px] font-semibold text-white">{k.value}</div>
-            <div className="mt-1 text-[11px] text-[--positive]">{k.tip}</div>
-          </GlassPanel>
-        ))}
+
+        <div className="grid grid-cols-2 gap-4 lg:grid-cols-2">
+          {cards.map((k) => (
+            <GlassPanel key={k.label} className="p-4">
+              <div className="text-[9.5px] uppercase tracking-[0.14em] text-white/45">{k.label}</div>
+              <div className="mt-1.5 font-[family-name:var(--font-display)] text-[22px] font-semibold tabular-nums text-white">{k.value}</div>
+              <div className="mt-1 text-[10.5px] text-[--positive]">{k.tip}</div>
+            </GlassPanel>
+          ))}
+        </div>
       </div>
     </ModuleShell>
   );
@@ -1667,7 +1528,7 @@ export function SettingsModule() {
       eyebrow="Configurações"
       title={<>Personalize <span className="italic text-white/60">a plataforma.</span></>}
       description="Perfil, preferências, notificações e integrações — no seu ritmo."
-      actions={<Button size="sm" onClick={() => toast.success("Configurações salvas")} className="bg-[--primary-orange] text-white hover:bg-[--primary-orange]/90 border-transparent">Salvar tudo</Button>}
+      actions={<Button size="sm" onClick={() => toast.success("Configurações salvas")} className="border-transparent bg-[--primary-orange] text-white hover:bg-[--primary-orange]/90">Salvar tudo</Button>}
     >
       <GlassPanel className="p-2">
         <Tabs defaultValue="perfil" className="w-full">

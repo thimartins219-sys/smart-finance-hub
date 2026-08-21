@@ -2,17 +2,31 @@ import { createFileRoute } from "@tanstack/react-router";
 import {
   AIModule,
   CashFlowModule,
-  CategoriasModule,
-  CentrosModule,
-  DespesasModule,
+  DistribuicaoModule,
   ExecutiveModule,
   HeroModule,
   IndicadoresModule,
-  ReceitasModule,
+  MovimentacoesModule,
   SettingsModule,
 } from "@/components/experience/modules";
 
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "The Econommy — Dashboard Financeiro Executivo" },
+      {
+        name: "description",
+        content:
+          "Visão executiva em tempo real: KPIs, fluxo de caixa, movimentações, distribuição de gastos e copiloto de IA para gestão financeira corporativa.",
+      },
+      { property: "og:title", content: "The Econommy — Dashboard Financeiro Executivo" },
+      {
+        property: "og:description",
+        content:
+          "Visão executiva em tempo real: KPIs, fluxo de caixa, movimentações, distribuição de gastos e copiloto de IA para gestão financeira corporativa.",
+      },
+    ],
+  }),
   component: ExperiencePage,
 });
 
@@ -21,11 +35,9 @@ function ExperiencePage() {
     <main className="relative">
       <HeroModule />
       <ExecutiveModule />
-      <ReceitasModule />
-      <DespesasModule />
       <CashFlowModule />
-      <CategoriasModule />
-      <CentrosModule />
+      <MovimentacoesModule />
+      <DistribuicaoModule />
       <IndicadoresModule />
       <AIModule />
       <SettingsModule />
