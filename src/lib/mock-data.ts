@@ -1,7 +1,7 @@
 export const empresa = {
   nome: "Porto Meridian S/A",
   periodo: "Setembro 2026",
-  usuario: { nome: "Ricardo Almeida", cargo: "CFO", iniciais: "RA" },
+  usuario: { nome: "Ricardo Almeida", cargo: "CFO" },
 };
 
 export const kpisDashboard = {

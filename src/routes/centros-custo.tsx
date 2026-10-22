@@ -1,2 +1,8 @@
-import { createFileRoute, Navigate } from "@tanstack/react-router";
-export const Route = createFileRoute("/centros-custo")({ component: () => <Navigate to="/" hash="centros" replace /> });
+import { createFileRoute, redirect } from "@tanstack/react-router";
+
+// Legacy URL kept working: the content now lives in a section of the main page.
+export const Route = createFileRoute("/centros-custo")({
+  beforeLoad: () => {
+    throw redirect({ to: "/", hash: "distribuicao", replace: true });
+  },
+});

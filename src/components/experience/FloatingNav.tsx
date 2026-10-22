@@ -45,7 +45,7 @@ export function FloatingNav({ sections }: { sections: NavSection[] }) {
         className="fixed left-0 right-0 top-0 z-[80] h-[2px] origin-left"
         style={{
           scaleX,
-          background: "linear-gradient(90deg, oklch(0.65 0.22 32), oklch(0.58 0.20 260))",
+          background: "var(--gradient-primary)",
         }}
       />
 
@@ -79,7 +79,7 @@ export function FloatingNav({ sections }: { sections: NavSection[] }) {
           </button>
 
           <div className="hidden items-center gap-1 md:flex">
-            {sections.slice(0, 6).map((s) => (
+            {sections.slice(1, 6).map((s) => (
               <button
                 key={s.id}
                 onClick={() => scrollTo(s.id)}
@@ -100,11 +100,11 @@ export function FloatingNav({ sections }: { sections: NavSection[] }) {
           </div>
 
           <button
-            onClick={() => scrollTo("ai-insights")}
+            onClick={() => scrollTo("ai")}
             className="rounded-full px-4 py-1.5 text-[11px] font-semibold text-white shadow-[0_8px_24px_-8px_oklch(0.65_0.22_32/0.6)] transition-transform hover:scale-[1.03]"
             style={{ background: "var(--gradient-primary)" }}
           >
-            Explorar IA
+            Copiloto IA
           </button>
         </div>
       </motion.header>
