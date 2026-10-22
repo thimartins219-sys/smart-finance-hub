@@ -370,11 +370,6 @@
     transition: stroke var(--duration-normal) var(--ease-out-expo), transform var(--duration-smooth) var(--ease-out-expo);
   }
 
-  [data-sidebar=sidebar] svg, .sidebar svg {
-    width: 17px !important;
-    height: 17px !important;
-  }
-
   header svg {
     width: 15px !important;
     height: 15px !important;
@@ -464,59 +459,6 @@
 
   tr[data-state=selected] td {
     background-color: oklch(1 0 0 / 0.030) !important;
-  }
-
-  /* ══════════════════════════════════
-     SIDEBAR
-     ══════════════════════════════════ */
-  [data-sidebar=sidebar] {
-    background-color: oklch(0.08 0.004 260 / 0.45) !important;
-    backdrop-filter: blur(28px) saturate(140%) !important;
-    border-right: 1px solid var(--divider-raw) !important;
-  }
-
-  [data-sidebar=sidebar] .group\/item {
-    margin: 2px 8px;
-    border-radius: var(--radius-md) !important;
-    transition: var(--transition-smooth) !important;
-    padding: 0 10px !important;
-    position: relative;
-  }
-
-  [data-sidebar=sidebar] .group\/item:hover {
-    background-color: oklch(1 0 0 / 0.030) !important;
-    color: var(--text-primary) !important;
-  }
-
-  [data-sidebar=sidebar] .group\/item[data-active=true] {
-    background: linear-gradient(135deg, oklch(0.65 0.22 32 / 0.13), oklch(0.65 0.22 32 / 0.05)) !important;
-    border: 1px solid oklch(0.65 0.22 32 / 0.16) !important;
-    color: var(--text-primary) !important;
-    box-shadow:
-      0 0 18px -6px oklch(0.65 0.22 32 / 0.18),
-      0 1px 0 0 oklch(1 0 0 / 0.04) inset !important;
-  }
-
-  [data-sidebar=sidebar] .group\/item[data-active=true] svg {
-    color: oklch(0.75 0.18 35) !important;
-    filter: drop-shadow(0 0 5px oklch(0.65 0.22 32 / 0.40));
-  }
-
-  /* ══════════════════════════════════
-     HEADER
-     ══════════════════════════════════ */
-  header.sticky {
-    background-color: oklch(0.09 0.004 260 / 0.45) !important;
-    backdrop-filter: blur(28px) saturate(140%) !important;
-    border-bottom: 1px solid var(--divider-raw) !important;
-    padding-left: 28px !important;
-    padding-right: 28px !important;
-    height: 72px !important;
-  }
-
-  header.sticky input {
-    background-color: oklch(1 0 0 / 0.020) !important;
-    border: 1px solid var(--glass-border-raw) !important;
   }
 
   /* ── Status badges ── */
@@ -647,22 +589,6 @@
       0 1px 0 0 oklch(1 0 0 / 0.10) inset,
       var(--shadow-large),
       0 0 28px -4px oklch(0.65 0.22 32 / 0.10);
-  }
-}
-
-@utility sidebar-hover {
-  transition: var(--transition-smooth);
-  &:hover {
-    background-color: oklch(1 0 0 / 0.030);
-    color: var(--text-primary);
-  }
-}
-
-@utility menu-hover {
-  transition: var(--transition-smooth);
-  &:hover {
-    background-color: oklch(1 0 0 / 0.035);
-    color: var(--text-primary);
   }
 }
 
