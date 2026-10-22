@@ -11,10 +11,7 @@ const TabsList = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <TabsPrimitive.List
     ref={ref}
-    className={cn(
-      "inline-flex h-10 items-center justify-center rounded-[--radius-lg] bg-[oklch(1_0_0/0.020)] border border-[--glass-border-raw] p-1 text-muted-foreground backdrop-blur-md",
-      className,
-    )}
+    className={cn("inline-flex h-10 items-center rounded-full border border-border bg-muted p-1 text-muted-foreground", className)}
     {...props}
   />
 ));
@@ -27,7 +24,7 @@ const TabsTrigger = React.forwardRef<
   <TabsPrimitive.Trigger
     ref={ref}
     className={cn(
-      "inline-flex items-center justify-center whitespace-nowrap rounded-[--radius-md] px-3 py-1.5 text-sm font-medium ring-offset-background cursor-pointer transition-all duration-[var(--duration-normal)] ease-[var(--ease-out-expo)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed data-[state=active]:bg-[oklch(1_0_0/0.05)] data-[state=active]:text-foreground data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-[--glass-border-raw]",
+      "inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-full px-3.5 py-1.5 text-[12.5px] font-semibold transition-all duration-300 focus-visible:outline-none disabled:opacity-50 data-[state=active]:bg-card data-[state=active]:text-foreground data-[state=active]:shadow-soft hover:text-foreground",
       className,
     )}
     {...props}
@@ -41,10 +38,7 @@ const TabsContent = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <TabsPrimitive.Content
     ref={ref}
-    className={cn(
-      "mt-3 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-      className,
-    )}
+    className={cn("mt-4 focus-visible:outline-none data-[state=active]:animate-in data-[state=active]:fade-in-0 data-[state=active]:slide-in-from-bottom-1", className)}
     {...props}
   />
 ));
