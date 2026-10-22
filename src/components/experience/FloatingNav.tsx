@@ -45,7 +45,7 @@ export function FloatingNav({ sections }: { sections: NavSection[] }) {
         className="fixed left-0 right-0 top-0 z-[80] h-[2px] origin-left"
         style={{
           scaleX,
-          background: "linear-gradient(90deg, oklch(0.65 0.22 32), oklch(0.58 0.20 260))",
+          background: "var(--gradient-primary)",
         }}
       />
 
@@ -73,17 +73,17 @@ export function FloatingNav({ sections }: { sections: NavSection[] }) {
               <div className="absolute inset-0" style={{ background: "var(--gradient-primary)" }} />
               <span className="relative font-[family-name:var(--font-display)] text-sm font-bold text-white leading-none">e</span>
             </div>
-            <span className="font-[family-name:var(--font-display)] text-[13.5px] font-semibold tracking-tight text-white/95">
+            <span className="font-[family-name:var(--font-display)] text-[13.5px] font-semibold tracking-tight text-white/95 whitespace-nowrap">
               The Econommy
             </span>
           </button>
 
           <div className="hidden items-center gap-1 md:flex">
-            {sections.slice(0, 6).map((s) => (
+            {sections.slice(1, 6).map((s) => (
               <button
                 key={s.id}
                 onClick={() => scrollTo(s.id)}
-                className={`relative rounded-full px-3 py-1 text-[11px] font-medium tracking-wide transition-colors ${
+                className={`relative whitespace-nowrap rounded-full px-3 py-1 text-[11px] font-medium tracking-wide transition-colors ${
                   active === s.id ? "text-white" : "text-white/50 hover:text-white/80"
                 }`}
               >
@@ -100,11 +100,11 @@ export function FloatingNav({ sections }: { sections: NavSection[] }) {
           </div>
 
           <button
-            onClick={() => scrollTo("ai-insights")}
-            className="rounded-full px-4 py-1.5 text-[11px] font-semibold text-white shadow-[0_8px_24px_-8px_oklch(0.65_0.22_32/0.6)] transition-transform hover:scale-[1.03]"
+            onClick={() => scrollTo("ai")}
+            className="shrink-0 whitespace-nowrap rounded-full px-4 py-1.5 text-[11px] font-semibold text-white shadow-[0_8px_24px_-8px_oklch(0.65_0.22_32/0.6)] transition-transform hover:scale-[1.03]"
             style={{ background: "var(--gradient-primary)" }}
           >
-            Explorar IA
+            Copiloto IA
           </button>
         </div>
       </motion.header>

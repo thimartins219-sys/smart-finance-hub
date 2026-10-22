@@ -6,6 +6,7 @@ import {
   useRouter,
   HeadContent,
   Scripts,
+  type ErrorComponentProps,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
@@ -20,14 +21,12 @@ import { CursorSpotlight } from "@/components/experience/CursorSpotlight";
 const NAV_SECTIONS = [
   { id: "hero", label: "Início" },
   { id: "dashboard", label: "Dashboard" },
-  { id: "receitas", label: "Receitas" },
-  { id: "despesas", label: "Despesas" },
   { id: "cashflow", label: "Fluxo" },
-  { id: "categorias", label: "Categorias" },
-  { id: "centros", label: "Centros" },
+  { id: "movimentacoes", label: "Movimentações" },
+  { id: "distribuicao", label: "Distribuição" },
   { id: "indicadores", label: "Indicadores" },
-  { id: "ai", label: "IA" },
-  { id: "settings", label: "Config" },
+  { id: "ai", label: "Copiloto IA" },
+  { id: "settings", label: "Configurações" },
 ];
 
 function NotFoundComponent() {
@@ -52,7 +51,7 @@ function NotFoundComponent() {
   );
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+function ErrorComponent({ error, reset }: ErrorComponentProps) {
   console.error(error);
   const router = useRouter();
   useEffect(() => {
