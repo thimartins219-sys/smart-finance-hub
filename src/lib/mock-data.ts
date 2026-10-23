@@ -1,69 +1,185 @@
-export const empresa = {
-  nome: "Porto Meridian S/A",
-  periodo: "Setembro 2026",
-  usuario: { nome: "Ricardo Almeida", cargo: "CFO" },
-};
+// Demo data for The Econommy. Everything is local (no server); the store copies
+// these seeds on first load and the user's edits are saved in the browser.
 
-export const kpisDashboard = {
-  receita: 2_450_000,
-  despesas: 487_320,
-  economia: 82_450,
-  operacionais: 312_800,
-};
+/** Fixed "today" for the demo so overdue / upcoming states stay consistent. */
+export const HOJE = "2026-10-23";
 
-export const gastosCategoria = [
-  { categoria: "Operações", valor: 148_200, cor: "hsl(24 95% 60%)" },
-  { categoria: "Compras", valor: 112_400, cor: "hsl(38 92% 62%)" },
-  { categoria: "Logística", valor: 89_600, cor: "hsl(200 90% 60%)" },
-  { categoria: "Administrativo", valor: 68_120, cor: "hsl(280 70% 65%)" },
-  { categoria: "Tecnologia", valor: 69_000, cor: "hsl(160 70% 55%)" },
-];
-
-export const evolucaoMensal = [
-  { mes: "Jan", despesas: 412_000, receita: 2_180_000 },
-  { mes: "Fev", despesas: 428_500, receita: 2_240_000 },
-  { mes: "Mar", despesas: 445_200, receita: 2_290_000 },
-  { mes: "Abr", despesas: 462_100, receita: 2_310_000 },
-  { mes: "Mai", despesas: 451_800, receita: 2_360_000 },
-  { mes: "Jun", despesas: 470_300, receita: 2_380_000 },
-  { mes: "Jul", despesas: 481_600, receita: 2_400_000 },
-  { mes: "Ago", despesas: 476_900, receita: 2_425_000 },
-  { mes: "Set", despesas: 487_320, receita: 2_450_000 },
-];
-
-export const centrosCusto = [
-  { nome: "Operações Portuárias", gestor: "Marina Costa", orcamento: 180_000, utilizado: 148_200, savings: 18_400, status: "Saudável" },
-  { nome: "Compras", gestor: "Eduardo Lima", orcamento: 140_000, utilizado: 112_400, savings: 22_800, status: "Otimizado" },
-  { nome: "Logística", gestor: "Camila Duarte", orcamento: 100_000, utilizado: 89_600, savings: 9_200, status: "Atenção" },
-  { nome: "Administrativo", gestor: "Rafael Souza", orcamento: 80_000, utilizado: 68_120, savings: 6_400, status: "Saudável" },
-  { nome: "Comercial", gestor: "Beatriz Alves", orcamento: 90_000, utilizado: 69_000, savings: 4_100, status: "Atenção" },
-  { nome: "Tecnologia", gestor: "Lucas Mendes", orcamento: 75_000, utilizado: 58_400, savings: 7_800, status: "Saudável" },
-];
-
-export const gastos = [
-  { data: "12/09/2026", categoria: "Operações", fornecedor: "Petrobras Distribuidora", cc: "Operações Portuárias", valor: 42_800, status: "Pago" },
-  { data: "11/09/2026", categoria: "Compras", fornecedor: "Steel Corp Brasil", cc: "Compras", valor: 28_450, status: "Aprovado" },
-  { data: "10/09/2026", categoria: "Logística", fornecedor: "TransCargo Express", cc: "Logística", valor: 18_900, status: "Pago" },
-  { data: "09/09/2026", categoria: "Tecnologia", fornecedor: "CloudEdge Systems", cc: "Administrativo", valor: 12_400, status: "Pago" },
-  { data: "08/09/2026", categoria: "Administrativo", fornecedor: "Assessoria Legal Andrade", cc: "Administrativo", valor: 15_600, status: "Pendente" },
-  { data: "07/09/2026", categoria: "Operações", fornecedor: "Máritima Serviços LTDA", cc: "Operações Portuárias", valor: 34_200, status: "Aprovado" },
-  { data: "06/09/2026", categoria: "Compras", fornecedor: "Global Parts Import", cc: "Compras", valor: 21_780, status: "Pago" },
-  { data: "05/09/2026", categoria: "Logística", fornecedor: "PortoLog Armazéns", cc: "Logística", valor: 24_500, status: "Pago" },
-  { data: "04/09/2026", categoria: "Tecnologia", fornecedor: "DataSec Cibernética", cc: "Administrativo", valor: 18_200, status: "Aprovado" },
-  { data: "03/09/2026", categoria: "Operações", fornecedor: "Energia Costa Sul", cc: "Operações Portuárias", valor: 27_100, status: "Pago" },
-  { data: "02/09/2026", categoria: "Administrativo", fornecedor: "Prime Office Supply", cc: "Administrativo", valor: 4_320, status: "Pago" },
-  { data: "01/09/2026", categoria: "Compras", fornecedor: "Industrial Bearings Co", cc: "Compras", valor: 32_600, status: "Pendente" },
-];
-
-export const kpiSerie = [
-  { mes: "Abr", eficiencia: 79, economia: 32 },
-  { mes: "Mai", eficiencia: 81, economia: 41 },
-  { mes: "Jun", eficiencia: 82, economia: 48 },
-  { mes: "Jul", eficiencia: 84, economia: 58 },
-  { mes: "Ago", eficiencia: 86, economia: 71 },
-  { mes: "Set", eficiencia: 88, economia: 82 },
-];
-
-export function brl(n: number) {
-  return n.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
+export type TipoConta = "corrente" | "poupanca" | "investimento";
+export interface Conta {
+  id: string;
+  nome: string;
+  banco: string;
+  tipo: TipoConta;
+  agencia: string;
+  numero: string;
+  saldoInicial: number;
 }
+
+export type Bandeira = "Visa" | "Mastercard" | "Amex" | "Elo";
+export type TemaCartao = "onix" | "laranja" | "champagne" | "grafite";
+export interface Cartao {
+  id: string;
+  nome: string;
+  bandeira: Bandeira;
+  final: string;
+  titular: string;
+  limite: number;
+  fechamento: number;
+  vencimento: number;
+  contaId: string;
+  tema: TemaCartao;
+}
+
+export type TipoTransacao = "receita" | "despesa" | "transferencia";
+export interface Transacao {
+  id: string;
+  data: string; // YYYY-MM-DD
+  descricao: string;
+  valor: number; // always positive
+  tipo: TipoTransacao;
+  categoria: string;
+  contaId: string;
+  contaDestinoId?: string;
+  cartaoId?: string;
+  centro?: string;
+}
+
+export type Recorrencia = "nenhuma" | "semanal" | "mensal" | "anual";
+export interface Vencimento {
+  id: string;
+  descricao: string;
+  valor: number;
+  tipo: "pagar" | "receber";
+  data: string;
+  categoria: string;
+  contaId: string;
+  recorrencia: Recorrencia;
+  pago: boolean;
+  pagoEm?: string;
+}
+
+export interface Categoria {
+  id: string;
+  nome: string;
+  tipo: "receita" | "despesa";
+}
+
+export const CENTROS = ["Operações Portuárias", "Comercial", "Administrativo", "Tecnologia", "Logística"];
+
+/** Categories that move money but are not revenue/expense (kept out of reports). */
+export const CATEGORIA_FATURA = "Pagamento de fatura";
+export const CATEGORIA_TRANSFERENCIA = "Transferência";
+
+export const contasSeed: Conta[] = [
+  { id: "c-itau", nome: "Conta Operacional", banco: "Itaú Empresas", tipo: "corrente", agencia: "0412", numero: "48210-7", saldoInicial: 1_180_000 },
+  { id: "c-btg", nome: "Tesouraria", banco: "BTG Pactual", tipo: "investimento", agencia: "0001", numero: "772190-3", saldoInicial: 2_950_000 },
+  { id: "c-bradesco", nome: "Folha e Fornecedores", banco: "Bradesco Empresas", tipo: "corrente", agencia: "2231", numero: "10984-2", saldoInicial: 420_000 },
+  { id: "c-caixa", nome: "Reserva de Emergência", banco: "Caixa", tipo: "poupanca", agencia: "1648", numero: "00031-9", saldoInicial: 360_000 },
+];
+
+export const cartoesSeed: Cartao[] = [
+  { id: "k-black", nome: "Corporate Black", bandeira: "Visa", final: "4821", titular: "RICARDO ALMEIDA", limite: 180_000, fechamento: 25, vencimento: 5, contaId: "c-itau", tema: "onix" },
+  { id: "k-infinite", nome: "Infinite Business", bandeira: "Mastercard", final: "7310", titular: "PORTO MERIDIAN S/A", limite: 120_000, fechamento: 15, vencimento: 25, contaId: "c-bradesco", tema: "laranja" },
+  { id: "k-centurion", nome: "Platinum Travel", bandeira: "Amex", final: "1007", titular: "RICARDO ALMEIDA", limite: 90_000, fechamento: 8, vencimento: 18, contaId: "c-itau", tema: "champagne" },
+];
+
+export const categoriasSeed: Categoria[] = [
+  { id: "cat-servicos", nome: "Serviços portuários", tipo: "receita" },
+  { id: "cat-armazenagem", nome: "Armazenagem", tipo: "receita" },
+  { id: "cat-rendimentos", nome: "Rendimentos", tipo: "receita" },
+  { id: "cat-pessoal", nome: "Pessoal", tipo: "despesa" },
+  { id: "cat-operacoes", nome: "Operações", tipo: "despesa" },
+  { id: "cat-logistica", nome: "Logística", tipo: "despesa" },
+  { id: "cat-tecnologia", nome: "Tecnologia", tipo: "despesa" },
+  { id: "cat-administrativo", nome: "Administrativo", tipo: "despesa" },
+  { id: "cat-marketing", nome: "Marketing", tipo: "despesa" },
+  { id: "cat-viagens", nome: "Viagens", tipo: "despesa" },
+  { id: "cat-impostos", nome: "Impostos", tipo: "despesa" },
+];
+
+interface Modelo {
+  dia: number;
+  descricao: string;
+  base: number;
+  tipo: TipoTransacao;
+  categoria: string;
+  contaId: string;
+  contaDestinoId?: string;
+  cartaoId?: string;
+  centro?: string;
+}
+
+const MODELOS: Modelo[] = [
+  { dia: 2, descricao: "Contrato Maersk Line — operação de cais", base: 640_000, tipo: "receita", categoria: "Serviços portuários", contaId: "c-itau", centro: "Comercial" },
+  { dia: 4, descricao: "Armazenagem alfandegada — lote mensal", base: 236_000, tipo: "receita", categoria: "Armazenagem", contaId: "c-itau", centro: "Comercial" },
+  { dia: 6, descricao: "Folha de pagamento", base: 412_000, tipo: "despesa", categoria: "Pessoal", contaId: "c-bradesco", centro: "Administrativo" },
+  { dia: 7, descricao: "Transferência para folha", base: 380_000, tipo: "transferencia", categoria: CATEGORIA_TRANSFERENCIA, contaId: "c-itau", contaDestinoId: "c-bradesco" },
+  { dia: 8, descricao: "Petrobras Distribuidora — diesel marítimo", base: 86_400, tipo: "despesa", categoria: "Operações", contaId: "c-itau", centro: "Operações Portuárias" },
+  { dia: 10, descricao: "AWS + Google Workspace", base: 18_900, tipo: "despesa", categoria: "Tecnologia", contaId: "c-itau", cartaoId: "k-black", centro: "Tecnologia" },
+  { dia: 11, descricao: "Serviços de praticagem — Hapag-Lloyd", base: 164_000, tipo: "receita", categoria: "Serviços portuários", contaId: "c-itau", centro: "Comercial" },
+  { dia: 12, descricao: "TransCargo Express — fretes", base: 54_700, tipo: "despesa", categoria: "Logística", contaId: "c-bradesco", centro: "Logística" },
+  { dia: 13, descricao: "Manutenção de guindastes STS", base: 61_200, tipo: "despesa", categoria: "Operações", contaId: "c-bradesco", centro: "Operações Portuárias" },
+  { dia: 14, descricao: "Passagens e hospedagem — diretoria", base: 12_600, tipo: "despesa", categoria: "Viagens", contaId: "c-itau", cartaoId: "k-centurion", centro: "Comercial" },
+  { dia: 15, descricao: "Rendimento CDB 102% CDI", base: 27_800, tipo: "receita", categoria: "Rendimentos", contaId: "c-btg" },
+  { dia: 16, descricao: "Energia Costa Sul", base: 41_900, tipo: "despesa", categoria: "Operações", contaId: "c-itau", centro: "Operações Portuárias" },
+  { dia: 18, descricao: "Campanha LinkedIn + feiras", base: 22_300, tipo: "despesa", categoria: "Marketing", contaId: "c-itau", cartaoId: "k-infinite", centro: "Comercial" },
+  { dia: 19, descricao: "Assessoria jurídica Andrade", base: 15_600, tipo: "despesa", categoria: "Administrativo", contaId: "c-bradesco", centro: "Administrativo" },
+  { dia: 20, descricao: "ISS + PIS/COFINS", base: 96_500, tipo: "despesa", categoria: "Impostos", contaId: "c-itau", centro: "Administrativo" },
+  { dia: 21, descricao: "Aplicação automática tesouraria", base: 150_000, tipo: "transferencia", categoria: CATEGORIA_TRANSFERENCIA, contaId: "c-itau", contaDestinoId: "c-btg" },
+  { dia: 22, descricao: "Steel Corp — peças e insumos", base: 68_300, tipo: "despesa", categoria: "Operações", contaId: "c-bradesco", centro: "Operações Portuárias" },
+  { dia: 24, descricao: "Licenças SAP Business One", base: 9_800, tipo: "despesa", categoria: "Tecnologia", contaId: "c-itau", cartaoId: "k-black", centro: "Tecnologia" },
+  { dia: 26, descricao: "Armazenagem refrigerada — Cosco", base: 118_000, tipo: "receita", categoria: "Armazenagem", contaId: "c-itau", centro: "Comercial" },
+  { dia: 27, descricao: "PortoLog — aluguel de pátio", base: 38_500, tipo: "despesa", categoria: "Logística", contaId: "c-bradesco", centro: "Logística" },
+];
+
+function variacao(i: number, m: number) {
+  // Deterministic ±6% variation so every load shows the same demo numbers.
+  const h = Math.abs(Math.sin((i + 1) * 12.9898 + m * 78.233) * 43758.5453) % 1;
+  return 1 + (h - 0.5) * 0.12;
+}
+
+export function gerarTransacoesSeed(): Transacao[] {
+  const out: Transacao[] = [];
+  const meses = [5, 6, 7, 8, 9, 10];
+  meses.forEach((m) => {
+    MODELOS.forEach((mod, i) => {
+      const data = `2026-${String(m).padStart(2, "0")}-${String(mod.dia).padStart(2, "0")}`;
+      if (data > HOJE) return;
+      const crescimento = 1 + (m - 5) * 0.012;
+      const valor = Math.round((mod.base * variacao(i, m) * (mod.tipo === "receita" ? crescimento : 1)) / 10) * 10;
+      out.push({
+        id: `t-${m}-${i}`,
+        data,
+        descricao: mod.descricao,
+        valor,
+        tipo: mod.tipo,
+        categoria: mod.categoria,
+        contaId: mod.contaId,
+        contaDestinoId: mod.contaDestinoId,
+        cartaoId: mod.cartaoId,
+        centro: mod.centro,
+      });
+    });
+  });
+  return out.sort((a, b) => b.data.localeCompare(a.data));
+}
+
+export const vencimentosSeed: Vencimento[] = [
+  { id: "v-1", descricao: "Seguro de carga — Porto Seguro", valor: 34_800, tipo: "pagar", data: "2026-10-20", categoria: "Operações", contaId: "c-itau", recorrencia: "mensal", pago: false },
+  { id: "v-2", descricao: "Fatura Hapag-Lloyd — sobre-estadia", valor: 72_400, tipo: "receber", data: "2026-10-18", categoria: "Serviços portuários", contaId: "c-itau", recorrencia: "nenhuma", pago: false },
+  { id: "v-3", descricao: "Manutenção preventiva — RTGs", valor: 18_200, tipo: "pagar", data: "2026-10-23", categoria: "Operações", contaId: "c-bradesco", recorrencia: "semanal", pago: false },
+  { id: "v-4", descricao: "Armazenagem refrigerada — Cosco", valor: 121_000, tipo: "receber", data: "2026-10-26", categoria: "Armazenagem", contaId: "c-itau", recorrencia: "mensal", pago: false },
+  { id: "v-5", descricao: "PortoLog — aluguel de pátio", valor: 38_500, tipo: "pagar", data: "2026-10-27", categoria: "Logística", contaId: "c-bradesco", recorrencia: "mensal", pago: false },
+  { id: "v-6", descricao: "Energia Costa Sul", valor: 42_300, tipo: "pagar", data: "2026-10-29", categoria: "Operações", contaId: "c-itau", recorrencia: "mensal", pago: false },
+  { id: "v-7", descricao: "Contrato Maersk Line — operação de cais", valor: 668_000, tipo: "receber", data: "2026-11-02", categoria: "Serviços portuários", contaId: "c-itau", recorrencia: "mensal", pago: false },
+  { id: "v-8", descricao: "Fatura Corporate Black", valor: 31_400, tipo: "pagar", data: "2026-11-05", categoria: CATEGORIA_FATURA, contaId: "c-itau", recorrencia: "nenhuma", pago: false },
+  { id: "v-9", descricao: "Folha de pagamento", valor: 418_000, tipo: "pagar", data: "2026-11-06", categoria: "Pessoal", contaId: "c-bradesco", recorrencia: "mensal", pago: false },
+  { id: "v-10", descricao: "Licença anual Oracle Cloud", valor: 86_000, tipo: "pagar", data: "2026-11-16", categoria: "Tecnologia", contaId: "c-itau", recorrencia: "anual", pago: false },
+  { id: "v-11", descricao: "ISS + PIS/COFINS", valor: 98_000, tipo: "pagar", data: "2026-11-20", categoria: "Impostos", contaId: "c-itau", recorrencia: "mensal", pago: false },
+  { id: "v-12", descricao: "Serviços de praticagem — Hapag-Lloyd", valor: 168_000, tipo: "receber", data: "2026-11-11", categoria: "Serviços portuários", contaId: "c-itau", recorrencia: "mensal", pago: false },
+  { id: "v-13", descricao: "Assessoria jurídica Andrade", valor: 15_600, tipo: "pagar", data: "2026-10-19", categoria: "Administrativo", contaId: "c-bradesco", recorrencia: "mensal", pago: true, pagoEm: "2026-10-19" },
+  { id: "v-14", descricao: "ISS + PIS/COFINS", valor: 96_500, tipo: "pagar", data: "2026-10-20", categoria: "Impostos", contaId: "c-itau", recorrencia: "nenhuma", pago: true, pagoEm: "2026-10-20" },
+];
+
+export const perfilSeed = { nome: "Ricardo Almeida", cargo: "CFO", email: "ricardo.almeida@portomeridian.com.br" };
+export const empresaSeed = { nome: "Porto Meridian S/A", cnpj: "12.345.678/0001-90", setor: "Logística portuária" };
